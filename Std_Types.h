@@ -12,7 +12,7 @@
 #define STD_TYPES_H
 
 #include "Compiler.h"
-
+#include "Platform_Types.h"
 
 #define STD_TYPES_VENDOR_ID                                  (1000U)
 

@@ -6,8 +6,8 @@
 
 #ifdef RV32
 	#define STORE_REG sw
-    #define LOAD_REG lw
-    #define portWORD_SIZE 4  
+        #define LOAD_REG lw
+        #define portWORD_SIZE 4  
 	#define portCONTEXT_SIZE  120 
 	
 	#define PC_STACK_OFFSET   0
@@ -42,12 +42,12 @@
 	#define X31_STACK_OFFSET  116
 	
 #else		/* RV64 */
-    #define STORE_REG sd
-    #define LOAD_REG ld
+        #define STORE_REG sd
+        #define LOAD_REG ld
 	#define portWORD_SIZE 8
 	#define portCONTEXT_SIZE  240 
 	
-    #define PC_STACK_OFFSET   0
+        #define PC_STACK_OFFSET   0
 	#define MSTATUS_STACK_OFFSET  8
 	#define X1_STACK_OFFSET  16
 	#define X5_STACK_OFFSET  24

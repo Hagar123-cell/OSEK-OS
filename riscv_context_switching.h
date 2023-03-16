@@ -8,20 +8,20 @@
 	#define STORE_REG sw
         #define LOAD_REG lw
         #define portWORD_SIZE 4  
-	#define portCONTEXT_SIZE  120 
+	#define portCONTEXT_SIZE  120    /* 4*30=120 */
 	
 	#define PC_STACK_OFFSET   0
-	#define MSTATUS_STACK_OFFSET  4
-	#define X1_STACK_OFFSET  8
-	#define X5_STACK_OFFSET  12
-	#define X6_STACK_OFFSET  16
-	#define X7_STACK_OFFSET  20
-	#define X8_STACK_OFFSET  24
-	#define X9_STACK_OFFSET  28
-	#define X10_STACK_OFFSET  32
-	#define X11_STACK_OFFSET  36
-	#define X12_STACK_OFFSET  40
-	#define X13_STACK_OFFSET  44
+	#define MSTATUS_STACK_OFFSET  4   /* 4*1=4 */
+	#define X1_STACK_OFFSET  8        /* 4*2=8 */
+	#define X5_STACK_OFFSET  12	  /* 4*3=12 */
+	#define X6_STACK_OFFSET  16	  /* 4*4=16 */
+	#define X7_STACK_OFFSET  20	  /* 4*5=20 */
+	#define X8_STACK_OFFSET  24	  /* 4*6=24 */
+	#define X9_STACK_OFFSET  28       / *4*7=28 */
+	#define X10_STACK_OFFSET  32      / *4*8=32 */
+	#define X11_STACK_OFFSET  36      / *4*9=36 */
+	#define X12_STACK_OFFSET  40      / *4*10=40 */
+	#define X13_STACK_OFFSET  44      / *4*11=44 */
 	#define X14_STACK_OFFSET  48
 	#define X15_STACK_OFFSET  52
 	#define X16_STACK_OFFSET  56

@@ -11,6 +11,12 @@
 #ifndef OS_H
 #define OS_H
 
+#include "Std_Types.h"
+
+/*
+ * type of resource which is the input to GetResource & ReleaseResource
+ */
+#define ResourceType  char
 /*
  *  This data type is used for all status information the API services offer
  */
@@ -30,5 +36,20 @@ typedef enum{
   
 }StatusType;
 
+/*******************************************************************************
+ *                      Resource API Prototypes                                *
+ *******************************************************************************/
+/*
+ * This call serves to enter critical sections in the code that are 
+ * assigned to the resource referenced by <ResID>. A critical 
+ * section shall always be left using ReleaseResource
+ */
+StatusType GetResource ( ResourceType ResID );
 
+/*
+ * ReleaseResource is the counterpart of GetResource and 
+ * serves to leave critical sections in the code that are assigned to 
+ * the resource referenced by <ResID>
+*/
+StatusType ReleaseResource ( ResourceType ResID );
 #endif /* OS_H */

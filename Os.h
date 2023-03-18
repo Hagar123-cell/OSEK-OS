@@ -78,4 +78,46 @@ StatusType GetResource ( ResourceType ResID );
 StatusType ReleaseResource ( ResourceType ResID );
 
 
+/*******************************************************************************
+ *                      Interrupt API Prototypes                                *
+ *******************************************************************************/
+
+/*
+ * This service disables all interrupts for which the hardware
+ * supports disabling. The state before is saved for the
+ * EnableAllInterrupts call.
+ */
+void DisableAllInterrupts(void);
+
+/*
+ * This service restores the state saved by DisableAllInterrupts.
+ */
+void EnableAllInterrupts(void);
+
+/*
+ * This service saves the recognition status of all interrupts and
+ * disables all interrupts for which the hardware supports
+ * disabling.
+ */
+void SuspendAllInterrupts(void);
+
+/*
+ * This service restores the recognition status of all interrupts
+ * saved by the SuspendAllInterrupts service.
+ */
+void ResumeAllInterrupts(void);
+
+/*
+ * This service saves the recognition status of interrupts of
+ * category 2 and disables the recognition of these interrupts.
+ */
+void SuspendOSInterrupts(void);
+
+/*
+ * This service restores the recognition status of interrupts saved
+ * by the SuspendOSInterrupts service.
+ */
+void ResumeOSInterrupts(void);
+
+
 #endif /* OS_H */

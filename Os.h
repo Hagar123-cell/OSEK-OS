@@ -12,6 +12,7 @@
 #define OS_H
 
 #include "Std_Types.h"
+#include "Os_Cfg.h"
 
 #define ResourceType  char
 /*

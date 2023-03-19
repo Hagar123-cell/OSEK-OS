@@ -2,7 +2,7 @@
  *
  * Module: Interrupts
  *
- * File Name: OsInterrupts.h
+ * File Name: Interrupt.h
  *
  * Description: Source File for interrupts services for OSEK OS
  *

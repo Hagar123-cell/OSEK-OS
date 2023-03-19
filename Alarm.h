@@ -16,9 +16,6 @@
 /* General OS definitions */
 #include "Os.h"
 
-/* Standard AUTOSAR types */
-#include "Std_Types.h"
-
 /* Alarm Pre-Compile Configuration Header file */
 #include "Os_Cfg.h"
 

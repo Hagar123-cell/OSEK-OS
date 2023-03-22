@@ -1,6 +1,7 @@
 
 #ifndef RISCV_CONTXT_H
 #define RISCV_CONTXT_H
+.extern RISCV_CONTEXT_SWITCH
 
 #define RV32
 

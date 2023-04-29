@@ -17,6 +17,117 @@ static TaskType                     OsTask_RunningTask;                         
 static TaskType                     OsTask_RunningTaskNext;                    /*      task to be run next     */
 
 
+
+/*******************************************************************************
+*Function Name: OsSched_ReadyListInit
+*Parameter (In): list 		-the list to initialize.
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: initialize readyList  .
+*********************************************************************************/
+void OsSched_ReadyListInit(
+								  Os_ReadyListType* list
+								  )
+{
+	uint8 i;
+	for(i=0; i<OSTASK_PRIORITY_LEVELS ;i++)
+	{
+		OsTask_ReadyList[i].head=INVALID_TASK;
+		OsTask_ReadyList[i].tail=INVALID_TASK;
+	}
+}
+
+
+
+/*******************************************************************************
+*Function Name: OsSched_ReadyListAddToHead
+*Parameter (In): list   -ready list to add task to.
+*			     taskID	-task to add to list
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: Add task to the given ready list at the head of the list
+********************************************************************************/
+static void OsSched_ReadyListAddToHead(
+										Os_ReadyListType* list,
+										TaskType 		  taskID
+									   )
+{
+    OsTask_TCBs[taskID].next = list->head;
+    list->head = taskID;
+	if (list->tail == INVALID_TASK)
+	{
+        list->tail = taskID;
+    }
+	else
+	{
+		/* Do Nothing */
+	}
+}
+
+/*******************************************************************************
+*Function Name: OsSched_ReadyListRemoveFromHead
+*Parameter (In): list  	    -ready list to remove task from.
+                 taskID		-task to be added to list
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: Add the task to the tail of the list .
+********************************************************************************/
+static void OsSched_ReadyListAddToTail(
+									   Os_ReadyListType* list,
+									   TaskType 	     taskID
+									   )
+{
+    OsTask_TCBs[taskID].next = INVALID_TASK;
+    if (list->head == INVALID_TASK)
+    {
+        list->head = taskID;
+    }
+    else
+    {
+        OsTask_TCBs[list->tail].next = taskID;
+    }
+    list->tail = taskID;
+}
+
+
+
+/*******************************************************************************
+*Function Name: OsSched_ReadyListRemoveFromHead
+*Parameter (In): list  	    -ready list to remove task from.
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: Remove the task at the head of the list .
+********************************************************************************/
+static void OsSched_ReadyListRemoveFromHead(
+											Os_ReadyListType* list
+										   )
+{
+	TaskType oldHead;
+
+	if(list->head == INVALID_TASK) /* list is already empty */
+	{
+		/* Do Nothing */
+	}
+	else if (list->head == list->tail ) /* there is only one task in list */
+	{
+		list->head = INVALID_TASK;
+		list->tail = INVALID_TASK;
+		/* Removed task next is already INVALID_TASK */
+	}
+	else  /* list contains more than one task */
+	{
+		oldHead=list->head;
+		list->head=OsTask_TCBs[oldHead].next;
+		OsTask_TCBs[oldHead].next=INVALID_TASK; /* assign Removed task next to INVALID_TASK */
+	}
+}
+
+
+
 /*******************************************************************************
 *Function Name: OsSched_ReadyListRemoveFromHead
 *Parameter (In): list  	    -ready list to remove task from.

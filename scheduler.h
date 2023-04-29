@@ -39,6 +39,17 @@ extern OsTask_TCBType              	OsTask_TCBs        [OSTASK_NUMBER];
 *********************************************************************************/
 #define OSSCHED_RUNNING_TO_SUSPENDED(taskID)  OsTask_TCBs[(taskID)].state= SUSPENDED;
 
+/*******************************************************************************
+*Function Name: OsSched_ReadyListInit
+*Parameter (In): list 		-the list to initialize.
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: initialize readyList  .
+*********************************************************************************/
+void OsSched_ReadyListInit(
+								  Os_ReadyListType* list
+								  );
 
 
 /*******************************************************************************
@@ -96,5 +107,18 @@ void OsSched_WaitingToReady(
 							TaskType taskID
 							);
 #endif
+
+
+/*******************************************************************************
+*Function Name: OsSched_ReadyListInit
+*Parameter (In): list 		-the list to initialize.
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: initialize readyList  .
+*********************************************************************************/
+void OsSched_ReadyListInit(
+								  Os_ReadyListType* list
+								  );
 
 #endif /* SCHEDULER_H_ */

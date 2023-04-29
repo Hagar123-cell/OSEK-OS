@@ -55,82 +55,96 @@ typedef AlarmBaseType* AlarmBaseRefType;
 /* Type definition represents an alarm object */
 typedef unsigned int AlarmType;
 
+/* Type definition for os event Reference */
+typedef uint16 OsEvent;     //////////////////////
+typedef OsEvent* OsEventRefType;
+
+/* Type definition for os task Reference */
+typedef uint16 OsTask;     //////////////////////
+typedef OsTask* OsTaskRefType;
+
+
+/* Type definition contains the natural type or unit of the counter */
+typedef enum{
+		HARDWARE , SOFTWARE
+}OsCounterTypeType;
+
 
 /* Structure specifies the config of counter */
 typedef struct
 {
-
+  TickType OsCounterMaxAllowedValue;
+  TickType OsCounterMinCycle;
+  TickType OsCounterTicksPerBase;
+  OsCounterTypeType OsCounterType;
+  //OsSecondsPerTick;
 
 }OsCounter;
+
+
+/* Type definition for os Counter Reference */
+typedef OsCounter* OsCounterRefType;
 
 /* Structure specifies the parameters to activate a task */
 typedef struct
 {
-  OsTask    *OsAlarmActivateTaskRef;
+  OsTaskRefType OsAlarmActivateTaskRef;
 
-}AlarmActiveTask;
+}OsAlarmActiveTask;
 
 
 /* Structure specifies the parameters to call a callback OS alarm action */
 typedef struct
 {
 
-  OsAlarmCallbackName   //////////////////
+  OsAlarmCallbackName;   //////////////////
  
-}AlarmCallback;
+}OsAlarmCallback;
 
 
 /* Strcture specifies the parameters to increment a counter */
 typedef struct
 {
-  OsCounter   *OsAlarmIncrementCounterRef;
+  OsCounterRefType OsAlarmIncrementCounterRef;
 
-}AlarmIcrementCounter;
+}OsAlarmIcrementCounter;
 
 /* Structure specifies the parameters to set an event*/
 typedef struct
 {
 
-  OsEvent   *OsAlarmSetEventRef;
+  OsEventRefType OsAlarmSetEventRef;
+  OsTaskRefType OsAlarmSetEventTaskRef;
 
-  OsTask    *OsAlarmSetEventTaskRef;
 
-
-}AlarmSetEvent;
+}OsAlarmSetEvent;
 
 /* Structure defines which type of notification is used when the alarm expires */
 typedef struct
 {
-  AlarmActiveTask ActiveTask;
+  OsAlarmActiveTask OsActiveTask;
+  OsAlarmCallback OsCallback;
+  OsAlarmIcrementCounter OsIncrementCounter;
+  OsAlarmSetEvent OsSetEvent;
 
-  AlarmCallback Callback;
+}OsAlarmAction;
 
-  AlarmIcrementCounter IncrementCounter;
-
-  AlarmSetEvent SetEvent;
-
-}AlarmAction;
-
-
-
-//implement config struct if found 
 
 typedef struct
 {
-  OsCounter  *AlarmCounterRef;
-  
-  AlarmAction Action;
+  OsCounterRefType OsAlarmCounterRef;
+  OsAlarmAction OsAction;
 
 
   //Alarmautostart
 
   
-}Alarm_ConfigChannel;
+}OsAlarm;
 
 /* Data Structure required for initializing the Alarm */
 typedef struct Alarm_ConfigType
 {
-	Alarm_ConfigChannel Alarms[No_ALARMS];
+	OsAlarm Alarms[No_ALARMS];
 } Alarm_ConfigType;
 
 

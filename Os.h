@@ -14,6 +14,10 @@
 #include "Std_Types.h"
 #include "Os_Cfg.h"
 
+/*
+ * type of resource which is the input to GetResource & ReleaseResource
+ */
+
 #define ResourceType  char
 /*
  *  This data type is used for all status information the API services offer
@@ -120,4 +124,10 @@ void SuspendOSInterrupts(void);
 void ResumeOSInterrupts(void);
 
 
+/*
+ * ReleaseResource is the counterpart of GetResource and 
+ * serves to leave critical sections in the code that are assigned to 
+ * the resource referenced by <ResID>
+*/
+StatusType ReleaseResource ( ResourceType ResID );
 #endif /* OS_H */

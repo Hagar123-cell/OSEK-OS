@@ -47,22 +47,32 @@ typedef struct
   
 }AlarmBaseType;
 
-
 /* Type definition points to the data type AlarmBaseType */
 typedef AlarmBaseType* AlarmBaseRefType;
-
 
 /* Type definition represents an alarm object */
 typedef unsigned int AlarmType;
 
-/* Type definition for os event Reference */
+
+/*******************************************************************************
+ *                 Type definition for os Event Reference                      *
+ *******************************************************************************/
+
 typedef uint16 OsEvent;     //////////////////////
 typedef OsEvent* OsEventRefType;
 
-/* Type definition for os task Reference */
+
+/*******************************************************************************
+ *                 Type definition for os Task Reference                       *
+ *******************************************************************************/
+
 typedef uint16 OsTask;     //////////////////////
 typedef OsTask* OsTaskRefType;
 
+
+/*******************************************************************************
+ *                 Os Counter Configuration                                    *
+ *******************************************************************************/
 
 /* Type definition contains the natural type or unit of the counter */
 typedef enum{
@@ -81,9 +91,15 @@ typedef struct
 
 }OsCounter;
 
-
 /* Type definition for os Counter Reference */
 typedef OsCounter* OsCounterRefType;
+
+/*******************************************************************************
+ *                 Os Alarm Configuration                                    *
+ *******************************************************************************/
+
+/* Type definition for Alarm callback function */
+typedef void (*OsAlarmCallbackFunction)( void * );
 
 /* Structure specifies the parameters to activate a task */
 typedef struct
@@ -97,7 +113,7 @@ typedef struct
 typedef struct
 {
 
-  OsAlarmCallbackName;   //////////////////
+  OsAlarmCallbackFunction OsAlarmCallbackName;   //////////////////
  
 }OsAlarmCallback;
 
@@ -115,7 +131,6 @@ typedef struct
 
   OsEventRefType OsAlarmSetEventRef;
   OsTaskRefType OsAlarmSetEventTaskRef;
-
 
 }OsAlarmSetEvent;
 
@@ -160,3 +175,11 @@ typedef struct Alarm_ConfigType
 extern const Alarm_ConfigType Alarm_Configuration;
 
 #endif /* ALARM_H */
+
+
+
+
+
+
+
+void IncrementCounter(unsigned int CounterID);

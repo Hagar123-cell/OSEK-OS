@@ -1,8 +1,8 @@
 
 #include "riscv_context_switching.h"
 
-.extern currentTCB
-.extern nextTCB
+.extern currentTCBPtr
+.extern nextTCBPtr
 
 .global RISCV_CONTEXT_SWITCH
 
@@ -55,7 +55,7 @@ RISCV_CONTEXT_SWITCH:
     STORE_REG t0, MSTATUS_STACK_OFFSET ( sp )   # push mstatus register into stack to save the Machine previous interrupt enable bit (MPIE bit) in the mstatus.
 
 
-    LOAD_REG  t0, currentTCB            # load value of currectTCB (address of the current TCB)
+    LOAD_REG  t0, currentTCBPtr            # load value of currectTCBPtr (address of the current TCB)
     STORE_REG  sp, 0( t0 )              # save the SP value into current TCB.             
 
     csrr a1, mepc            # mepc rigister contains the return address from exeption.
@@ -67,12 +67,8 @@ RISCV_CONTEXT_SWITCH:
 #*******************************************************************************
 #                             Restore Context                                 
 #*******************************************************************************
-
-    # next three lines equivalent to (currentTCB=nextTCB;) in c 
-    la t0,currentTCB             # t0 contains address of currectTCB i.e. &currectTCB  
-    LOAD_REG  t1, nextTCB        # t1 contains the value of nextTCB i.e. nextTCB (address of the next TCB )  
-    STORE_REG t1,0(t0)           # store nextTCB into &currectTCB  
-              
+ 
+    LOAD_REG  t1, nextTCBPtr        # t1 contains the value of nextTCBPtr i.e. nextTCBPtr (address of the next TCB )                
     LOAD_REG  sp, 0( t1 )        # load sp from nextTCB
     
     LOAD_REG t0,  PC_STACK_OFFSET ( sp )

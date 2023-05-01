@@ -367,3 +367,54 @@ void OsSched_reschedule()
 
 }
 
+
+/*******************************************************************************
+*Function Name: OsSched_getRunningTaskID
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : OsTask_RunningTaskID   -Running Task ID
+*Description: get Running Task ID  .
+*********************************************************************************/
+TaskType OsSched_getRunningTaskID()
+{
+	return OsTask_RunningTaskID;
+}
+
+
+
+/*******************************************************************************
+*Function Name: OsSched_scheduleInternal
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description:this function switch the context to the highest priority task.
+*Remark: this function is called only in schedule API.
+*********************************************************************************/
+void OsSched_scheduleInternal()
+{
+	TaskType peekTaskID;
+	OsSched_getHighestReadyTask(&peekTaskID);
+
+	if(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority)
+	{
+		OsSched_RunningToReady(OsTask_RunningTaskID);
+		OsSched_ReadyToRunning(peekTaskID);
+		OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
+		currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
+		nextTCBPtr =&OsTask_TCBs[peekTaskID];
+		OsTask_RunningTaskID=peekTaskID;
+		CALL_SWITCH_CONTEXT();
+	}
+	else
+	{
+		/* Do Nothing */
+	}
+}
+
+
+
+
+
+

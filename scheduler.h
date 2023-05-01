@@ -134,4 +134,28 @@ void OsSched_ReadyListInit(
 *********************************************************************************/
 void OsSched_reschedule();
 
+
+/*******************************************************************************
+*Function Name: OsSched_getRunningTaskID
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : OsTask_RunningTaskID   -Running Task ID
+*Description: get Running Task ID  .
+*********************************************************************************/
+TaskType OsSched_getRunningTaskID();
+
+
+/*******************************************************************************
+*Function Name: OsSched_scheduleInternal
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description:this function switch the context to the highest priority task.
+*Remark: this function is called only in schedule API.
+*********************************************************************************/
+void OsSched_scheduleInternal();
+
+
 #endif /* SCHEDULER_H_ */

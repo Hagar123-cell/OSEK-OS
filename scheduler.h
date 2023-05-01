@@ -121,4 +121,17 @@ void OsSched_ReadyListInit(
 								  Os_ReadyListType* list
 								  );
 
+
+
+/*******************************************************************************
+*Function Name: OsSched_reschedule
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: get highest priority task and switch context to it  .
+*Remark: this function check if the running task is preemptive or NOT before perform switch context.
+*********************************************************************************/
+void OsSched_reschedule();
+
 #endif /* SCHEDULER_H_ */

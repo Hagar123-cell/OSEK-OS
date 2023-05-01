@@ -9,17 +9,51 @@
  * Author:
  *
  *******************************************************************************/
+/*
+calling context:
+
+TerminateTask
+	OSSCHED_RUNNING_TO_SUSPENDED(OsSched_getRunningTaskID())
+	OsSched_reschedule()
+
+WaitEvent
+	OSSCHED_RUNNING_TO_WAITING(OsSched_getRunningTaskID())
+	OsSched_reschedule()
+
+ReleaseResource
+	OsSched_reschedule()
+
+schedule
+	OsSched_reschedule()
+
+
+ActivateTask
+	OsSched_SuspendedToReady(taskID);
+	OsSched_reschedule()
+
+ChainTask
+	OSSCHED_RUNNING_TO_SUSPENDED(OsSched_getRunningTaskID())
+	OsSched_SuspendedToReady(taskID)
+	OsSched_reschedule()
+
+SetEvent
+	OsSched_WaitingToReady(taskID)
+	OsSched_reschedule()
+
+*/
+
 
 #include "scheduler.h"
+#define CALL_SWITCH_CONTEXT() /* inline assembly triggers interrupt*/
+
 OsTask_TCBType              		OsTask_TCBs        [OSTASK_NUMBER]; /* TCB array for tasks based on task ID */
 static Os_ReadyListType             OsTask_ReadyList           [OSTASK_PRIORITY_LEVELS]; /* array of ready lists based on priority */
-TaskType                     		OsTask_RunningTask;                         /* currently running task */
-TaskType                   		    OsTask_RunningTaskNext;                    /*      task to be run next     */
-static TaskType						OsTask_HighestPriority;		        	 /* the highest priority ready or running */
+TaskType                     		OsTask_RunningTaskID;                         /* currently running task */
+static TaskType						OsTask_HighestBasePriority;		        	 /* the highest priority ready or running */
  	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	/* if we activate a task that has priority higher than the running task */
 																		    /*but the running task is non-preemptive ,so store highest priority in this variable  */
-
-
+OsTask_TCBType * currentTCBPtr ; /* pointer to the TCB of the running task , it is used in context switching to save the context of the current task */
+OsTask_TCBType * nextTCBPtr ;    /* pointer to the TCB of the task to be running next , it is used in context switching to restore the context of the next task */
 /*******************************************************************************
  *                            static Function Prototypes 		               *
  *******************************************************************************/
@@ -180,7 +214,7 @@ void OsSched_RunningToReady(
 *Return : none
 *Description: change task state from Suspended to ready,
 *			  add the task to the tail of the ready list,
-*			  update OsTask_HighestPriority .
+*			  update OsTask_HighestBasePriority .
 *********************************************************************************/
 void OsSched_SuspendedToReady
 (
@@ -199,9 +233,9 @@ void OsSched_SuspendedToReady
     OsSched_ReadyListAddToTail(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
     OsTask_TCBs[taskID].state    = READY; /* change state of the task to ready*/
 
-    if(OsTask_TCBs[taskID].CurrentPriority > OsTask_HighestPriority)
+    if(OsTask_TCBs[taskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskPriority)
     {
-    	OsTask_HighestPriority=OsTask_TCBs[taskID].CurrentPriority;
+    	OsTask_HighestBasePriority=OsTask_TCBs[taskID].CurrentPriority;
     }
     else
     {
@@ -235,7 +269,7 @@ void OsSched_ReadyToRunning(
 *Return : none
 *Description: change task state from waiting to ready,
 *			  add the task to the tail the ready list,
-*			  update OsTask_HighestPriority .
+*			  update OsTask_HighestBasePriority .
 *********************************************************************************/
 #if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC1) ||  (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) )
 void OsSched_WaitingToReady
@@ -246,9 +280,9 @@ void OsSched_WaitingToReady
 	OsTask_TCBs[taskID].state=READY;
 	OsSched_ReadyListAddToTail(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
 
-	if(OsTask_TCBs[taskID].CurrentPriority > OsTask_HighestPriority)
+	if(OsTask_TCBs[taskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskPriority)
 	{
-		OsTask_HighestPriority=OsTask_TCBs[taskID].CurrentPriority;
+		OsTask_HighestBasePriority=OsTask_TCBs[taskID].CurrentPriority;
 	}
 	else
 	{
@@ -271,7 +305,7 @@ static void OsSched_getHighestReadyTask
 		TaskType *taskIDPtr
 )
 {
-	sint16 i=(sint16)OsTask_HighestPriority; /* signed to exit when (i<0) otherwise the condition always true */
+	sint16 i=(sint16)OsTask_HighestBasePriority; /* signed to exit when (i<0) otherwise the condition always true */
 	*taskIDPtr=INVALID_TASK;
 	for( ; (*taskIDPtr==INVALID_TASK) && (i>=0) ;i--)
 	{
@@ -280,4 +314,56 @@ static void OsSched_getHighestReadyTask
 
 }
 
+
+/*******************************************************************************
+*Function Name: OsSched_reschedule
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: get highest priority task and switch context to it  .
+*Remark: this function check if the running task is preemptive or NOT before perform switch context.
+*********************************************************************************/
+void OsSched_reschedule()
+{
+	TaskType peekTaskID;
+	OsSched_getHighestReadyTask(&peekTaskID);
+	/*
+	 * IF condition is True when
+	 * 1.running task state is RUNNING .
+	 * because in this case we need to compare the running task priority with the peek priority in ready list .
+	 * this sub-condition True in case of ActivateTask, SetEvent and ReleaseResource APIs.
+	 * 2.running task state is FULL preemptive .
+	 * because ActivateTask, SetEvent and ReleaseResource APIs are rescheduling points only in case of FULL preemptive.
+	 *
+	 */
+	if((OsTask_TCBs[OsTask_RunningTaskID].state==RUNNING)  \
+	   &&(OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskSchedule==FULL))
+	{
+		if(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority)
+		{
+			OsSched_RunningToReady(OsTask_RunningTaskID);
+			OsSched_ReadyToRunning(peekTaskID);
+			OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
+			currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
+			nextTCBPtr =&OsTask_TCBs[peekTaskID];
+			OsTask_RunningTaskID=peekTaskID;
+			CALL_SWITCH_CONTEXT();
+		}
+		else
+		{
+			/* Do Nothing */
+		}
+	}
+	else  /*task state is NOT RUNNING in case of TerminateTask , ChainTask and WaitEvent APIs*/
+	{
+		OsSched_ReadyToRunning(peekTaskID);
+		OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
+		currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
+		nextTCBPtr =&OsTask_TCBs[peekTaskID];
+		OsTask_RunningTaskID=peekTaskID;
+		CALL_SWITCH_CONTEXT();
+	}
+
+}
 

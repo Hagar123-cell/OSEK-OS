@@ -67,6 +67,14 @@ typedef OsCounter* OsCounterRefType;
  *                 Os Alarm Configuration                                    *
  *******************************************************************************/
 
+/** Alarm State
+ **
+ ** This type defines the possibly states of one alarm which are:
+ ** 0 disable
+ ** 1 enable
+ **/
+typedef uint8 AlarmStateType;
+
 /* Type definition for Alarm callback function */
 typedef void (*OsAlarmCallbackFunction)( void * );
 
@@ -116,6 +124,7 @@ typedef struct
 
 typedef struct
 {
+  AlarmStateType AlarmState;
   OsCounterRefType OsAlarmCounterRef;
   OsAlarmAction OsAction;
 

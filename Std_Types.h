@@ -53,7 +53,7 @@ typedef struct
 #define STD_ON          0x01U       /* Standard ON */
 #define STD_OFF         0x00U       /* Standard OFF */
 
-#define E_OK            ((Std_ReturnType)0x00U)      /* Function Return OK */
+
 #define E_NOT_OK        ((Std_ReturnType)0x01U)      /* Function Return NOT OK */
 
 #endif /* STD_TYPES_H */

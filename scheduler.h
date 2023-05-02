@@ -156,4 +156,14 @@ TaskType OsSched_getRunningTaskID();
 void OsSched_scheduleInternal();
 
 
+/*******************************************************************************
+*Function Name: Ossched_StartScheduler
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: switch context to the highest task in ready list .
+*********************************************************************************/
+void Ossched_StartScheduler();
+
 #endif /* SCHEDULER_H_ */

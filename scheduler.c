@@ -44,7 +44,7 @@ SetEvent
 
 
 #include "scheduler.h"
-#define CALL_SWITCH_CONTEXT() /* inline assembly triggers interrupt*/
+#define CALL_SWITCH_CONTEXT() /* NotImplemented inline assembly triggers interrupt*/
 
 OsTask_TCBType              		OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS]; /* TCB array for tasks based on task ID */
 STATIC Os_ReadyListType             OsTask_ReadyList           [OSTASK_PRIORITY_LEVELS]; /* array of ready lists based on priority */
@@ -413,6 +413,28 @@ void OsSched_scheduleInternal()
 	}
 }
 
+
+
+/*******************************************************************************
+*Function Name: Ossched_StartScheduler
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: switch context to the highest task in ready list .
+*********************************************************************************/
+void Ossched_StartScheduler()
+{
+	TaskType peekTaskID;
+	OsSched_getHighestReadyTask(&peekTaskID);
+
+	OsSched_ReadyToRunning(peekTaskID);
+	OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
+	currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
+	nextTCBPtr =&OsTask_TCBs[peekTaskID];
+	OsTask_RunningTaskID=peekTaskID;
+	CALL_SWITCH_CONTEXT();
+}
 
 
 

@@ -14,7 +14,7 @@
 #ifndef TASK_MANAGEMENT_H_
 #define TASK_MANAGEMENT_H_
 #include "Os.h"
-
+#include "scheduler.h"
 
 /*******************************************************************************
  *                              App Mode Start			                       *
@@ -97,6 +97,11 @@ enum
 	OS_CONFORMANCE_BCC2,
 	OS_CONFORMANCE_ECC2
 };
+typedef enum
+		{
+		BASIC ,
+		EXTENDED
+		}OsTask_taskKindType;
 
 
 /* Task Management Pre-Compile Configuration Header file */
@@ -112,6 +117,7 @@ typedef struct {
 	OsTask_stackType stackPtr; /* fixed stack pointer */
 	OsTask_stackSizeType stackSize; /* stack size of the task in bytes */
 	OsTask_EntryType entry; /* address of the entry point of the task */
+	OsTask_taskKindType taskKind;  /* BASIC or EXTENDED */
 #if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2) )
 	OsTaskActivationType OsTaskActivation;
 #endif
@@ -248,6 +254,17 @@ StatusType GetTaskID ( TaskRefType TaskID );
 *Conformance: BCC1, BCC2, ECC1, ECC2
  *******************************************************************************/
 StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State );
+
+
+/*******************************************************************************
+*Function Name: OsTask_taskInit
+*Parameter (In): OsTaskConfig	 - pointer to the first element of static configuration array.
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: initialize tasks TCB and ready list . move autostart task to ready list .
+*********************************************************************************/
+void OsTask_taskInit(OsTask * OsTaskConfig);
 
 
 #endif /* TASK_MANAGEMENT_H_ */

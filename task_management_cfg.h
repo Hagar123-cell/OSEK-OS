@@ -18,7 +18,7 @@
 #define OSTASK_PRIORITY_LEVELS  8
 
 #define OS_CONFORMANCE OS_CONFORMANCE_ECC2
-
+#define OS_EXTENDED_ERROR    TRUE
 /*******************************************************************************
  *                              App Mode Configuration                         *
  *******************************************************************************/

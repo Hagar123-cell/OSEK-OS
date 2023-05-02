@@ -2,7 +2,7 @@
  *
  * Module: Interrupts
  *
- * File Name: Interrupt.h
+ * File Name: OsInterrupts.h
  *
  * Description: Source File for interrupts services for OSEK OS
  *
@@ -12,19 +12,38 @@
 
 #include "Interrupt.h"
 #include "Os.h"
-#include "Std_types.h"
 
 uint8 suspend_All_Counter = 0;
-uint8 OsSavedIntState = 0;
+uint32 OsSavedIntState = 0;
+
+
 
 void osSaveAndDisableIntState(void)
 {
-  OsSavedIntState = csr_read_clr_bits_mstatus(MSTATUS_MIE_BIT);
+	unsigned int mstatus;
+	__asm__ volatile("csrrc %0, mstatus, %1" : "=r" (mstatus) : "r" (MSTATUS_MIE_BIT_MASK));
+	OsSavedIntState = mstatus& MSTATUS_MIE_BIT_MASK;
 }
 
 void osRestoreSavedIntState(void)
 {
-  csr_write_mstatus(OsSavedIntState);
+	__asm__ volatile ("csrw    mstatus, %0"
+			: /* output: none */
+			: "r" (OsSavedIntState)); /* input : from register */
+}
+
+uint32 osGetPMR(void)
+{
+	uint32 pmr_value;
+	DISABLE_INTERRUPTS();
+	pmr_value = PLIC->threshold;
+	ENABLE_INTERRUPTS();
+	return pmr_value;
+}
+
+void osSetPMR(uint32 level)
+{
+	PLIC->threshold = level;
 }
 /*
  * This service disables all interrupts for which the hardware
@@ -94,7 +113,11 @@ void ResumeAllInterrupts(void)
  */
 void SuspendOSInterrupts(void)
 {
+	/* Get the global mask prio */
+	Interrupt_Configuration.IntSavedLevel = osGetPMR();
 
+	/* Disable OS interrupts */
+	osSetPMR(OS_CAT1_PRIO_MASK);
 }
 
 /*
@@ -103,7 +126,8 @@ void SuspendOSInterrupts(void)
  */
 void ResumeOSInterrupts(void)
 {
-
+	/* Restore the global mask prio */
+	osSetPMR(Interrupt_Configuration.IntSavedLevel);
 }
 
 

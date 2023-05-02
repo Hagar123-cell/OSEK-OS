@@ -37,6 +37,37 @@ typedef enum{
 }StatusType;
 
 /*******************************************************************************
+ *                      Alarm Data Types                                        *
+ *******************************************************************************/
+
+/* Type definition represents count values in ticks */
+typedef unsigned int TickType;
+
+/* Type definition points to the data type TickType */
+typedef TickType* TickRefType;
+
+/* Structure for AlarmBaseType for storage of counter characteristics */
+typedef struct
+{
+  /* Maximum possible allowed count value in ticks */
+  TickType maxallowedvalue;
+  
+  /* Number of ticks required to reach a counter-specific (significant) unit */
+  TickType ticksperbase;
+  
+  /* Smallest allowed value for the cycle-parameter of SetRelAlarm/SetAbsAlarm (only for systems with extended status) */
+  TickType mincycle;
+  
+}AlarmBaseType;
+
+/* Type definition points to the data type AlarmBaseType */
+typedef AlarmBaseType* AlarmBaseRefType;
+
+/* Type definition represents an alarm object */
+typedef unsigned int AlarmType;
+
+
+/*******************************************************************************
  *                      Alarm API Prototypes                                    *
  *******************************************************************************/
 

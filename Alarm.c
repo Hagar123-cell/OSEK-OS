@@ -25,21 +25,27 @@
 ************************************************************************************/
 StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 {
+  StatusType ret = E_OK;
+  OsCounterRefType counter;
+
   if(AlarmID < No_ALARMS)
   {
+
+    counter = Alarms[AlarmID].OsAlarmCounterRef;
+
+    Info->maxallowedvalue = counter->OsCounterMaxAllowedValue;
+    Info->mincycle = counter->OsCounterMinCycle;
+    Info->ticksperbase = counter->OsCounterTicksPerBase;
     
-    Info = &Alarm_Configuration[AlarmID];
-    return(E_OK);
     
   }
   else{
     
-    return(E_OS_ID);
+    ret = E_OS_ID;
     
   }
   
-  
-  
+  return ret;
 }
 
 
@@ -121,8 +127,32 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickRefType start, TickType cycle )
 ************************************************************************************/
 StatusType CancelAlarm ( AlarmType AlarmID )
 {
-  
-  
-  
-  
+  StatusType ret = E_OK;
+
+  if(AlarmID < No_ALARMS)
+  {
+    
+    if(Alarms[AlarmID].AlarmState == 0)
+    {
+
+      ret = E_OS_NOFUNC;
+
+    }
+    else
+    {
+      
+      Alarms[AlarmID].AlarmState == 0;
+
+    }
+    
+  }
+  else
+  {
+    
+    ret = E_OS_ID;
+    
+  } 
+
+  return ret;
+
 }

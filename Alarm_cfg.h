@@ -15,6 +15,8 @@
 
 #define No_ALARMS             (2U)
 
+#define No_COUNTERS           (2U)
+
 
 
 #endif /* ALARM_CFG_H */

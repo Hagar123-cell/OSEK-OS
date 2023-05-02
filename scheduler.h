@@ -15,7 +15,7 @@
 #include "task_management.h"
 
 
-extern OsTask_TCBType              	OsTask_TCBs        [OSTASK_NUMBER];
+extern OsTask_TCBType              	OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS];
 
 /*******************************************************************************
 *Macro Name: OSSCHED_RUNNING_TO_WAITING
@@ -110,16 +110,14 @@ void OsSched_WaitingToReady(
 
 
 /*******************************************************************************
-*Function Name: OsSched_ReadyListInit
-*Parameter (In): list 		-the list to initialize.
+*Function Name: OsSched_schedulerInit
+*Parameter (In): none.
 *Parameter (Out): none
 *Parameter (In/Out): none
 *Return : none
-*Description: initialize readyList  .
+*Description: initialize ready list , OsTask_RunningTaskID, OsTask_HighestBasePriority  .
 *********************************************************************************/
-void OsSched_ReadyListInit(
-								  Os_ReadyListType* list
-								  );
+void OsSched_schedulerInit();
 
 
 

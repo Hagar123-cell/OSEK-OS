@@ -14,7 +14,22 @@
 #ifndef TASK_MANAGEMENT_H_
 #define TASK_MANAGEMENT_H_
 #include "Os.h"
-#include "task_management_cfg.h"
+
+
+/*******************************************************************************
+ *                              App Mode Start			                       *
+ *******************************************************************************/
+#define OSDEFAULTAPPMODE  1
+
+typedef uint16 AppModeType ;
+typedef struct {
+	AppModeType appMode; /* support 16 App Mode ,each bit refer to an App mode */
+}OsAppMode;
+/*******************************************************************************
+ *                              App Mode End			                       *
+ *******************************************************************************/
+
+#define INVALID_TASK OSTASK_NUMBER_OF_TASKS
 
 /*******************************************************************************
  *                               Types from os event 		                    *
@@ -31,23 +46,15 @@ typedef OsEvent* OsEventRefType;
  typedef OsResource* OsResourceRefType;
 
 
-
-/*******************************************************************************
- *                               not defined                                   *
- *******************************************************************************/
-typedef uint16 OsAppMode; /* delete later */
-
-
-
-
-
 /*******************************************************************************
  *                              Module Data Types   	                       *
  *******************************************************************************/
 /* in OS SWS */
 typedef uint8 OsTaskActivationType;
 typedef uint8 OsTaskPriorityType;
-
+typedef void (*OsTask_EntryType)(void);
+typedef void* OsTask_stackType;
+typedef uint16 OsTask_stackSizeType;
 
 
 
@@ -90,12 +97,21 @@ enum
 	OS_CONFORMANCE_BCC2,
 	OS_CONFORMANCE_ECC2
 };
+
+
+/* Task Management Pre-Compile Configuration Header file */
+#include "task_management_cfg.h"
+
+
 /*******************************************************************************
  *                              Structures			  	                       *
  *******************************************************************************/
 
 
 typedef struct {
+	OsTask_stackType stackPtr; /* fixed stack pointer */
+	OsTask_stackSizeType stackSize; /* stack size of the task in bytes */
+	OsTask_EntryType entry; /* address of the entry point of the task */
 #if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2) )
 	OsTaskActivationType OsTaskActivation;
 #endif
@@ -115,6 +131,7 @@ typedef struct {
 
 
 typedef struct {
+	OsTask_stackType stackPtr; /* current top of stack pointer , changes during run time  */
 	TaskStateType state;
 	OsTaskPriorityType CurrentPriority;
 #if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2) )
@@ -130,8 +147,8 @@ typedef struct {
 }OsTask_TCBType;
 
 typedef struct Os_ReadyListType {
-    TaskType head;             /**< @brief pointer to the first ready task */
-    TaskType tail;             /**< @brief pointer to the last ready task */
+    TaskType head;             /* pointer to the first ready task */
+    TaskType tail;             /* pointer to the last ready task */
 } Os_ReadyListType;
 
 /*******************************************************************************
@@ -231,5 +248,6 @@ StatusType GetTaskID ( TaskRefType TaskID );
 *Conformance: BCC1, BCC2, ECC1, ECC2
  *******************************************************************************/
 StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State );
+
 
 #endif /* TASK_MANAGEMENT_H_ */

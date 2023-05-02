@@ -11,6 +11,8 @@
  *******************************************************************************/
 
 #include "task_management.h"
+#include "scheduler.h"
+
 /************************************************************************************
 *Service Name: ActivateTask
 *Parameter (In):  TaskID 	-Task reference
@@ -157,3 +159,33 @@ StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 
 	return 0;
 }
+
+
+void OsTask_taskInit(OsTask * OsTaskConfig)
+{
+	uint8 i;
+	OsSched_schedulerInit();
+
+	for(i=0; i < OSTASK_NUMBER_OF_TASKS;i++)
+	{
+		OsTask_TCBs[i].OsTaskConfig= &OsTaskConfig[i];
+		if(OsTaskConfig[i].OsTaskAutostart.OsTaskAppModeRef->appMode & OSAPPMODE_CURRENT_APPMODE)
+		{
+			OsTask_TCBs[i].Activations=1;
+			OsTask_TCBs[i].CurrentPriority=OsTaskConfig[i].OsTaskPriority;
+			OsTask_TCBs[i].next=INVALID_TASK;
+			OsTask_TCBs[i].stackPtr=OsTaskConfig[i].stackPtr + OsTaskConfig[i].stackSize;
+			OsTask_TCBs[i].state=READY;
+
+			/* initialize Events , EventsWait , Resources*/
+	     /* OsTask_TCBs[i].Events=0;
+			OsTask_TCBs[i].EventsWait=0;
+			OsTask_TCBs[i].Resources=0; */
+
+			OsSched_SuspendedToReady(i);
+
+		}
+	}
+}
+
+

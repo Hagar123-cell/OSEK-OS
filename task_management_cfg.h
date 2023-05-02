@@ -13,11 +13,15 @@
 #ifndef TASK_MANAGEMENT_CFG_H_
 #define TASK_MANAGEMENT_CFG_H_
 
-#define OSTASK_NUMBER  20   /* 		1 .. 255		 */
+#define OSTASK_NUMBER_OF_TASKS  20   /* 		1 .. 255		 */
 
 #define OSTASK_PRIORITY_LEVELS  8
 
-#define INVALID_TASK OSTASK_NUMBER
 #define OS_CONFORMANCE OS_CONFORMANCE_ECC2
 
+/*******************************************************************************
+ *                              App Mode Configuration                         *
+ *******************************************************************************/
+
+#define OSAPPMODE_CURRENT_APPMODE OSDEFAULTAPPMODE
 #endif /* TASK_MANAGEMENT_CFG_H_ */

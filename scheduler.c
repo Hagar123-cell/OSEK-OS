@@ -46,52 +46,52 @@ SetEvent
 #include "scheduler.h"
 #define CALL_SWITCH_CONTEXT() /* inline assembly triggers interrupt*/
 
-OsTask_TCBType              		OsTask_TCBs        [OSTASK_NUMBER]; /* TCB array for tasks based on task ID */
-static Os_ReadyListType             OsTask_ReadyList           [OSTASK_PRIORITY_LEVELS]; /* array of ready lists based on priority */
-TaskType                     		OsTask_RunningTaskID;                         /* currently running task */
-static TaskType						OsTask_HighestBasePriority;		        	 /* the highest priority ready or running */
+OsTask_TCBType              		OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS]; /* TCB array for tasks based on task ID */
+STATIC Os_ReadyListType             OsTask_ReadyList           [OSTASK_PRIORITY_LEVELS]; /* array of ready lists based on priority */
+STATIC TaskType                     OsTask_RunningTaskID;                         /* currently running task */
+STATIC TaskType						OsTask_HighestBasePriority;		        	 /* the highest priority ready or running */
  	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	/* if we activate a task that has priority higher than the running task */
-																		    /*but the running task is non-preemptive ,so store highest priority in this variable  */
+																		    /* but the running task is non-preemptive ,so store highest priority in this variable  */
 OsTask_TCBType * currentTCBPtr ; /* pointer to the TCB of the running task , it is used in context switching to save the context of the current task */
 OsTask_TCBType * nextTCBPtr ;    /* pointer to the TCB of the task to be running next , it is used in context switching to restore the context of the next task */
 /*******************************************************************************
  *                            static Function Prototypes 		               *
  *******************************************************************************/
-static void OsSched_ReadyListAddToHead
+STATIC void OsSched_ReadyListAddToHead
 (
 		Os_ReadyListType* list,
 		TaskType 		  taskID
 );
 
-static void OsSched_ReadyListAddToTail
+STATIC void OsSched_ReadyListAddToTail
 (
 	 Os_ReadyListType* list,
 	 TaskType 	     taskID
 );
 
-static void OsSched_ReadyListRemoveFromHead
+STATIC void OsSched_ReadyListRemoveFromHead
 (
 	Os_ReadyListType* list
 );
 
-static void OsSched_getHighestReadyTask
+STATIC void OsSched_getHighestReadyTask
 (
 		TaskType *taskIDPtr
 );
 
 /*******************************************************************************
-*Function Name: OsSched_ReadyListInit
-*Parameter (In): list 		-the list to initialize.
+*Function Name: OsSched_schedulerInit
+*Parameter (In): none.
 *Parameter (Out): none
 *Parameter (In/Out): none
 *Return : none
-*Description: initialize readyList  .
+*Description: initialize ready list , OsTask_RunningTaskID, OsTask_HighestBasePriority  .
 *********************************************************************************/
-void OsSched_ReadyListInit(
-								  Os_ReadyListType* list
-								  )
+void OsSched_schedulerInit()
 {
 	uint8 i;
+	OsTask_RunningTaskID=0;
+	OsTask_HighestBasePriority=0;
 	for(i=0; i<OSTASK_PRIORITY_LEVELS ;i++)
 	{
 		OsTask_ReadyList[i].head=INVALID_TASK;
@@ -110,7 +110,7 @@ void OsSched_ReadyListInit(
 *Return : none
 *Description: Add task to the given ready list at the head of the list
 ********************************************************************************/
-static void OsSched_ReadyListAddToHead(
+STATIC void OsSched_ReadyListAddToHead(
 										Os_ReadyListType* list,
 										TaskType 		  taskID
 									   )
@@ -136,7 +136,7 @@ static void OsSched_ReadyListAddToHead(
 *Return : none
 *Description: Add the task to the tail of the list .
 ********************************************************************************/
-static void OsSched_ReadyListAddToTail(
+STATIC void OsSched_ReadyListAddToTail(
 									   Os_ReadyListType* list,
 									   TaskType 	     taskID
 									   )
@@ -163,7 +163,7 @@ static void OsSched_ReadyListAddToTail(
 *Return : none
 *Description: Remove the task at the head of the list .
 ********************************************************************************/
-static void OsSched_ReadyListRemoveFromHead(
+STATIC void OsSched_ReadyListRemoveFromHead(
 											Os_ReadyListType* list
 										   )
 {
@@ -300,7 +300,7 @@ void OsSched_WaitingToReady
 *Return : none
 *Description: search the ready list to get the highest priority task ID .
 *********************************************************************************/
-static void OsSched_getHighestReadyTask
+STATIC void OsSched_getHighestReadyTask
 (
 		TaskType *taskIDPtr
 )

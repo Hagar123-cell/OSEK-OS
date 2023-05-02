@@ -135,12 +135,12 @@ typedef struct
 }OsAlarm;
 
 /* Data Structure required for initializing the Alarm */
-typedef struct Alarm_ConfigType
-{
-	OsAlarm Alarms[No_ALARMS];
-} Alarm_ConfigType;
+//typedef struct Alarm_ConfigType
+//{
+//	OsAlarm Alarms[No_ALARMS];
+//} Alarm_ConfigType;
 
-
+OsAlarm Alarms[No_ALARMS];
 
 
 

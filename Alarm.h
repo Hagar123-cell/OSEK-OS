@@ -67,13 +67,19 @@ typedef OsCounter* OsCounterRefType;
  *                 Os Alarm Configuration                                    *
  *******************************************************************************/
 
-/** Alarm State
+/** Type definition for Alarm State
  **
  ** This type defines the possibly states of one alarm which are:
  ** 0 disable
  ** 1 enable
  **/
 typedef uint8 AlarmStateType;
+
+/* Type definition for Alarm Time */
+typedef uint32 AlarmTimeType;
+
+/*Type definition for Alarm Cycle Time */
+typedef uint32 AlarmCycleTimeType;
 
 /* Type definition for Alarm callback function */
 typedef void (*OsAlarmCallbackFunction)( void * );
@@ -124,6 +130,8 @@ typedef struct
 
 typedef struct
 {
+  AlarmTimeType AlarmTime;
+  AlarmCycleTimeType AlarmCycleTime;
   AlarmStateType AlarmState;
   OsCounterRefType OsAlarmCounterRef;
   OsAlarmAction OsAction;
@@ -141,6 +149,7 @@ typedef struct
 //} Alarm_ConfigType;
 
 OsAlarm Alarms[No_ALARMS];
+OsCounter Counters[No_COUNTERS];
 
 
 
@@ -150,7 +159,7 @@ OsAlarm Alarms[No_ALARMS];
  *******************************************************************************/
 
 /* Extern PB structures to be used by Alarm and other modules */
-extern const Alarm_ConfigType Alarm_Configuration;
+//extern const Alarm_ConfigType Alarm_Configuration;
 
 #endif /* ALARM_H */
 

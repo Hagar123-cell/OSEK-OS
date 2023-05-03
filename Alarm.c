@@ -215,9 +215,6 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
     
   return ret;
   
-  
-  
-  
 }
 
 

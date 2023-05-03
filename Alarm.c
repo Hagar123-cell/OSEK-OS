@@ -25,21 +25,27 @@
 ************************************************************************************/
 StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 {
+  StatusType ret = E_OK;
+  OsCounterRefType counter;
+
   if(AlarmID < No_ALARMS)
   {
+
+    counter = Alarms[AlarmID].OsAlarmCounterRef;
+
+    Info->maxallowedvalue = counter->OsCounterMaxAllowedValue;
+    Info->mincycle = counter->OsCounterMinCycle;
+    Info->ticksperbase = counter->OsCounterTicksPerBase;
     
-    Info = &Alarm_Configuration[AlarmID];
-    return(E_OK);
     
   }
   else{
     
-    return(E_OS_ID);
+    ret = E_OS_ID;
     
   }
   
-  
-  
+  return ret;
 }
 
 
@@ -55,10 +61,31 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 ************************************************************************************/
 StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 {
+  StatusType ret = E_OK;
+
+  if(AlarmID < No_ALARMS)
+  {
+    if(Alarms[AlarmID].AlarmState == 0)
+    {
+
+      ret = E_OS_NOFUNC;
+
+    }
+    else
+    {
+
+      *Tick = Alarms[AlarmID].AlarmTime;
+
+    }    
+    
+  }
+  else{
+    
+    ret = E_OS_ID;
+    
+  }
   
-  
-  
-  
+  return ret;  
 }
 
 
@@ -77,11 +104,52 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 *               alarm <AlarmID> is activated or the assigned event (only for 
 *               extended tasks) is set or the alarm-callback routine is called. 
 ************************************************************************************/
-StatusType SetRelAlarm ( AlarmType AlarmID, TickRefType increment, TickType cycle )
+StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
 {
-  
-  
-  
+  StatusType ret = E_OK;
+  OsCounterRefType counter;
+  counter = Alarms[AlarmID].OsAlarmCounterRef;
+
+  if(AlarmID >= No_ALARMS)
+  {
+
+    ret = E_OS_ID;
+    
+  }
+  else if( ( increment < 0 ) || ( increment > (counter->OsCounterMaxAllowedValue) ) || 
+            ( (cycle != 0) && 
+              ( (cycle > (counter->OsCounterMaxAllowedValue)) || 
+                (cycle < (counter->OsCounterMinCycle)) ) ) )
+            {
+
+              ret = E_OS_VALUE;
+
+            }
+
+            else
+            {
+              if(Alarms[AlarmID].AlarmState == 1)
+              {
+
+               ret = E_OS_STATE; 
+
+              }
+              else
+              {
+
+                DisableAllInterrupts();
+
+                Alarms[AlarmID].AlarmState = 1;
+                Alarms[AlarmID].AlarmTime = increment;
+                Alarms[AlarmID].AlarmCycleTime = cycle;
+
+                EnableAllInterrupts();
+
+              }
+
+            }
+    
+  return ret;
   
 }
 
@@ -100,11 +168,52 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickRefType increment, TickType cycl
 *               <AlarmID> is activated or the assigned event (only for extended 
 *               tasks) is set or the alarm-callback routine is called.
 ************************************************************************************/
-StatusType SetAbsAlarm ( AlarmType AlarmID, TickRefType start, TickType cycle )
+StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
 {
-  
-  
-  
+  StatusType ret = E_OK;
+  OsCounterRefType counter;
+  counter = Alarms[AlarmID].OsAlarmCounterRef;
+
+  if(AlarmID >= No_ALARMS)
+  {
+
+    ret = E_OS_ID;
+    
+  }
+  else if( ( start < 0 ) || ( start > (counter->OsCounterMaxAllowedValue) ) || 
+            ( (cycle != 0) && 
+              ( (cycle > (counter->OsCounterMaxAllowedValue)) || 
+                (cycle < (counter->OsCounterMinCycle)) ) ) )
+            {
+
+              ret = E_OS_VALUE;
+
+            }
+
+            else
+            {
+              if(Alarms[AlarmID].AlarmState == 1)
+              {
+
+               ret = E_OS_STATE; 
+
+              }
+              else
+              {
+
+                DisableAllInterrupts();
+
+                Alarms[AlarmID].AlarmState = 1;
+                Alarms[AlarmID].AlarmTime = GetCounter(counter) + start;
+                Alarms[AlarmID].AlarmCycleTime = cycle;
+
+                EnableAllInterrupts();
+
+              }
+
+            }
+    
+  return ret;
   
 }
 
@@ -121,8 +230,32 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickRefType start, TickType cycle )
 ************************************************************************************/
 StatusType CancelAlarm ( AlarmType AlarmID )
 {
-  
-  
-  
-  
+  StatusType ret = E_OK;
+
+  if(AlarmID < No_ALARMS)
+  {
+    
+    if(Alarms[AlarmID].AlarmState == 0)
+    {
+
+      ret = E_OS_NOFUNC;
+
+    }
+    else
+    {
+      
+      Alarms[AlarmID].AlarmState == 0;
+
+    }
+    
+  }
+  else
+  {
+    
+    ret = E_OS_ID;
+    
+  } 
+
+  return ret;
+
 }

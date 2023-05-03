@@ -12,8 +12,11 @@
 #define OS_CFG_H_
 
 #include "Std_Types.h"
+
+
+
 /*******************************************************************************
- *                                 resource configurations                     *
+ *                                  structures & unions                        *
  *******************************************************************************/
 
 
@@ -36,14 +39,6 @@ typedef struct {
 
 Interrupt_ConfigType Interrupt_Configuration;
 
-/*******************************************************************************
- *                                  structures & unions                        *
- *******************************************************************************/
-typedef struct
-{
-	 typedef enum
-		{INTERNAL, LINKED, STANDARD}OsResourceProperty;
-     struct OsResource *OsResourceLinkedResourceRef;
-}OsResource;
+
 
 #endif /* OS_CFG_H_ */

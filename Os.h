@@ -12,6 +12,11 @@
 #define OS_H
 
 #include "Std_Types.h"
+#include "Os_Cfg.h"
+
+/*
+ * type of resource which is the input to GetResource & ReleaseResource
+ */
 
 #define ResourceType  char
 /*
@@ -30,6 +35,37 @@ typedef enum{
   E_OS_VALUE
   
 }StatusType;
+
+/*******************************************************************************
+ *                      Alarm Data Types                                        *
+ *******************************************************************************/
+
+/* Type definition represents count values in ticks */
+typedef unsigned int TickType;
+
+/* Type definition points to the data type TickType */
+typedef TickType* TickRefType;
+
+/* Structure for AlarmBaseType for storage of counter characteristics */
+typedef struct
+{
+  /* Maximum possible allowed count value in ticks */
+  TickType maxallowedvalue;
+  
+  /* Number of ticks required to reach a counter-specific (significant) unit */
+  TickType ticksperbase;
+  
+  /* Smallest allowed value for the cycle-parameter of SetRelAlarm/SetAbsAlarm (only for systems with extended status) */
+  TickType mincycle;
+  
+}AlarmBaseType;
+
+/* Type definition points to the data type AlarmBaseType */
+typedef AlarmBaseType* AlarmBaseRefType;
+
+/* Type definition represents an alarm object */
+typedef unsigned int AlarmType;
+
 
 /*******************************************************************************
  *                      Alarm API Prototypes                                    *
@@ -77,4 +113,52 @@ StatusType GetResource ( ResourceType ResID );
 StatusType ReleaseResource ( ResourceType ResID );
 
 
+/*******************************************************************************
+ *                      Interrupt API Prototypes                                *
+ *******************************************************************************/
+
+/*
+ * This service disables all interrupts for which the hardware
+ * supports disabling. The state before is saved for the
+ * EnableAllInterrupts call.
+ */
+void DisableAllInterrupts(void);
+
+/*
+ * This service restores the state saved by DisableAllInterrupts.
+ */
+void EnableAllInterrupts(void);
+
+/*
+ * This service saves the recognition status of all interrupts and
+ * disables all interrupts for which the hardware supports
+ * disabling.
+ */
+void SuspendAllInterrupts(void);
+
+/*
+ * This service restores the recognition status of all interrupts
+ * saved by the SuspendAllInterrupts service.
+ */
+void ResumeAllInterrupts(void);
+
+/*
+ * This service saves the recognition status of interrupts of
+ * category 2 and disables the recognition of these interrupts.
+ */
+void SuspendOSInterrupts(void);
+
+/*
+ * This service restores the recognition status of interrupts saved
+ * by the SuspendOSInterrupts service.
+ */
+void ResumeOSInterrupts(void);
+
+
+/*
+ * ReleaseResource is the counterpart of GetResource and 
+ * serves to leave critical sections in the code that are assigned to 
+ * the resource referenced by <ResID>
+*/
+StatusType ReleaseResource ( ResourceType ResID );
 #endif /* OS_H */

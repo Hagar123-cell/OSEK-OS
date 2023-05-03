@@ -61,10 +61,32 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 ************************************************************************************/
 StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 {
+  StatusType ret = E_OK;
+  OsCounterRefType counter;
+
+  if(AlarmID < No_ALARMS)
+  {
+    if(Alarms[AlarmID].AlarmState == 0)
+    {
+
+      ret = E_OS_NOFUNC;
+
+    }
+    else
+    {
+
+      *Tick = Alarms[AlarmID].AlarmTime;
+
+    }    
+    
+  }
+  else{
+    
+    ret = E_OS_ID;
+    
+  }
   
-  
-  
-  
+  return ret;  
 }
 
 

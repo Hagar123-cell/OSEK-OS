@@ -137,15 +137,13 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
               else
               {
 
-                //disable interrupt
-
-
+                DisableAllInterrupts();
 
                 Alarms[AlarmID].AlarmState = 1;
                 Alarms[AlarmID].AlarmTime = increment;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                //enable interrupt
+                EnableAllInterrupts();
 
               }
 
@@ -203,15 +201,13 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
               else
               {
 
-                //disable interrupt
-
-
+                DisableAllInterrupts();
 
                 Alarms[AlarmID].AlarmState = 1;
                 Alarms[AlarmID].AlarmTime = GetCounter(counter) + start;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                //enable interrupt
+                EnableAllInterrupts();
 
               }
 

@@ -336,9 +336,20 @@ StatusType GetTaskID ( TaskRefType TaskID )
  *******************************************************************************/
 StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 {
+	StatusType status=E_OK;
 
-
-	return 0;
+#if(OS_EXTENDED_ERROR==TRUE)
+	/*check if task id is invalid */
+	if(TaskID >= OSTASK_NUMBER_OF_TASKS) /* invalid task id */
+	{
+		status=E_OS_ID; /*Task <TaskID> is invalid, E_OS_ID */
+	}
+	else
+#endif
+	{
+		*State =OsTask_TCBs[TaskID].state;
+	}
+		return status;
 }
 
 

@@ -59,8 +59,8 @@ StatusType ActivateTask ( TaskType TaskID )
 				status=E_OS_LIMIT; /* Too many task activations of <TaskID>, E_OS_LIMIT */
 			}
 #else   /*OS_CONFORMANCE_ECC1 ,OS_CONFORMANCE_BCC1 */
-		/* if task is activate while it is NOT suspended */
-		status=E_OS_LIMIT;/* Too many task activations of <TaskID>, E_OS_LIMIT */
+			/* if task is activate while it is NOT suspended */
+			status=E_OS_LIMIT;/* Too many task activations of <TaskID>, E_OS_LIMIT */
 
 
 
@@ -177,8 +177,79 @@ StatusType TerminateTask ( void )
  *******************************************************************************/
 StatusType ChainTask ( TaskType TaskID )
 {
+	StatusType status=E_OK;
 
-	return 0;
+#if(OS_EXTENDED_ERROR==TRUE)
+	/*check if task id is invalid */
+	if(TaskID >= OSTASK_NUMBER_OF_TASKS) /* invalid task id */
+	{
+		status=E_OS_ID; /*Task <TaskID> is invalid, E_OS_ID */
+
+	}
+	else if (0/* NotImplemented task occupies resources*/)
+	{
+		status=E_OS_RESOURCE;
+	}
+	else if(0 /* NotImplemented calling level Not task level*/)
+	{
+		status=E_OS_CALLEVEL;
+	}
+	else
+#endif
+	{
+
+		OsTask_TCBType * taskTCB=&OsTask_TCBs[TaskID];/* pointer to configuration structure */
+
+		/* check if the task state is READY or  WAITING */
+		if ((taskTCB->state == READY) || (taskTCB->state == WAITING) )
+		{
+
+
+#if ((OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2))
+
+			if( (taskTCB->OsTaskConfig->taskKind==BASIC) && ( (taskTCB->Activations) < (taskTCB->OsTaskConfig->OsTaskActivation) ) )
+			{
+				OsSched_RunningToSuspended(); /* suspended the running task */
+				taskTCB->Activations++; /* increase number of activations */
+				OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
+			}
+			else /* extended task or basic task exceeded maximum activation*/
+			{
+				status=E_OS_LIMIT; /* Too many task activations of <TaskID>, E_OS_LIMIT */
+			}
+#else   /*OS_CONFORMANCE_ECC1 ,OS_CONFORMANCE_BCC1 */
+			/* if task is activate while it is NOT suspended */
+			status=E_OS_LIMIT;/* Too many task activations of <TaskID>, E_OS_LIMIT */
+
+
+
+#endif
+		}
+		else /* task state is SUSPENDED or RUNNING */
+		{
+
+			if(taskTCB->state == SUSPENDED)
+			{
+			  OsSched_RunningToSuspended();/* suspended the running task */
+			}
+			else /* task state is RUNNING , activates itself */
+			{
+				/* Do Nothing */
+			}
+			OsSched_SuspendedToReady( TaskID);/* change task state and add the task to ready list */
+			taskTCB->stackPtr=taskTCB->OsTaskConfig->stackPtr + taskTCB->OsTaskConfig->stackSize; /*set stack pointer to the bottom of stack*/
+
+			/* NotImplemented initialize stack context and point on top of context */
+
+			/* NotImplemented ensures that the task code is being executed from the first statement.*/
+
+			/* NotImplemented initialize Events , EventsWait , Resources*/
+
+		OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
+
+		}
+	}
+	return status;
 }
 
 

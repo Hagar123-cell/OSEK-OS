@@ -9,7 +9,7 @@
 	#define STORE_REG sw
         #define LOAD_REG lw
         #define portWORD_SIZE 4  
-	#define portCONTEXT_SIZE  120    /* 4*30=120 */
+	#define CONTEXT_SIZE  120    /* 4*30=120 */
 	
 	#define PC_STACK_OFFSET   0
 	#define MSTATUS_STACK_OFFSET  4   /* 4*1=4 */
@@ -46,7 +46,7 @@
         #define STORE_REG sd
         #define LOAD_REG ld
 	#define portWORD_SIZE 8
-	#define portCONTEXT_SIZE  240 
+	#define CONTEXT_SIZE  240 
 	
         #define PC_STACK_OFFSET   0
 	#define MSTATUS_STACK_OFFSET  8

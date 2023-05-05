@@ -305,8 +305,18 @@ StatusType Schedule ( void )
  *******************************************************************************/
 StatusType GetTaskID ( TaskRefType TaskID )
 {
+	TaskType runningTaskID = OsSched_getRunningTaskID();
 
-	return 0;
+	if (OsTask_TCBs[runningTaskID].state == RUNNING)
+	{
+		*TaskID = runningTaskID;
+	}
+	else
+	{
+		*TaskID = INVALID_TASK;
+	}
+
+	return E_OK;
 }
 
 /*******************************************************************************

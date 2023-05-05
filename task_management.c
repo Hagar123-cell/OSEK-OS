@@ -204,7 +204,6 @@ StatusType ChainTask ( TaskType TaskID )
 		if ((taskTCB->state == READY) || (taskTCB->state == WAITING) )
 		{
 
-
 #if ((OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2))
 
 			if( (taskTCB->OsTaskConfig->taskKind==BASIC) && ( (taskTCB->Activations) < (taskTCB->OsTaskConfig->OsTaskActivation) ) )
@@ -230,7 +229,7 @@ StatusType ChainTask ( TaskType TaskID )
 
 			if(taskTCB->state == SUSPENDED)
 			{
-			  OsSched_RunningToSuspended();/* suspended the running task */
+				OsSched_RunningToSuspended();/* suspended the running task */
 			}
 			else /* task state is RUNNING , activates itself */
 			{
@@ -245,7 +244,7 @@ StatusType ChainTask ( TaskType TaskID )
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
 
-		OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
+			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
 
 		}
 	}
@@ -272,8 +271,23 @@ StatusType ChainTask ( TaskType TaskID )
  *******************************************************************************/
 StatusType Schedule ( void )
 {
+	StatusType status=E_OK;
+#if(OS_EXTENDED_ERROR==TRUE)
+	if(0/* NotImplemented task occupies resources*/)
+	{
+		status=E_OS_RESOURCE;
+	}
+	else if(0 /* NotImplemented calling level Not task level*/)
+	{
+		status=E_OS_CALLEVEL;
+	}
+	else
+#endif
+	{
+		OsSched_scheduleInternal();
+	}
 
-	return 0;
+	return status;
 }
 
 /*******************************************************************************

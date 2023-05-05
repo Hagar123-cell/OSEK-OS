@@ -135,7 +135,7 @@ initialiseStack:
     slli t1, t1, 4                      /* 0x1880 <- (0x188<<4)  */
     or t0, t0, t1                       /* Set MPIE and MPP bits in mstatus value. */
 
-    addi a0, a0, -portCONTEXT_SIZE      /* space for Pc ,msatus ,x1 , x5-x31*/
+    addi a0, a0, -CONTEXT_SIZE      /* space for Pc ,msatus ,x1 , x5-x31*/
     STORE_REG t0, MSTATUS_STACK_OFFSET(a0)                   /*store  mstatus onto the stack. */
 
     STORE_REG a1, PC_STACK_OFFSET(a0)                   /* store Entry of Task onto the stack. */

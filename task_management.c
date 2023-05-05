@@ -110,6 +110,7 @@ StatusType TerminateTask ( void )
 	TaskType runningTaskID=OsSched_getRunningTaskID();
 	OsTask_TCBType * taskTCB=&OsTask_TCBs[runningTaskID];/* pointer to TCB structure */
 
+#if(OS_EXTENDED_ERROR==TRUE)
 	if(0/* NotImplemented task occupies resources*/)
 	{
 		status=E_OS_RESOURCE;
@@ -119,6 +120,8 @@ StatusType TerminateTask ( void )
 		status=E_OS_CALLEVEL;
 	}
 	else
+#endif
+
 	{
 #if ((OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2))
 		if(taskTCB->Activations >= 1)

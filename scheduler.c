@@ -13,18 +13,18 @@
 calling context:
 
 TerminateTask
-	OSSCHED_RUNNING_TO_SUSPENDED(OsSched_getRunningTaskID())
+	OsSched_RunningToSuspended()
 	OsSched_reschedule()
 
 WaitEvent
-	OSSCHED_RUNNING_TO_WAITING(OsSched_getRunningTaskID())
+	OsSched_RunningToWaiting()
 	OsSched_reschedule()
 
 ReleaseResource
 	OsSched_reschedule()
 
 schedule
-	OsSched_reschedule()
+	OsSched_scheduleInternal()
 
 
 ActivateTask
@@ -32,7 +32,7 @@ ActivateTask
 	OsSched_reschedule()
 
 ChainTask
-	OSSCHED_RUNNING_TO_SUSPENDED(OsSched_getRunningTaskID())
+	OsSched_RunningToSuspended()
 	OsSched_SuspendedToReady(taskID)
 	OsSched_reschedule()
 
@@ -188,21 +188,48 @@ STATIC void OsSched_ReadyListRemoveFromHead(
 }
 
 
+
+/*******************************************************************************
+*Function Name: OsSched_RunningToWaiting
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: move task from running to waiting.
+*********************************************************************************/
+#if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC1) ||  (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) )
+void OsSched_RunningToWaiting(void)
+{
+	OsTask_TCBs[OsTask_RunningTaskID].state=WAITING;
+}
+#endif
+
+/*******************************************************************************
+*Macro Name: OsSched_RunningToSuspended
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: move task from running to suspended.
+*********************************************************************************/
+void OsSched_RunningToSuspended(void)
+{
+	OsTask_TCBs[OsTask_RunningTaskID].state= SUSPENDED;
+}
+
 /*******************************************************************************
 *Function Name: OsSched_RunningToReady
-*Parameter (In): taskID		-id of the task to be moved from running to ready.
+*Parameter (In): none.
 *Parameter (Out): none
 *Parameter (In/Out): none
 *Return : none
 *Description: change task state from running to ready,
 *			  add the task to the head of the ready list.
 *********************************************************************************/
-void OsSched_RunningToReady(
-							TaskType taskID
-							)
+void OsSched_RunningToReady(void)
 {
-    OsTask_TCBs[taskID].state = READY;
-    OsSched_ReadyListAddToHead(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
+    OsTask_TCBs[OsTask_RunningTaskID].state = READY;
+    OsSched_ReadyListAddToHead(&OsTask_ReadyList[OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority], OsTask_RunningTaskID);
 }
 
 
@@ -342,7 +369,7 @@ void OsSched_reschedule()
 	{
 		if(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority)
 		{
-			OsSched_RunningToReady(OsTask_RunningTaskID);
+			OsSched_RunningToReady();
 			OsSched_ReadyToRunning(peekTaskID);
 			OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
 			currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
@@ -399,7 +426,7 @@ void OsSched_scheduleInternal()
 
 	if(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority)
 	{
-		OsSched_RunningToReady(OsTask_RunningTaskID);
+		OsSched_RunningToReady();
 		OsSched_ReadyToRunning(peekTaskID);
 		OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
 		currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];

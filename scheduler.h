@@ -18,28 +18,6 @@
 extern OsTask_TCBType              	OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS];
 
 /*******************************************************************************
-*Macro Name: OSSCHED_RUNNING_TO_WAITING
-*Parameter (In): taskID		-id of the task to be moved from running to waiting.
-*Parameter (Out): none
-*Parameter (In/Out): none
-*Return : none
-*Description: move task from running to waiting.
-*********************************************************************************/
-#if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC1) ||  (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) )
-#define OSSCHED_RUNNING_TO_WAITING(taskID) OsTask_TCBs[(taskID)].state=WAITING;
-#endif
-
-/*******************************************************************************
-*Macro Name: OSSCHED_RUNNING_TO_SUSPENDED
-*Parameter (In): taskID		-id of the task to be moved from running to suspended.
-*Parameter (Out): none
-*Parameter (In/Out): none
-*Return : none
-*Description: move task from running to suspended.
-*********************************************************************************/
-#define OSSCHED_RUNNING_TO_SUSPENDED(taskID)  OsTask_TCBs[(taskID)].state= SUSPENDED;
-
-/*******************************************************************************
 *Function Name: OsSched_ReadyListInit
 *Parameter (In): list 		-the list to initialize.
 *Parameter (Out): none
@@ -53,18 +31,37 @@ void OsSched_ReadyListInit(
 
 
 /*******************************************************************************
+*Function Name: OsSched_RunningToWaiting
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: move task from running to waiting.
+*********************************************************************************/
+#if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC1) ||  (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) )
+void OsSched_RunningToWaiting(void);
+#endif
+
+/*******************************************************************************
+*Macro Name: OsSched_RunningToSuspended
+*Parameter (In): none
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: move task from running to suspended.
+*********************************************************************************/
+void OsSched_RunningToSuspended(void);
+
+/*******************************************************************************
 *Function Name: OsSched_RunningToReady
-*Parameter (In): taskID		-id of the task to be moved from running to ready.
+*Parameter (In): none.
 *Parameter (Out): none
 *Parameter (In/Out): none
 *Return : none
 *Description: change task state from running to ready,
 *			  add the task to the head of the ready list.
 *********************************************************************************/
-void OsSched_RunningToReady(
-							TaskType taskID
-							);
-
+void OsSched_RunningToReady(void);
 
 /*******************************************************************************
 *Macro Name: OsSched_SuspendedToReady

@@ -106,9 +106,44 @@ StatusType ActivateTask ( TaskType TaskID )
  *******************************************************************************/
 StatusType TerminateTask ( void )
 {
+	StatusType status=E_OK;
+	TaskType runningTaskID=OsSched_getRunningTaskID();
+	OsTask_TCBType * taskTCB=&OsTask_TCBs[runningTaskID];/* pointer to TCB structure */
 
+	if(0/* NotImplemented task occupies resources*/)
+	{
+		status=E_OS_RESOURCE;
+	}
+	else if(0 /* NotImplemented calling level Not task level*/)
+	{
+		status=E_OS_CALLEVEL;
+	}
+	else
+	{
+#if ((OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2))
+		if(taskTCB->Activations >= 1)
+		{
+			OsSched_RunningToSuspended();
+			OsSched_SuspendedToReady(runningTaskID);
+			taskTCB->stackPtr=taskTCB->OsTaskConfig->stackPtr + taskTCB->OsTaskConfig->stackSize; /*set stack pointer to the bottom of stack*/
 
-	return 0;
+			/* NotImplemented initialize stack context and point on top of context */
+
+			/* NotImplemented ensures that the task code is being executed from the first statement.*/
+
+			/* NotImplemented initialize Events , EventsWait , Resources*/
+			taskTCB->Activations--;
+		}
+		else
+#endif
+		{
+			OsSched_RunningToSuspended();
+		}
+
+		OsSched_reschedule();
+	}
+
+	return status;
 }
 
 

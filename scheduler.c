@@ -44,7 +44,7 @@ SetEvent
 
 
 #include "scheduler.h"
-#define CALL_SWITCH_CONTEXT() /* NotImplemented inline assembly triggers interrupt*/
+#define CALL_SWITCH_CONTEXT() __asm volatile( "ecall" ); /* trigger exception to perform context switch */
 
 OsTask_TCBType              		OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS]; /* TCB array for tasks based on task ID */
 STATIC Os_ReadyListType             OsTask_ReadyList           [OSTASK_PRIORITY_LEVELS]; /* array of ready lists based on priority */

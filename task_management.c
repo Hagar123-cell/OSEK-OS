@@ -71,9 +71,9 @@ StatusType ActivateTask ( TaskType TaskID )
 			OsSched_SuspendedToReady( TaskID);/* change task state and add the task to ready list */
 			taskTCB->stackPtr=taskTCB->OsTaskConfig->stackPtr + taskTCB->OsTaskConfig->stackSize; /*set stack pointer to the bottom of stack*/
 
-			/* NotImplemented initialize stack context and point on top of context */
+			/* ensures that the task code is being executed from the first statement.*/
+			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
-			/* NotImplemented ensures that the task code is being executed from the first statement.*/
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
 
@@ -130,9 +130,9 @@ StatusType TerminateTask ( void )
 			OsSched_SuspendedToReady(runningTaskID);
 			taskTCB->stackPtr=taskTCB->OsTaskConfig->stackPtr + taskTCB->OsTaskConfig->stackSize; /*set stack pointer to the bottom of stack*/
 
-			/* NotImplemented initialize stack context and point on top of context */
+			/* ensures that the task code is being executed from the first statement.*/
+			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
-			/* NotImplemented ensures that the task code is being executed from the first statement.*/
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
 			taskTCB->Activations--;
@@ -238,9 +238,8 @@ StatusType ChainTask ( TaskType TaskID )
 			OsSched_SuspendedToReady( TaskID);/* change task state and add the task to ready list */
 			taskTCB->stackPtr=taskTCB->OsTaskConfig->stackPtr + taskTCB->OsTaskConfig->stackSize; /*set stack pointer to the bottom of stack*/
 
-			/* NotImplemented initialize stack context and point on top of context */
-
-			/* NotImplemented ensures that the task code is being executed from the first statement.*/
+			/* ensures that the task code is being executed from the first statement.*/
+			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
 
@@ -381,14 +380,17 @@ void OsTask_taskInit(OsTask * OsTaskConfig)
 		{
 			OsTask_TCBs[i].state=READY;
 			OsSched_SuspendedToReady(i);
+			/* point to stack top*/
 			OsTask_TCBs[i].stackPtr=OsTaskConfig[i].stackPtr + OsTaskConfig[i].stackSize;
+
+			/* ensures that the task code is being executed from the first statement.*/
+			OsTask_TCBs[i].stackPtr=initialiseStack(OsTask_TCBs[i].stackPtr ,OsTaskConfig[i].entry );
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
 			/* OsTask_TCBs[i].Events=0;
 			OsTask_TCBs[i].EventsWait=0;
 			OsTask_TCBs[i].Resources  */
 
-			/*NotImplemented initialize stack context and point on top of context */
 		}
 		else
 		{

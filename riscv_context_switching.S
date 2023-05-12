@@ -6,6 +6,7 @@
 
 .global RISCV_CONTEXT_SWITCH
 .global initialiseStack
+.global restoreContext
 
 # All general purpose registers are pushed into the stack except x0 , x2 ,x3 and x4 :
 # x0 since it's value is 0 and it can't be changed.
@@ -67,7 +68,7 @@ RISCV_CONTEXT_SWITCH:
 #*******************************************************************************
 #                             Restore Context                                 
 #*******************************************************************************
- 
+ restoreContext: 
     LOAD_REG  t1, nextTCBPtr        # t1 contains the value of nextTCBPtr i.e. nextTCBPtr (address of the next TCB )                
     LOAD_REG  sp, 0( t1 )        # load sp from nextTCB
     

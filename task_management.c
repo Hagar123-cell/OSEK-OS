@@ -12,6 +12,9 @@
 
 #include "task_management.h"
 
+#if(OS_EXTENDED_ERROR==TRUE)
+volatile OsTask_callLevelType OS_callLevel;
+#endif
 /************************************************************************************
  *Service Name: ActivateTask
  *Parameter (In):  TaskID 	-Task reference
@@ -76,8 +79,9 @@ StatusType ActivateTask ( TaskType TaskID )
 
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
-
+			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
+			OS_SET_CALL_LEVEL(TASK_LEVEL);
 		}
 
 	}
@@ -115,7 +119,7 @@ StatusType TerminateTask ( void )
 	{
 		status=E_OS_RESOURCE;
 	}
-	else if(0 /* NotImplemented calling level Not task level*/)
+	else if(OS_GET_CALL_LEVEL()!=TASK_LEVEL )
 	{
 		status=E_OS_CALLEVEL;
 	}
@@ -143,6 +147,7 @@ StatusType TerminateTask ( void )
 			OsSched_RunningToSuspended();
 		}
 
+		OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 		OsSched_reschedule();
 	}
 
@@ -190,7 +195,7 @@ StatusType ChainTask ( TaskType TaskID )
 	{
 		status=E_OS_RESOURCE;
 	}
-	else if(0 /* NotImplemented calling level Not task level*/)
+	else if(OS_GET_CALL_LEVEL()!=TASK_LEVEL)
 	{
 		status=E_OS_CALLEVEL;
 	}
@@ -210,6 +215,8 @@ StatusType ChainTask ( TaskType TaskID )
 			{
 				OsSched_RunningToSuspended(); /* suspended the running task */
 				taskTCB->Activations++; /* increase number of activations */
+
+				OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 				OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
 			}
 			else /* extended task or basic task exceeded maximum activation*/
@@ -243,6 +250,7 @@ StatusType ChainTask ( TaskType TaskID )
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
 
+			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
 
 		}
@@ -276,14 +284,16 @@ StatusType Schedule ( void )
 	{
 		status=E_OS_RESOURCE;
 	}
-	else if(0 /* NotImplemented calling level Not task level*/)
+	else if(OS_GET_CALL_LEVEL()!=TASK_LEVEL)
 	{
 		status=E_OS_CALLEVEL;
 	}
 	else
 #endif
 	{
+		OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 		OsSched_scheduleInternal();
+		OS_SET_CALL_LEVEL(TASK_LEVEL);
 	}
 
 	return status;
@@ -363,6 +373,7 @@ StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 void OsTask_taskInit(OsTask * OsTaskConfig)
 {
 	uint8 i;
+	OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 	OsSched_schedulerInit();
 
 

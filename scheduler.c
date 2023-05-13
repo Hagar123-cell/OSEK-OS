@@ -45,6 +45,7 @@ SetEvent
 
 #include "scheduler.h"
 #define CALL_SWITCH_CONTEXT() __asm volatile( "ecall" ); /* trigger exception to perform context switch */
+#define START_FIRST_TASK() __asm volatile( "call restoreContext" ); /* trigger exception to perform context switch */
 
 OsTask_TCBType              		OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS]; /* TCB array for tasks based on task ID */
 STATIC Os_ReadyListType             OsTask_ReadyList           [OSTASK_PRIORITY_LEVELS]; /* array of ready lists based on priority */
@@ -375,6 +376,7 @@ void OsSched_reschedule()
 			currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
 			nextTCBPtr =&OsTask_TCBs[peekTaskID];
 			OsTask_RunningTaskID=peekTaskID;
+			OS_SET_CALL_LEVEL(TASK_LEVEL);
 			CALL_SWITCH_CONTEXT();
 		}
 		else
@@ -389,6 +391,7 @@ void OsSched_reschedule()
 		currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
 		nextTCBPtr =&OsTask_TCBs[peekTaskID];
 		OsTask_RunningTaskID=peekTaskID;
+		OS_SET_CALL_LEVEL(TASK_LEVEL);
 		CALL_SWITCH_CONTEXT();
 	}
 
@@ -432,6 +435,7 @@ void OsSched_scheduleInternal()
 		currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
 		nextTCBPtr =&OsTask_TCBs[peekTaskID];
 		OsTask_RunningTaskID=peekTaskID;
+		OS_SET_CALL_LEVEL(TASK_LEVEL);
 		CALL_SWITCH_CONTEXT();
 	}
 	else
@@ -457,10 +461,10 @@ void Ossched_StartScheduler()
 
 	OsSched_ReadyToRunning(peekTaskID);
 	OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
-	currentTCBPtr=&OsTask_TCBs[OsTask_RunningTaskID];
+	currentTCBPtr=NULL_PTR;
 	nextTCBPtr =&OsTask_TCBs[peekTaskID];
 	OsTask_RunningTaskID=peekTaskID;
-	CALL_SWITCH_CONTEXT();
+	START_FIRST_TASK();
 }
 
 

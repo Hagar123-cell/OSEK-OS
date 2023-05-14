@@ -6,7 +6,6 @@
 
 .global RISCV_CONTEXT_SWITCH
 .global initialiseStack
-.global restoreContext
 
 # All general purpose registers are pushed into the stack except x0 , x2 ,x3 and x4 :
 # x0 since it's value is 0 and it can't be changed.
@@ -17,10 +16,15 @@
 
 RISCV_CONTEXT_SWITCH:
 
+    LOAD_REG  x4, currentTCBPtr             # load value of currectTCBPtr (address of the current TCB)
+    beq x4,x0,restoreContext		    # currentTCBPtr=0 in case of task termination by TerminateTask or  ChainTask APIs
+     					    # and no need to save context in this case since the task is already terminated so all we need is to
+    					    # load the context of the highest periority task.
+					    
 #*******************************************************************************
 #                                 Save Context                                 
 #*******************************************************************************
-    
+
     addi sp, sp, -CONTEXT_SIZE     
     
     STORE_REG x1,  X1_STACK_OFFSET  ( sp )      # ra
@@ -56,7 +60,7 @@ RISCV_CONTEXT_SWITCH:
     STORE_REG t0, MSTATUS_STACK_OFFSET ( sp )   # push mstatus register into stack to save the Machine previous interrupt enable bit (MPIE bit) in the mstatus.
 
 
-    LOAD_REG  t0, currentTCBPtr            # load value of currectTCBPtr (address of the current TCB)
+    LOAD_REG  t0, currentTCBPtr         # load value of currectTCBPtr (address of the current TCB)
     STORE_REG  sp, 0( t0 )              # save the SP value into current TCB.             
 
     csrr a1, mepc            # mepc rigister contains the return address from exeption.

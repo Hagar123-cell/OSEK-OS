@@ -9,7 +9,6 @@
  * Author:
  *
  *******************************************************************************/
-
 #include "task_management.h"
 
 #if(OS_EXTENDED_ERROR==TRUE)
@@ -34,6 +33,7 @@ volatile OsTask_callLevelType OS_callLevel;
 StatusType ActivateTask ( TaskType TaskID )
 {
 	StatusType status=E_OK;
+	DISABLE_INTERRUPTS();
 
 #if(OS_EXTENDED_ERROR==TRUE)
 	/*check if task id is invalid */
@@ -77,14 +77,22 @@ StatusType ActivateTask ( TaskType TaskID )
 			/* ensures that the task code is being executed from the first statement.*/
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
-
 			/* NotImplemented initialize Events , EventsWait , Resources*/
-			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
-			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
-			OS_SET_CALL_LEVEL(TASK_LEVEL);
+			ENABLE_INTERRUPTS();
+			if(OS_GET_CALL_LEVEL() ==TASK_LEVEL)
+			{
+				OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
+				OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
+				OS_SET_CALL_LEVEL(TASK_LEVEL);
+			}
+			else /* if activateTask API is called from ISR cat2 , rescheduling occurs after return from ISR cat2 */
+			{
+				/* Do Nothing */
+			}
 		}
 
 	}
+	ENABLE_INTERRUPTS();
 	return status;
 }
 
@@ -111,6 +119,7 @@ StatusType ActivateTask ( TaskType TaskID )
 StatusType TerminateTask ( void )
 {
 	StatusType status=E_OK;
+	DISABLE_INTERRUPTS();
 	TaskType runningTaskID=OsSched_getRunningTaskID();
 	OsTask_TCBType * taskTCB=&OsTask_TCBs[runningTaskID];/* pointer to TCB structure */
 
@@ -146,11 +155,11 @@ StatusType TerminateTask ( void )
 		{
 			OsSched_RunningToSuspended();
 		}
-
+		ENABLE_INTERRUPTS();
 		OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 		OsSched_reschedule();
 	}
-
+	ENABLE_INTERRUPTS();
 	return status;
 }
 
@@ -183,6 +192,7 @@ StatusType TerminateTask ( void )
 StatusType ChainTask ( TaskType TaskID )
 {
 	StatusType status=E_OK;
+	DISABLE_INTERRUPTS();
 
 #if(OS_EXTENDED_ERROR==TRUE)
 	/*check if task id is invalid */
@@ -215,7 +225,7 @@ StatusType ChainTask ( TaskType TaskID )
 			{
 				OsSched_RunningToSuspended(); /* suspended the running task */
 				taskTCB->Activations++; /* increase number of activations */
-
+				ENABLE_INTERRUPTS();
 				OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 				OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
 			}
@@ -249,12 +259,13 @@ StatusType ChainTask ( TaskType TaskID )
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 			/* NotImplemented initialize Events , EventsWait , Resources*/
-
+			ENABLE_INTERRUPTS();
 			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
 
 		}
 	}
+	ENABLE_INTERRUPTS();
 	return status;
 }
 
@@ -279,6 +290,7 @@ StatusType ChainTask ( TaskType TaskID )
 StatusType Schedule ( void )
 {
 	StatusType status=E_OK;
+	DISABLE_INTERRUPTS();
 #if(OS_EXTENDED_ERROR==TRUE)
 	if(0/* NotImplemented task occupies resources*/)
 	{
@@ -291,11 +303,12 @@ StatusType Schedule ( void )
 	else
 #endif
 	{
+		ENABLE_INTERRUPTS();
 		OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 		OsSched_scheduleInternal();
 		OS_SET_CALL_LEVEL(TASK_LEVEL);
 	}
-
+	ENABLE_INTERRUPTS();
 	return status;
 }
 
@@ -314,6 +327,7 @@ StatusType Schedule ( void )
  *******************************************************************************/
 StatusType GetTaskID ( TaskRefType TaskID )
 {
+	DISABLE_INTERRUPTS();
 	TaskType runningTaskID = OsSched_getRunningTaskID();
 
 	if (OsTask_TCBs[runningTaskID].state == RUNNING)
@@ -324,7 +338,7 @@ StatusType GetTaskID ( TaskRefType TaskID )
 	{
 		*TaskID = INVALID_TASK;
 	}
-
+	ENABLE_INTERRUPTS();
 	return E_OK;
 }
 
@@ -346,7 +360,7 @@ StatusType GetTaskID ( TaskRefType TaskID )
 StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 {
 	StatusType status=E_OK;
-
+	DISABLE_INTERRUPTS();
 #if(OS_EXTENDED_ERROR==TRUE)
 	/*check if task id is invalid */
 	if(TaskID >= OSTASK_NUMBER_OF_TASKS) /* invalid task id */
@@ -358,7 +372,8 @@ StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 	{
 		*State =OsTask_TCBs[TaskID].state;
 	}
-		return status;
+	ENABLE_INTERRUPTS();
+	return status;
 }
 
 

@@ -12,10 +12,25 @@
 
 #ifndef SCHEDULER_H_
 #define SCHEDULER_H_
-#include "task_management.h"
+#include "Os.h"
 
 
 extern OsTask_TCBType              	OsTask_TCBs        [OSTASK_NUMBER_OF_TASKS];
+
+
+/*******************************************************************************
+ *                              Scheduler structures                           *
+ *******************************************************************************/
+typedef struct Os_ReadyListType {
+	TaskType head;             /* pointer to the first ready task */
+	TaskType tail;             /* pointer to the last ready task */
+} Os_ReadyListType;
+
+
+
+/*******************************************************************************
+ *                              Scheduler functions                            *
+ *******************************************************************************/
 
 
 /*******************************************************************************

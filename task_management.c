@@ -10,6 +10,8 @@
  *
  *******************************************************************************/
 #include "task_management.h"
+#include "scheduler.h"
+#include "Interrupt.h"
 
 #if(OS_EXTENDED_ERROR==TRUE)
 volatile OsTask_callLevelType OS_callLevel;

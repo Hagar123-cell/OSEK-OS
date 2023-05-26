@@ -19,7 +19,6 @@
 #define RES_SCHEDULER 255  // if handled later
 #define Resources_count 15
 
-#define OSTASK_NUMBER_OF_TASKS  20  /*		1 .. 255		   delete later */
 
 
 

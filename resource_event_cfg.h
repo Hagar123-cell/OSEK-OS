@@ -25,4 +25,5 @@
 
 
 
+
 #endif /* RESOURCE_EVENT_CFG_H_ */

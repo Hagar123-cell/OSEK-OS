@@ -12,8 +12,25 @@
 #define OS_CFG_H_
 
 #include "Std_Types.h"
+/*******************************************************************************
+ *                  Task Management Pre-Compile Configurations                 *
+ *******************************************************************************/
+
+#define OSTASK_NUMBER_OF_TASKS  20   /* 		1 .. 255		 */
+
+#define INVALID_TASK OSTASK_NUMBER_OF_TASKS
 
 
+#define OSTASK_PRIORITY_LEVELS  8
+
+#define OS_CONFORMANCE OS_CONFORMANCE_ECC2
+#define OS_EXTENDED_ERROR    TRUE
+
+/*******************************************************************************
+ *                              App Mode Configuration                         *
+ *******************************************************************************/
+
+#define OSAPPMODE_CURRENT_APPMODE OSDEFAULTAPPMODE
 
 /*******************************************************************************
  *                                  structures & unions                        *

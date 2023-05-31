@@ -17,7 +17,7 @@
 #include "Os.h"
 
 /* Alarm Pre-Compile Configuration Header file */
-#include "Os_Cfg.h"
+#include "Alarm_cfg.h"
 
 /* Non AUTOSAR files */
 #include "Common_Macros.h"
@@ -66,6 +66,20 @@ typedef OsCounter* OsCounterRefType;
 /*******************************************************************************
  *                 Os Alarm Configuration                                    *
  *******************************************************************************/
+
+/** Type definition for Alarm State
+ **
+ ** This type defines the possibly states of one alarm which are:
+ ** 0 disable
+ ** 1 enable
+ **/
+typedef uint8 AlarmStateType;
+
+/* Type definition for Alarm Time */
+typedef uint32 AlarmTimeType;
+
+/*Type definition for Alarm Cycle Time */
+typedef uint32 AlarmCycleTimeType;
 
 /* Type definition for Alarm callback function */
 typedef void (*OsAlarmCallbackFunction)( void * );
@@ -116,6 +130,9 @@ typedef struct
 
 typedef struct
 {
+  AlarmTimeType AlarmTime;
+  AlarmCycleTimeType AlarmCycleTime;
+  AlarmStateType AlarmState;
   OsCounterRefType OsAlarmCounterRef;
   OsAlarmAction OsAction;
 
@@ -126,12 +143,13 @@ typedef struct
 }OsAlarm;
 
 /* Data Structure required for initializing the Alarm */
-typedef struct Alarm_ConfigType
-{
-	OsAlarm Alarms[No_ALARMS];
-} Alarm_ConfigType;
+//typedef struct Alarm_ConfigType
+//{
+//	OsAlarm Alarms[No_ALARMS];
+//} Alarm_ConfigType;
 
-
+OsAlarm Alarms[No_ALARMS];
+OsCounter Counters[No_COUNTERS];
 
 
 
@@ -141,7 +159,7 @@ typedef struct Alarm_ConfigType
  *******************************************************************************/
 
 /* Extern PB structures to be used by Alarm and other modules */
-extern const Alarm_ConfigType Alarm_Configuration;
+//extern const Alarm_ConfigType Alarm_Configuration;
 
 #endif /* ALARM_H */
 

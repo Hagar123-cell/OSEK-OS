@@ -13,7 +13,27 @@
 
 #include "Std_Types.h"
 /*******************************************************************************
- *                                 resource configurations                     *
+ *                  Task Management Pre-Compile Configurations                 *
+ *******************************************************************************/
+
+#define OSTASK_NUMBER_OF_TASKS  20   /* 		1 .. 255		 */
+
+#define INVALID_TASK OSTASK_NUMBER_OF_TASKS
+
+
+#define OSTASK_PRIORITY_LEVELS  8
+
+#define OS_CONFORMANCE OS_CONFORMANCE_ECC2
+#define OS_EXTENDED_ERROR    TRUE
+
+/*******************************************************************************
+ *                              App Mode Configuration                         *
+ *******************************************************************************/
+
+#define OSAPPMODE_CURRENT_APPMODE OSDEFAULTAPPMODE
+
+/*******************************************************************************
+ *                                  structures & unions                        *
  *******************************************************************************/
 
 
@@ -36,14 +56,6 @@ typedef struct {
 
 Interrupt_ConfigType Interrupt_Configuration;
 
-/*******************************************************************************
- *                                  structures & unions                        *
- *******************************************************************************/
-typedef struct
-{
-	 typedef enum
-		{INTERNAL, LINKED, STANDARD}OsResourceProperty;
-     struct OsResource *OsResourceLinkedResourceRef;
-}OsResource;
+
 
 #endif /* OS_CFG_H_ */

@@ -37,25 +37,32 @@
  *******************************************************************************/
 
 
+
 /*******************************************************************************
- *                                 Interrupt configurations                     *
+ *                       OS Interrupt Configuration                            *
  *******************************************************************************/
 
+/* Type definition contains the nesting type of interrupts */
 typedef enum
 {
-  NOT_NESTED = 0,
+  NOT_NESTED,
   NESTED
 }OsInterruptNestingType;
 
+/* Type definition for ISR*/
 typedef void (*ISRFunc_ptr)(void);
 
+
+/* Structures specifies the config of interrupt */
 typedef struct {
 	ISRFunc_ptr IsrFunc;
 	uint8 IntID;            /* unique identifier for this ICB */
 	uint8 IntPRIO;          /* priority of the interrupt source */
 	OsInterruptNestingType IntType;
-} Interrupt_ConfigType;
+}Interrupt_ConfigType;
 
+/* Pointer to Interrupt configuration*/
+Interrupt_ConfigType *Interrupt_Config_Ptr;
 
 
 typedef struct
@@ -63,8 +70,13 @@ typedef struct
 	uint32 IntSavedLevel;
 	uint32 Cat2IntLevel;
 	uint32 IntNestingDeepth;
-	uint8 IntENABLED;       /* flag indicating whether the interrupt source is enabled or disabled */
+	uint8 IntENABLED;      /* flag indicating whether the interrupt source is enabled or disabled*/
 }OS_Interrupt;
+
+/* Pointer to Interrupt struct*/
+OS_Interrupt *OSInterruptStruct;
+
+
 
 
 #endif /* OS_CFG_H_ */

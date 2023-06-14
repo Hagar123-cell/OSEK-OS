@@ -27,6 +27,11 @@ uint32 OsSavedIntState = 0;
 
 void osInitInterrupts(void)
 {
+	/*set the mtvec value to our interrupt vector table*/
+	uint32 mtvecValue = ((uint32)interruptVectorTable & 0xFFFFFFFC) | 0x1;
+	csr_write_mtvec(mtvecValue);
+
+	/*initialization of interrupts*/
 	for(uint32 Intsource = 0; Intsource < 53; Intsource++)
 	{
 		/* enable the interrupt */
@@ -79,16 +84,14 @@ void OsRunCat2Isr(void)
 
 void osSaveAndDisableIntState(void)
 {
-	unsigned int mstatus;
-	__asm__ volatile("csrrc %0, mstatus, %1" : "=r" (mstatus) : "r" (MSTATUS_MIE_BIT_MASK));
-	OsSavedIntState = mstatus& MSTATUS_MIE_BIT_MASK;
+	uint32 mstatus;
+	mstatus = csr_read_clear_bits_mstatus(MSTATUS_MIE_BIT_MASK);
+	OsSavedIntState = mstatus & MSTATUS_MIE_BIT_MASK;
 }
 
 void osRestoreSavedIntState(void)
 {
-	__asm__ volatile ("csrw    mstatus, %0"
-			: /* output: none */
-			: "r" (OsSavedIntState)); /* input : from register */
+	csr_write_mstatus(OsSavedIntState);
 }
 
 uint32 osGetPMR(void)
@@ -193,5 +196,3 @@ void ResumeOSInterrupts(void)
 	/* Restore the global mask prio */
 	osSetPMR(OSInterruptStruct->IntSavedLevel);
 }
-
-

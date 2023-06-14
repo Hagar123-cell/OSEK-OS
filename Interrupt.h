@@ -13,25 +13,26 @@
 #define INTERRUPT_H_
 
 #include "Interrupt_HW.h"
-#include "InterruptVectorTable_Cfg.h"
+#include "InterruptVectorTable.h"
 #include "Os.h"
+
 
 /*******************************************************************************
  *                       OS Interrupt Definitions                              *
  *******************************************************************************/
 
 #define SUSPEND_ALL_MAX_COUNTER     0xFF
-#define MSTATUS_MIE_BIT_MASK        0x8
 #define OS_CAT1_PRIO_MASK           0U
 
 /* HW DEPENDENT MACROS */
-#define ENABLE_INTERRUPTS()       __asm__ volatile 	( "csrs mstatus,MSTATUS_MIE_BIT_MASK" )
-#define DISABLE_INTERRUPTS()      __asm__ volatile 	( "csrc mstatus,MSTATUS_MIE_BIT_MASK" )
+#define ENABLE_INTERRUPTS()       csr_set_bits_mstatus(MSTATUS_MIE_BIT_MASK)
+#define DISABLE_INTERRUPTS()      csr_clear_bits_mstatus(MSTATUS_MIE_BIT_MASK)
 
 
 /*******************************************************************************
  *                                 Prototypes                                  *
  *******************************************************************************/
+
 void osSaveAndDisableIntState(void);
 
 void osRestoreSavedIntState(void);

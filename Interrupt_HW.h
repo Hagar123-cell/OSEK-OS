@@ -13,6 +13,52 @@
 #ifndef INTERRUPT_HW_H_
 #define INTERRUPT_HW_H_
 
+#include "Os.h"
+
+/*******************************************************************************
+ *                                   CSR                                       *
+ *******************************************************************************/
+
+#define MSTATUS_MIE_BIT_MASK        0x8
+
+
+/* Register CSR bit set and clear instructions */
+static inline void csr_set_bits_mstatus(uint32 mask) {
+    __asm__ volatile ("csrs    zero, mstatus, %0"
+                      : /* output: none */
+                      : "r" (mask)  /* input : register */
+                      : /* clobbers: none */);
+}
+static inline void csr_clear_bits_mstatus(uint32 mask) {
+    __asm__ volatile ("csrc    zero, mstatus, %0"
+                      : /* output: none */
+                      : "r" (mask)  /* input : register */
+                      : /* clobbers: none */);
+
+}
+
+static inline uint32 csr_read_clear_bits_mstatus(uint32 mask) {
+    uint32 value;
+    __asm__ volatile ("csrrc    %0, mstatus, %1"
+                                  : "=r" (value) /* output: register %0 */
+                                  : "r" (mask)  /* input : register */
+                                  : /* clobbers: none */);
+    return value;
+}
+static inline void csr_write_mstatus(uint32 value) {
+    __asm__ volatile ("csrw    mstatus, %0"
+                      : /* output: none */
+                      : "r" (value) /* input : from register */
+                      : /* clobbers: none */);
+}
+
+static inline void csr_write_mtvec(uint32 value) {
+    __asm__ volatile ("csrw    mtvec, %0"
+                      : /* output: none */
+                      : "r" (value) /* input : from register */
+                      : /* clobbers: none */);
+}
+
 
 /*******************************************************************************
  *                                   PLIC                                      *

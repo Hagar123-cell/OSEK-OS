@@ -2,25 +2,37 @@
  *
  * Module: Interrupts
  *
- * File Name: OsInterrupts.h
+ * File Name: InterruptVectorTable.h
  *
- * Description: Source File for interrupts services for OSEK OS
+ * Description: Header File for interrupt vector table
  *
  * Author: Nora Nagdi
  *
  *******************************************************************************/
 
-#ifndef INTERRUPTVECTORTABLE_CFG_H_
-#define INTERRUPTVECTORTABLE_CFG_H_
+#ifndef INTERRUPTVECTORTABLE_H_
+#define INTERRUPTVECTORTABLE_H_
 
 #include "Os.h"
+#include "Interrupt.h"
 
 /*******************************************************************************
- *                              ISR Definitions                                *
+ *                          ISR & Vector Table Definitions                     *
  *******************************************************************************/
 
 #define ISR(x)                 void OsIsr_##x##Func(void)
 #define CALL_ISR(x)            OsIsr_##x##Func()
+
+#define VECTOR_TABLE_SIZE      64
+
+/*******************************************************************************
+ *                             Prototypes                                      *
+ *******************************************************************************/
+
+void set_vector_table_address(uint32 vectorTableAddress);
+
+
+void set_mtvecValue(uint32 mtvecValue);
 
 /*******************************************************************************
  *                         Interrupt Service Routines                          *
@@ -40,25 +52,25 @@ void OsCallSysTickIsr(void)
 /*******************************************************************************
  *                         Interrupt Vector Table                              *
  *******************************************************************************/
-
-const ISRFunc_ptr interruptVectorTable[] =
+// Define the interrupt vector table
+typedef struct
 {
-	0,
-	0,
-	0,
-	0,
-	0,
-	0,
-	(ISRFunc_ptr)OsCallSysTickIsr,   // Interrupt Vector 7 (Machine Timer Interrupt)
+    uint32 interrupt_id;
+    void (*ISRFunc_ptr)(void);
+} InterruptVector;
+
+InterruptVector interruptVectorTable[VECTOR_TABLE_SIZE] = {
+    {1, NULL},
+    {2, NULL},
+	{3, NULL},
+	{4, NULL},
+	{5, NULL},
+	{6, NULL},
+	{7, (ISRFunc_ptr)OsCallSysTickIsr},
 };
 
-// Set the address and mode in the mtvec register
-//uint32 * vectorTableAddress = &interruptVectorTable;
-
-uint32 vectorTableAddress = (uint32)interruptVectorTable;
-uint32 mtvecValue = (vectorTableAddress & 0xFFFFFFFC) | 0x1; // to specify the mode
-
-asm volatile("csrw mtvec, %0" :: "r"(mtvecValue));
 
 
-#endif /* INTERRUPTVECTORTABLE_CFG_H_ */
+
+
+#endif /* INTERRUPTVECTORTABLE_H_ */

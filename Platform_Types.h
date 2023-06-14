@@ -4,7 +4,7 @@
  *
  * File Name: Platform_Types.h
  *
- * Description: Platform types 
+ * Description: Platform types
  *
  *******************************************************************************/
 
@@ -27,6 +27,10 @@
 #define PLATFORM_AR_RELEASE_MAJOR_VERSION           (4U)
 #define PLATFORM_AR_RELEASE_MINOR_VERSION           (0U)
 #define PLATFORM_AR_RELEASE_PATCH_VERSION           (3U)
+
+
+#define NULL       (void*)0
+#define NULL_PTR   (void*)0
 
 
 /*
@@ -52,4 +56,6 @@ typedef signed long long      sint64;         /* -9223372036854775808 .. 9223372
 typedef float                 float32;
 typedef double                float64;
 
+
 #endif /* PLATFORM_TYPES_H */
+

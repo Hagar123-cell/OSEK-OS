@@ -6,8 +6,7 @@
  *
  * Description: Header file for Alarm management 
  *
- * Author: Yasmin Afifi
- *
+ * Author: 
  ******************************************************************************/
 
 #ifndef ALARM_H
@@ -130,7 +129,7 @@ typedef struct
 
 typedef struct
 {
-  AlarmTimeType AlarmTime;
+  AlarmTimeType AlarmTime;    //expire time
   AlarmCycleTimeType AlarmCycleTime;
   AlarmStateType AlarmState;
   OsCounterRefType OsAlarmCounterRef;
@@ -148,8 +147,8 @@ typedef struct
 //	OsAlarm Alarms[No_ALARMS];
 //} Alarm_ConfigType;
 
-OsAlarm Alarms[No_ALARMS];
-OsCounter Counters[No_COUNTERS];
+OsAlarm Alarms[OSALARM_NUMBER_OF_ALARMS];
+OsCounter Counters[OSALARM_NUMBER_OF_COUNTERS];
 
 
 

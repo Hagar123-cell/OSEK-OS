@@ -6,7 +6,7 @@
  *
  * Description: Source file for Alarm management
  *
- * Author: Yasmin Afifi
+ * Author: 
  ******************************************************************************/
 
 #include "Alarm.h"
@@ -28,22 +28,26 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
   StatusType ret = E_OK;
   OsCounterRefType counter;
 
-  if(AlarmID < No_ALARMS)
+#if (OS_EXTENDED_ERROR == TRUE)
+
+  if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
+    ret = E_OS_ID;
+
+  }
+  else
+ 
+#endif
+ {
+    
     counter = Alarms[AlarmID].OsAlarmCounterRef;
 
     Info->maxallowedvalue = counter->OsCounterMaxAllowedValue;
     Info->mincycle = counter->OsCounterMinCycle;
     Info->ticksperbase = counter->OsCounterTicksPerBase;
     
-    
-  }
-  else{
-    
-    ret = E_OS_ID;
-    
-  }
+ }
   
   return ret;
 }
@@ -62,9 +66,19 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 {
   StatusType ret = E_OK;
+#if (OS_EXTENDED_ERROR == TRUE)
 
-  if(AlarmID < No_ALARMS)
+  if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
+
+    ret = E_OS_ID;
+
+  }
+  else
+
+#endif
+ {
+    
     if(Alarms[AlarmID].AlarmState == 0)
     {
 
@@ -76,14 +90,9 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 
       *Tick = Alarms[AlarmID].AlarmTime;
 
-    }    
+    }   
     
-  }
-  else{
-    
-    ret = E_OS_ID;
-    
-  }
+ }
   
   return ret;  
 }
@@ -110,7 +119,9 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
   OsCounterRefType counter;
   counter = Alarms[AlarmID].OsAlarmCounterRef;
 
-  if(AlarmID >= No_ALARMS)
+#if (OS_EXTENDED_ERROR == TRUE)
+
+  if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
     ret = E_OS_ID;
@@ -127,6 +138,7 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
             }
 
             else
+#endif            
             {
               if(Alarms[AlarmID].AlarmState == 1)
               {
@@ -174,7 +186,9 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
   OsCounterRefType counter;
   counter = Alarms[AlarmID].OsAlarmCounterRef;
 
-  if(AlarmID >= No_ALARMS)
+#if (OS_EXTENDED_ERROR == TRUE)
+
+  if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
     ret = E_OS_ID;
@@ -191,6 +205,7 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
             }
 
             else
+#endif            
             {
               if(Alarms[AlarmID].AlarmState == 1)
               {
@@ -204,7 +219,7 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
                 DisableAllInterrupts();
 
                 Alarms[AlarmID].AlarmState = 1;
-                Alarms[AlarmID].AlarmTime = GetCounter(counter) + start;
+                Alarms[AlarmID].AlarmTime = GetCounter(counter) + start; //////////
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
                 EnableAllInterrupts();
@@ -232,7 +247,17 @@ StatusType CancelAlarm ( AlarmType AlarmID )
 {
   StatusType ret = E_OK;
 
-  if(AlarmID < No_ALARMS)
+#if (OS_EXTENDED_ERROR == TRUE)
+
+  if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
+  {
+
+    ret = E_OS_ID;
+    
+  }
+  else
+  
+#endif
   {
     
     if(Alarms[AlarmID].AlarmState == 0)
@@ -247,12 +272,6 @@ StatusType CancelAlarm ( AlarmType AlarmID )
       Alarms[AlarmID].AlarmState == 0;
 
     }
-    
-  }
-  else
-  {
-    
-    ret = E_OS_ID;
     
   } 
 

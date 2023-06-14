@@ -13,12 +13,17 @@
 #include "Interrupt.h"
 #include "Os.h"
 
+/*******************************************************************************
+ *                                 Global Variables                            *
+ *******************************************************************************/
+
 uint8 suspend_All_Counter = 0;
 uint32 OsSavedIntState = 0;
 
-//extern Interrupt_ConfigType Interrupt_Configuration;
-//extern OS_Interrupt interrupt_struct;
-//extern PLIC_Type plic_type;
+
+/*******************************************************************************
+ *                             Helper Functions                                *
+ *******************************************************************************/
 
 void osInitInterrupts(void)
 {
@@ -38,17 +43,16 @@ void osInitInterrupts(void)
 
 	/* set the global interrupts enable flags */
 	ENABLE_INTERRUPTS();
-
 }
 
 boolean OsIsCat2IntContext(void)
 {
-	return((boolean)interrupt_struct.Cat2IntLevel);
+	return((boolean)OSInterruptStruct->Cat2IntLevel);
 }
 
 boolean OsIsInterruptContext(void)
 {
-	return((interrupt_struct.IntNestingDeepth > 0) ? TRUE : FALSE);
+	return((OSInterruptStruct->IntNestingDeepth > 0) ? TRUE : FALSE);
 }
 
 void OsRunCat2Isr(void)
@@ -70,7 +74,7 @@ void OsRunCat2Isr(void)
   /* set the interrupt as completed */
   PLIC->claim = (uint32)PlicIntId;
 
-  interrupt_struct.IntNestingDeepth--;
+  OSInterruptStruct->IntNestingDeepth--;
 }
 
 void osSaveAndDisableIntState(void)
@@ -100,6 +104,11 @@ void osSetPMR(uint32 level)
 {
 	PLIC->threshold.reg = level;
 }
+
+/*******************************************************************************
+ *                                  Interrupt APIs                             *
+ *******************************************************************************/
+
 /*
  * This service disables all interrupts for which the hardware
  * supports disabling. The state before is saved for the
@@ -129,7 +138,7 @@ void SuspendAllInterrupts(void)
 	if (suspend_All_Counter == SUSPEND_ALL_MAX_COUNTER) {
 		/*
 		 *  SuspendAllInterrupts has reached its max nest count
-		 *  So do nothing. May a ResumeAllInterrupts call has been forgot.
+		 *  So do nothing.
 		 */
 	}
 	else if (suspend_All_Counter == 0) {
@@ -150,7 +159,7 @@ void ResumeAllInterrupts(void)
 	if (suspend_All_Counter == 0) {
 		/*
 		 *  SuspendAllInterrupts hasn't been called before ResumeAllInterrupts
-		 *  It's an error, so just do nothig.
+		 *  so just do nothig.
 		 */
 	}
 	else if (suspend_All_Counter == 1) {
@@ -169,7 +178,7 @@ void ResumeAllInterrupts(void)
 void SuspendOSInterrupts(void)
 {
 	/* Get the global mask prio */
-	interrupt_struct.IntSavedLevel = osGetPMR();
+	OSInterruptStruct->IntSavedLevel = osGetPMR();
 
 	/* Disable OS interrupts */
 	osSetPMR(OS_CAT1_PRIO_MASK);
@@ -182,7 +191,7 @@ void SuspendOSInterrupts(void)
 void ResumeOSInterrupts(void)
 {
 	/* Restore the global mask prio */
-	osSetPMR(interrupt_struct.IntSavedLevel);
+	osSetPMR(OSInterruptStruct->IntSavedLevel);
 }
 
 

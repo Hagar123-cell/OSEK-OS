@@ -15,11 +15,16 @@
 
 #include "Os.h"
 
+/*******************************************************************************
+ *                              ISR Definitions                                *
+ *******************************************************************************/
+
 #define ISR(x)                 void OsIsr_##x##Func(void)
 #define CALL_ISR(x)            OsIsr_##x##Func()
 
-Interrupt_ConfigType Interrupt_Configuration;
-OS_Interrupt interrupt_struct;
+/*******************************************************************************
+ *                         Interrupt Service Routines                          *
+ *******************************************************************************/
 
 ISR(SysTickTimer)
 {
@@ -29,8 +34,12 @@ ISR(SysTickTimer)
 void OsCallSysTickIsr(void)
 {
   CALL_ISR(SysTickTimer);
-  interrupt_struct.IntNestingDeepth --;
+  OSInterruptStruct->IntNestingDeepth --;
 }
+
+/*******************************************************************************
+ *                         Interrupt Vector Table                              *
+ *******************************************************************************/
 
 const ISRFunc_ptr interruptVectorTable[] =
 {
@@ -40,7 +49,7 @@ const ISRFunc_ptr interruptVectorTable[] =
 	0,
 	0,
 	0,
-	OsCallSysTickIsr,   // Interrupt Vector 7 (Machine Timer Interrupt)
+	(ISRFunc_ptr)OsCallSysTickIsr,   // Interrupt Vector 7 (Machine Timer Interrupt)
 };
 
 // Set the address and mode in the mtvec register

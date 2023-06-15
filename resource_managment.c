@@ -19,8 +19,6 @@
 /*******************************************************************************
  *                                  global variables                           *
  *******************************************************************************/
-boolean occupation[Resources_count] = {0};
-uint8 ceiling_priority[Resources_count] = {5, 3, 2}; //in progress
 
 
 
@@ -28,7 +26,14 @@ uint8 ceiling_priority[Resources_count] = {5, 3, 2}; //in progress
 /*******************************************************************************
  *                                  function definitions                       *
  *******************************************************************************/
-
+void Resource_init(get_using_tasks x )
+{
+	for(uint8 i=0; i<Resources_count; i++)
+	{
+		resource_info[i].resource_occupation = 0;
+	}
+	get_ceiling_priority(x);
+}
 /*
  * This call serves to enter critical sections in the code that are
  * assigned to the resource referenced by <ResID>. A critical
@@ -47,7 +52,7 @@ StatusType GetResource (ResourceType ResID )
 	}
 
 /*OSEK_RESOURCE_3*/
-	else if((occupation[ResID] == 1) || (OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority  > ceiling_priority[ResID]))
+	else if((resource_info[ResID].resource_occupation == 1) || (OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority  > resource_info[ResID].ceiling_prior))
 	{
 		status = E_OS_ACCESS;
 	}
@@ -56,9 +61,9 @@ StatusType GetResource (ResourceType ResID )
 	{
 		status = E_OK;
 /*OSEK_RESOURCE_4*/
-		occupation[ResID] = 1;
-	    OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority = ceiling_priority[ResID];
-	    // is it complete
+		resource_info[ResID].resource_occupation = 1;
+	    OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority = resource_info[ResID].ceiling_prior;
+
 	}
 
 	return status;
@@ -83,12 +88,12 @@ StatusType ReleaseResource ( ResourceType ResID )
 		status = E_OS_ID;
 	}
 /*OSEK_RESOURCE_7*/
-	else if (OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority > ceiling_priority[ResID])
+	else if (OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority > resource_info[ResID].ceiling_prior)
 	{
 		status = E_OS_ACCESS;
 	}
 /*OSEK_RESOURCE_7*/
-	else if(occupation[ResID] == 0)
+	else if(resource_info[ResID].resource_occupation == 0)
 	{
 		status = E_OS_NOFUNC;
 	}
@@ -97,11 +102,30 @@ StatusType ReleaseResource ( ResourceType ResID )
 	{
 		status = E_OK;
 /*OSEK_RESOURCE_8*/
-		occupation[ResID] = 0;
+		resource_info[ResID].resource_occupation = 0;
 		OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority = OsTask_TCBs[OsSched_getRunningTaskID()].OsTaskConfig->OsTaskPriority ;
 /*OSEK_RESOURCE_9*/
 		OsSched_reschedule();//call scheduler
 	}
 
 	return status;
+}
+
+/*
+ * setting ceiling priority for each resource
+ */
+void get_ceiling_priority(get_using_tasks x )
+{
+	ceiling_priority max = 0;
+  for(uint8 i=0; i<Resources_count; i++)
+  {
+
+	  for(uint8 j=0; j<OSTASK_NUMBER_OF_TASKS; j++)
+	  {
+		 if(max < OsTask_TCBs[j].OsTaskConfig -> OsTaskPriority)
+			 max = OsTask_TCBs[j].OsTaskConfig -> OsTaskPriority;
+
+	  }
+	  resource_info[i].ceiling_prior = max+1;
+  }
 }

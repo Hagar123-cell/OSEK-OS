@@ -59,16 +59,19 @@ typedef enum{
  */
 typedef uint8 ResourceType ;  //error with typedef
 
-typedef ResourceType* ResourceRefType;  // if needed
+#define TaskType  uint8 /*delete later by task management team*/
+
+typedef struct
+{
+	TaskType using_tasks [Resources_count][OSTASK_NUMBER_OF_TASKS];
+}get_using_tasks;
 
 /*******************************************************************************
  *                            Event definitions                                *
  *******************************************************************************/
 
-typedef uint32 EventMaskType;
-typedef EventMaskType* EventMaskRefType;
 
-typedef uint32 TaskEventsType;  // usage?
+
 
 
 /*******************************************************************************
@@ -166,6 +169,10 @@ StatusType GetEvent ( TaskType TaskID , EventMaskRefType Event );
  *of the events specified in <Mask> has already been set.
 */
 StatusType WaitEvent ( EventMaskType Mask );
+
+StatusType ClearEvent ( EventMaskType Mask );
+
+StatusType SetEvent ( TaskType TaskID ,EventMaskType Mask );
 
 /*******************************************************************************
  *                      Interrupt API Prototypes                                *

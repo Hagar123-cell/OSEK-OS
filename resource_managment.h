@@ -1,4 +1,5 @@
 /******************************************************************************
+ * Author: Hagar Ahmed & Heba Adel
  *
  * Module: resource_management
  *
@@ -13,6 +14,7 @@
 /*******************************************************************************
  *                                  includes                                   *
  *******************************************************************************/
+
 #include"Os.h"
 #include "resource_event_cfg.h"
 #include"scheduler.h"
@@ -20,26 +22,30 @@
 /*******************************************************************************
  *                                  structures & unions                        *
  *******************************************************************************/
+
+ typedef enum
+{INTERNAL, LINKED, STANDARD}OsResourceProperty;
+
 typedef struct
 {
-	 typedef enum
-		{INTERNAL, LINKED, STANDARD}OsResourceProperty;
-     struct OsResource *OsResourceLinkedResourceRef;
+	 OsResourceProperty ResourceProperty;
+     OsResource *OsResourceLinkedResourceRef;
 }OsResource;
 
+
+typedef struct
+{
+	ceiling_priority ceiling_prior;
+	occupation resource_occupation;
+}resources_info;
 
 /*******************************************************************************
  *                      definitions & configurations                           *
  *******************************************************************************/
 
-
-
-/*******************************************************************************
- *                      extern module shared global variables                  *
- *******************************************************************************/
-extern boolean occupation[Resources_count];
-extern uint8 ceiling_priority[Resources_count];// in progress
-
+typedef  uint8 ceiling_priority;
+typedef boolean occupation;
+resources_info resource_info [Resources_count];
 
 
 #endif /*_resourse_H*/

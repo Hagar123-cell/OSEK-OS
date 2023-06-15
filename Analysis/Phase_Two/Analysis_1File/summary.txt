@@ -1,0 +1,2595 @@
+ ************************************** Sequences of 5 consecutive instructions ************************************** 
+Sequence: 
+mov
+strb
+ldrb
+cmp
+bne
+Repetition count: 42
+
+#################################
+
+Sequence: 
+sub
+pop
+push
+add
+sub
+Repetition count: 38
+
+#################################
+
+Sequence: 
+pop
+push
+add
+sub
+mov
+Repetition count: 29
+
+#################################
+
+Sequence: 
+cmp
+beq
+mov
+strb
+ldrb
+Repetition count: 29
+
+#################################
+
+Sequence: 
+beq
+mov
+strb
+ldrb
+cmp
+Repetition count: 29
+
+#################################
+
+Sequence: 
+push
+add
+sub
+mov
+strb
+Repetition count: 28
+
+#################################
+
+Sequence: 
+stmfd
+mov
+svc
+ldmfd
+mov
+Repetition count: 24
+
+#################################
+
+Sequence: 
+svc
+ldmfd
+mov
+stmfd
+mov
+Repetition count: 23
+
+#################################
+
+Sequence: 
+mov
+svc
+ldmfd
+mov
+stmfd
+Repetition count: 23
+
+#################################
+
+Sequence: 
+mov
+stmfd
+mov
+svc
+ldmfd
+Repetition count: 23
+
+#################################
+
+Sequence: 
+ldr
+ldr
+str
+ldr
+ldr
+Repetition count: 23
+
+#################################
+
+Sequence: 
+ldmfd
+mov
+stmfd
+mov
+svc
+Repetition count: 23
+
+#################################
+
+Sequence: 
+sub
+pop
+bx
+push
+add
+Repetition count: 20
+
+#################################
+
+Sequence: 
+mov
+cmp
+beq
+mov
+strb
+Repetition count: 20
+
+#################################
+
+Sequence: 
+bl
+mov
+cmp
+beq
+mov
+Repetition count: 20
+
+#################################
+
+Sequence: 
+mov
+sub
+pop
+push
+add
+Repetition count: 18
+
+#################################
+
+Sequence: 
+cmp
+bne
+movw
+movt
+ldr
+Repetition count: 18
+
+#################################
+
+Sequence: 
+mov
+strb
+bl
+mov
+cmp
+Repetition count: 17
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+ldr
+ldr
+Repetition count: 17
+
+#################################
+
+Sequence: 
+strb
+ldrb
+cmp
+bne
+ldrb
+Repetition count: 16
+
+#################################
+
+Sequence: 
+strb
+bl
+mov
+cmp
+beq
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movw
+movt
+str
+movw
+movt
+Repetition count: 16
+
+#################################
+
+Sequence: 
+strb
+ldrb
+mov
+sub
+pop
+Repetition count: 15
+
+#################################
+
+Sequence: 
+str
+ldr
+ldr
+str
+ldr
+Repetition count: 15
+
+#################################
+
+Sequence: 
+pop
+bx
+push
+add
+sub
+Repetition count: 15
+
+#################################
+
+Sequence: 
+ldrb
+mov
+sub
+pop
+push
+Repetition count: 15
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+bne
+movw
+movt
+Repetition count: 15
+
+#################################
+
+Sequence: 
+bl
+sub
+pop
+push
+add
+Repetition count: 14
+
+#################################
+
+Sequence: 
+strb
+ldrb
+cmp
+bne
+movw
+Repetition count: 13
+
+#################################
+
+Sequence: 
+str
+ldr
+cmp
+beq
+ldr
+Repetition count: 13
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+str
+ldr
+Repetition count: 13
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+ldr
+cmp
+Repetition count: 13
+
+#################################
+
+Sequence: 
+ldr
+cmp
+beq
+ldr
+ldr
+Repetition count: 13
+
+#################################
+
+Sequence: 
+pop
+push
+add
+movw
+movt
+Repetition count: 12
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+str
+ldr
+Repetition count: 12
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+ldr
+str
+Repetition count: 12
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+ldr
+ldr
+Repetition count: 12
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+cmp
+beq
+Repetition count: 12
+
+#################################
+
+Sequence: 
+ldr
+ldr
+str
+ldr
+cmp
+Repetition count: 12
+
+#################################
+
+Sequence: 
+strb
+ldrsb
+movw
+movt
+ldr
+Repetition count: 11
+
+#################################
+
+Sequence: 
+push
+add
+movw
+movt
+ldr
+Repetition count: 11
+
+#################################
+
+Sequence: 
+movt
+str
+movw
+movt
+ldr
+Repetition count: 11
+
+#################################
+
+Sequence: 
+strb
+mov
+strb
+bl
+mov
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movw
+movt
+ldrb
+mov
+bl
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+add
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldr
+add
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrsb
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrb
+mov
+sub
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+add
+movw
+movt
+str
+Repetition count: 10
+
+#################################
+
+Sequence: 
+cmp
+beq
+movw
+movt
+ldr
+Repetition count: 10
+
+#################################
+ ************************************** Sequences of 4 consecutive instructions ************************************** 
+Sequence: 
+sub
+pop
+push
+add
+Repetition count: 44
+
+#################################
+
+Sequence: 
+pop
+push
+add
+sub
+Repetition count: 43
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrb
+cmp
+Repetition count: 43
+
+#################################
+
+Sequence: 
+ldr
+ldr
+str
+ldr
+Repetition count: 43
+
+#################################
+
+Sequence: 
+strb
+ldrb
+cmp
+bne
+Repetition count: 42
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+ldr
+Repetition count: 41
+
+#################################
+
+Sequence: 
+push
+add
+sub
+mov
+Repetition count: 37
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+ldr
+Repetition count: 31
+
+#################################
+
+Sequence: 
+cmp
+beq
+mov
+strb
+Repetition count: 31
+
+#################################
+
+Sequence: 
+beq
+mov
+strb
+ldrb
+Repetition count: 29
+
+#################################
+
+Sequence: 
+add
+sub
+mov
+strb
+Repetition count: 28
+
+#################################
+
+Sequence: 
+stmfd
+mov
+svc
+ldmfd
+Repetition count: 24
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+ldr
+Repetition count: 24
+
+#################################
+
+Sequence: 
+mov
+svc
+ldmfd
+mov
+Repetition count: 24
+
+#################################
+
+Sequence: 
+bl
+mov
+cmp
+beq
+Repetition count: 24
+
+#################################
+
+Sequence: 
+svc
+ldmfd
+mov
+stmfd
+Repetition count: 23
+
+#################################
+
+Sequence: 
+mov
+stmfd
+mov
+svc
+Repetition count: 23
+
+#################################
+
+Sequence: 
+ldmfd
+mov
+stmfd
+mov
+Repetition count: 23
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+cmp
+Repetition count: 22
+
+#################################
+
+Sequence: 
+cmp
+bne
+movw
+movt
+Repetition count: 21
+
+#################################
+
+Sequence: 
+sub
+pop
+bx
+push
+Repetition count: 20
+
+#################################
+
+Sequence: 
+str
+ldr
+ldr
+ldr
+Repetition count: 20
+
+#################################
+
+Sequence: 
+pop
+bx
+push
+add
+Repetition count: 20
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+ldrb
+Repetition count: 20
+
+#################################
+
+Sequence: 
+mov
+cmp
+beq
+mov
+Repetition count: 20
+
+#################################
+
+Sequence: 
+str
+ldr
+ldr
+str
+Repetition count: 19
+
+#################################
+
+Sequence: 
+mov
+bl
+movw
+movt
+Repetition count: 19
+
+#################################
+
+Sequence: 
+ldrb
+mov
+sub
+pop
+Repetition count: 19
+
+#################################
+
+Sequence: 
+mov
+sub
+pop
+push
+Repetition count: 18
+
+#################################
+
+Sequence: 
+bne
+movw
+movt
+ldr
+Repetition count: 18
+
+#################################
+
+Sequence: 
+strb
+bl
+mov
+cmp
+Repetition count: 17
+
+#################################
+
+Sequence: 
+mov
+strb
+bl
+mov
+Repetition count: 17
+
+#################################
+
+Sequence: 
+ldrsb
+movw
+movt
+ldr
+Repetition count: 17
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+bne
+ldrb
+Repetition count: 17
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+str
+Repetition count: 17
+
+#################################
+
+Sequence: 
+ldr
+cmp
+beq
+ldr
+Repetition count: 17
+
+#################################
+
+Sequence: 
+str
+movw
+movt
+ldr
+Repetition count: 16
+
+#################################
+
+Sequence: 
+push
+add
+sub
+str
+Repetition count: 16
+
+#################################
+
+Sequence: 
+push
+add
+movw
+movt
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movw
+movt
+str
+movw
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+str
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+cmp
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movt
+str
+movw
+movt
+Repetition count: 16
+
+#################################
+
+Sequence: 
+strb
+movw
+movt
+ldr
+Repetition count: 15
+
+#################################
+
+Sequence: 
+strb
+ldrb
+mov
+sub
+Repetition count: 15
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+bne
+movw
+Repetition count: 15
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+cmp
+Repetition count: 15
+
+#################################
+
+Sequence: 
+cmp
+beq
+ldr
+ldr
+Repetition count: 15
+
+#################################
+
+Sequence: 
+bx
+push
+add
+sub
+Repetition count: 15
+
+#################################
+
+Sequence: 
+bl
+pop
+push
+add
+Repetition count: 15
+
+#################################
+
+Sequence: 
+str
+ldr
+cmp
+beq
+Repetition count: 14
+
+#################################
+
+Sequence: 
+mov
+strb
+movw
+movt
+Repetition count: 14
+
+#################################
+
+Sequence: 
+ldrb
+movw
+movt
+ldr
+Repetition count: 14
+
+#################################
+
+Sequence: 
+ldr
+lsl
+ldr
+add
+Repetition count: 14
+
+#################################
+
+Sequence: 
+bl
+sub
+pop
+push
+Repetition count: 14
+
+#################################
+
+Sequence: 
+bl
+movw
+movt
+mov
+Repetition count: 14
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+bne
+ldr
+Repetition count: 13
+
+#################################
+
+Sequence: 
+pop
+push
+add
+movw
+Repetition count: 12
+
+#################################
+
+Sequence: 
+movt
+ldr
+str
+ldr
+Repetition count: 12
+
+#################################
+
+Sequence: 
+mov
+strb
+mov
+strb
+Repetition count: 12
+
+#################################
+
+Sequence: 
+strb
+movw
+movt
+ldrb
+Repetition count: 11
+
+#################################
+
+Sequence: 
+strb
+ldrsb
+movw
+movt
+Repetition count: 11
+
+#################################
+
+Sequence: 
+movw
+movt
+mov
+strb
+Repetition count: 11
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+uxtb
+Repetition count: 11
+
+#################################
+
+Sequence: 
+mov
+movt
+mov
+bl
+Repetition count: 11
+
+#################################
+
+Sequence: 
+ldr
+ldrb
+cmp
+bne
+Repetition count: 11
+
+#################################
+
+Sequence: 
+ldr
+ldr
+cmp
+beq
+Repetition count: 11
+
+#################################
+
+Sequence: 
+cmp
+beq
+movw
+movt
+Repetition count: 11
+
+#################################
+
+Sequence: 
+add
+movw
+movt
+ldr
+Repetition count: 11
+
+#################################
+
+Sequence: 
+uxtb
+sxtb
+mov
+bl
+Repetition count: 10
+
+#################################
+
+Sequence: 
+sub
+str
+ldr
+ldr
+Repetition count: 10
+
+#################################
+
+Sequence: 
+strb
+mov
+strb
+bl
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movw
+movt
+ldrb
+mov
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movw
+movt
+ldr
+add
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldrb
+mov
+bl
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldr
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldr
+add
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrsb
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrb
+mov
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+mov
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+add
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+cmp
+bne
+ldr
+ldr
+Repetition count: 10
+
+#################################
+
+Sequence: 
+beq
+movw
+movt
+ldr
+Repetition count: 10
+
+#################################
+
+Sequence: 
+add
+movw
+movt
+str
+Repetition count: 10
+
+#################################
+ ************************************** Sequences of 3 consecutive instructions ************************************** 
+Sequence: 
+movw
+movt
+ldr
+Repetition count: 129
+
+#################################
+
+Sequence: 
+ldr
+ldr
+ldr
+Repetition count: 89
+
+#################################
+
+Sequence: 
+ldr
+str
+ldr
+Repetition count: 67
+
+#################################
+
+Sequence: 
+pop
+push
+add
+Repetition count: 65
+
+#################################
+
+Sequence: 
+push
+add
+sub
+Repetition count: 62
+
+#################################
+
+Sequence: 
+ldr
+ldr
+str
+Repetition count: 58
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+bne
+Repetition count: 56
+
+#################################
+
+Sequence: 
+str
+ldr
+ldr
+Repetition count: 54
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrb
+Repetition count: 53
+
+#################################
+
+Sequence: 
+sub
+pop
+push
+Repetition count: 44
+
+#################################
+
+Sequence: 
+strb
+ldrb
+cmp
+Repetition count: 43
+
+#################################
+
+Sequence: 
+movw
+movt
+ldrb
+Repetition count: 39
+
+#################################
+
+Sequence: 
+ldr
+ldr
+cmp
+Repetition count: 38
+
+#################################
+
+Sequence: 
+add
+sub
+mov
+Repetition count: 37
+
+#################################
+
+Sequence: 
+cmp
+beq
+mov
+Repetition count: 32
+
+#################################
+
+Sequence: 
+ldr
+cmp
+beq
+Repetition count: 31
+
+#################################
+
+Sequence: 
+bl
+movw
+movt
+Repetition count: 31
+
+#################################
+
+Sequence: 
+beq
+mov
+strb
+Repetition count: 31
+
+#################################
+
+Sequence: 
+sub
+mov
+strb
+Repetition count: 28
+
+#################################
+
+Sequence: 
+strb
+movw
+movt
+Repetition count: 28
+
+#################################
+
+Sequence: 
+str
+movw
+movt
+Repetition count: 27
+
+#################################
+
+Sequence: 
+bl
+mov
+cmp
+Repetition count: 26
+
+#################################
+
+Sequence: 
+add
+movw
+movt
+Repetition count: 26
+
+#################################
+
+Sequence: 
+mov
+sub
+pop
+Repetition count: 25
+
+#################################
+
+Sequence: 
+svc
+ldmfd
+mov
+Repetition count: 24
+
+#################################
+
+Sequence: 
+str
+ldr
+cmp
+Repetition count: 24
+
+#################################
+
+Sequence: 
+stmfd
+mov
+svc
+Repetition count: 24
+
+#################################
+
+Sequence: 
+movw
+movt
+mov
+Repetition count: 24
+
+#################################
+
+Sequence: 
+movt
+ldr
+ldr
+Repetition count: 24
+
+#################################
+
+Sequence: 
+mov
+svc
+ldmfd
+Repetition count: 24
+
+#################################
+
+Sequence: 
+mov
+cmp
+beq
+Repetition count: 24
+
+#################################
+
+Sequence: 
+mov
+stmfd
+mov
+Repetition count: 23
+
+#################################
+
+Sequence: 
+ldmfd
+mov
+stmfd
+Repetition count: 23
+
+#################################
+
+Sequence: 
+movw
+movt
+str
+Repetition count: 22
+
+#################################
+
+Sequence: 
+ldr
+cmp
+bne
+Repetition count: 22
+
+#################################
+
+Sequence: 
+cmp
+bne
+ldr
+Repetition count: 22
+
+#################################
+
+Sequence: 
+sub
+pop
+bx
+Repetition count: 21
+
+#################################
+
+Sequence: 
+mov
+strb
+bl
+Repetition count: 21
+
+#################################
+
+Sequence: 
+cmp
+bne
+movw
+Repetition count: 21
+
+#################################
+
+Sequence: 
+cmp
+beq
+ldr
+Repetition count: 21
+
+#################################
+
+Sequence: 
+bne
+movw
+movt
+Repetition count: 21
+
+#################################
+
+Sequence: 
+pop
+bx
+push
+Repetition count: 20
+
+#################################
+
+Sequence: 
+movt
+ldr
+ldrb
+Repetition count: 20
+
+#################################
+
+Sequence: 
+bx
+push
+add
+Repetition count: 20
+
+#################################
+
+Sequence: 
+movt
+mov
+bl
+Repetition count: 19
+
+#################################
+
+Sequence: 
+mov
+bl
+movw
+Repetition count: 19
+
+#################################
+
+Sequence: 
+ldrb
+mov
+sub
+Repetition count: 19
+
+#################################
+
+Sequence: 
+strb
+mov
+strb
+Repetition count: 18
+
+#################################
+
+Sequence: 
+ldrsb
+movw
+movt
+Repetition count: 18
+
+#################################
+
+Sequence: 
+ldr
+mov
+strb
+Repetition count: 18
+
+#################################
+
+Sequence: 
+strb
+bl
+mov
+Repetition count: 17
+
+#################################
+
+Sequence: 
+cmp
+bne
+ldrb
+Repetition count: 17
+
+#################################
+
+Sequence: 
+push
+add
+movw
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movt
+str
+movw
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movt
+ldr
+str
+Repetition count: 16
+
+#################################
+
+Sequence: 
+movt
+ldr
+cmp
+Repetition count: 16
+
+#################################
+
+Sequence: 
+mov
+bl
+mov
+Repetition count: 16
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+beq
+Repetition count: 16
+
+#################################
+
+Sequence: 
+ldr
+ldrb
+cmp
+Repetition count: 16
+
+#################################
+
+Sequence: 
+beq
+ldr
+ldr
+Repetition count: 16
+
+#################################
+
+Sequence: 
+add
+sub
+str
+Repetition count: 16
+
+#################################
+
+Sequence: 
+sxtb
+mov
+bl
+Repetition count: 15
+
+#################################
+
+Sequence: 
+strb
+ldrb
+mov
+Repetition count: 15
+
+#################################
+
+Sequence: 
+ldrb
+movw
+movt
+Repetition count: 15
+
+#################################
+
+Sequence: 
+bl
+sub
+pop
+Repetition count: 15
+
+#################################
+
+Sequence: 
+bl
+pop
+push
+Repetition count: 15
+
+#################################
+
+Sequence: 
+mov
+strb
+movw
+Repetition count: 14
+
+#################################
+
+Sequence: 
+mov
+strb
+mov
+Repetition count: 14
+
+#################################
+
+Sequence: 
+mov
+strb
+ldrsb
+Repetition count: 14
+
+#################################
+
+Sequence: 
+lsl
+ldr
+add
+Repetition count: 14
+
+#################################
+
+Sequence: 
+ldr
+lsl
+ldr
+Repetition count: 14
+
+#################################
+
+Sequence: 
+ldr
+ldrb
+sxtb
+Repetition count: 13
+
+#################################
+
+Sequence: 
+sub
+str
+ldr
+Repetition count: 12
+
+#################################
+
+Sequence: 
+str
+ldr
+mov
+Repetition count: 12
+
+#################################
+
+Sequence: 
+strb
+ldrsb
+movw
+Repetition count: 11
+
+#################################
+
+Sequence: 
+movt
+mov
+strb
+Repetition count: 11
+
+#################################
+
+Sequence: 
+movt
+ldr
+uxtb
+Repetition count: 11
+
+#################################
+
+Sequence: 
+mov
+str
+ldr
+Repetition count: 11
+
+#################################
+
+Sequence: 
+mov
+movt
+mov
+Repetition count: 11
+
+#################################
+
+Sequence: 
+ldr
+add
+str
+Repetition count: 11
+
+#################################
+
+Sequence: 
+cmp
+bne
+bl
+Repetition count: 11
+
+#################################
+
+Sequence: 
+cmp
+beq
+movw
+Repetition count: 11
+
+#################################
+
+Sequence: 
+beq
+movw
+movt
+Repetition count: 11
+
+#################################
+
+Sequence: 
+uxtb
+sxtb
+mov
+Repetition count: 10
+
+#################################
+
+Sequence: 
+sub
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+str
+ldr
+ldrb
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldrb
+mov
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldr
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+ldr
+add
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+movw
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+ldr
+add
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+add
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+bne
+ldr
+ldr
+Repetition count: 10
+
+#################################
+
+Sequence: 
+bl
+mov
+movt
+Repetition count: 10
+
+#################################
+
+Sequence: 
+b
+movw
+movt
+Repetition count: 10
+
+#################################
+ ************************************** Sequences of 2 consecutive instructions ************************************** 
+Sequence: 
+movw
+movt
+Repetition count: 229
+
+#################################
+
+Sequence: 
+ldr
+ldr
+Repetition count: 220
+
+#################################
+
+Sequence: 
+mov
+strb
+Repetition count: 138
+
+#################################
+
+Sequence: 
+movt
+ldr
+Repetition count: 134
+
+#################################
+
+Sequence: 
+str
+ldr
+Repetition count: 132
+
+#################################
+
+Sequence: 
+ldr
+str
+Repetition count: 100
+
+#################################
+
+Sequence: 
+push
+add
+Repetition count: 93
+
+#################################
+
+Sequence: 
+cmp
+bne
+Repetition count: 82
+
+#################################
+
+Sequence: 
+ldr
+cmp
+Repetition count: 81
+
+#################################
+
+Sequence: 
+ldrb
+cmp
+Repetition count: 76
+
+#################################
+
+Sequence: 
+cmp
+beq
+Repetition count: 75
+
+#################################
+
+Sequence: 
+sub
+pop
+Repetition count: 66
+
+#################################
+
+Sequence: 
+pop
+push
+Repetition count: 65
+
+#################################
+
+Sequence: 
+add
+sub
+Repetition count: 64
+
+#################################
+
+Sequence: 
+mov
+bl
+Repetition count: 63
+
+#################################
+
+Sequence: 
+strb
+ldrb
+Repetition count: 59
+
+#################################
+
+Sequence: 
+ldr
+ldrb
+Repetition count: 52
+
+#################################
+
+Sequence: 
+bl
+mov
+Repetition count: 50
+
+#################################
+
+Sequence: 
+ldr
+add
+Repetition count: 40
+
+#################################
+
+Sequence: 
+sub
+mov
+Repetition count: 39
+
+#################################
+
+Sequence: 
+movt
+ldrb
+Repetition count: 39
+
+#################################
+
+Sequence: 
+movt
+mov
+Repetition count: 35
+
+#################################
+
+Sequence: 
+ldr
+mov
+Repetition count: 33
+
+#################################
+
+Sequence: 
+beq
+mov
+Repetition count: 33
+
+#################################
+
+Sequence: 
+bl
+movw
+Repetition count: 31
+
+#################################
+
+Sequence: 
+strb
+movw
+Repetition count: 28
+
+#################################
+
+Sequence: 
+mov
+str
+Repetition count: 28
+
+#################################
+
+Sequence: 
+ldrb
+mov
+Repetition count: 28
+
+#################################
+
+Sequence: 
+str
+movw
+Repetition count: 27
+
+#################################
+
+Sequence: 
+mov
+sub
+Repetition count: 27
+
+#################################
+
+Sequence: 
+mov
+cmp
+Repetition count: 27
+
+#################################
+
+Sequence: 
+add
+movw
+Repetition count: 26
+
+#################################
+
+Sequence: 
+svc
+ldmfd
+Repetition count: 24
+
+#################################
+
+Sequence: 
+strb
+bl
+Repetition count: 24
+
+#################################
+
+Sequence: 
+stmfd
+mov
+Repetition count: 24
+
+#################################
+
+Sequence: 
+mov
+svc
+Repetition count: 24
+
+#################################
+
+Sequence: 
+ldmfd
+mov
+Repetition count: 24
+
+#################################
+
+Sequence: 
+sub
+str
+Repetition count: 23
+
+#################################
+
+Sequence: 
+mov
+stmfd
+Repetition count: 23
+
+#################################
+
+Sequence: 
+ldrb
+sxtb
+Repetition count: 23
+
+#################################
+
+Sequence: 
+movt
+str
+Repetition count: 22
+
+#################################
+
+Sequence: 
+bne
+ldr
+Repetition count: 22
+
+#################################
+
+Sequence: 
+beq
+ldr
+Repetition count: 22
+
+#################################
+
+Sequence: 
+pop
+bx
+Repetition count: 21
+
+#################################
+
+Sequence: 
+mov
+movt
+Repetition count: 21
+
+#################################
+
+Sequence: 
+bx
+push
+Repetition count: 21
+
+#################################
+
+Sequence: 
+bne
+movw
+Repetition count: 21
+
+#################################
+
+Sequence: 
+strb
+mov
+Repetition count: 20
+
+#################################
+
+Sequence: 
+ldr
+lsl
+Repetition count: 19
+
+#################################
+
+Sequence: 
+ldr
+bl
+Repetition count: 19
+
+#################################
+
+Sequence: 
+strb
+ldrsb
+Repetition count: 18
+
+#################################
+
+Sequence: 
+ldrsb
+movw
+Repetition count: 18
+
+#################################
+
+Sequence: 
+bne
+ldrb
+Repetition count: 17
+
+#################################
+
+Sequence: 
+sxtb
+mov
+Repetition count: 16
+
+#################################
+
+Sequence: 
+bl
+pop
+Repetition count: 16
+
+#################################
+
+Sequence: 
+ldrb
+movw
+Repetition count: 15
+
+#################################
+
+Sequence: 
+bl
+sub
+Repetition count: 15
+
+#################################
+
+Sequence: 
+b
+ldr
+Repetition count: 15
+
+#################################
+
+Sequence: 
+str
+b
+Repetition count: 14
+
+#################################
+
+Sequence: 
+lsl
+ldr
+Repetition count: 14
+
+#################################
+
+Sequence: 
+bl
+bl
+Repetition count: 14
+
+#################################
+
+Sequence: 
+str
+mov
+Repetition count: 13
+
+#################################
+
+Sequence: 
+orr
+msr
+Repetition count: 13
+
+#################################
+
+Sequence: 
+cmp
+bls
+Repetition count: 13
+
+#################################
+
+Sequence: 
+ldrb
+strb
+Repetition count: 12
+
+#################################
+
+Sequence: 
+cmp
+bcs
+Repetition count: 12
+
+#################################
+
+Sequence: 
+ldr
+uxtb
+Repetition count: 11
+
+#################################
+
+Sequence: 
+bne
+bl
+Repetition count: 11
+
+#################################
+
+Sequence: 
+bl
+ldr
+Repetition count: 11
+
+#################################
+
+Sequence: 
+beq
+movw
+Repetition count: 11
+
+#################################
+
+Sequence: 
+add
+str
+Repetition count: 11
+
+#################################
+
+Sequence: 
+add
+mov
+Repetition count: 11
+
+#################################
+
+Sequence: 
+uxtb
+sxtb
+Repetition count: 10
+
+#################################
+
+Sequence: 
+sub
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+movt
+bl
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldrh
+strh
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+sub
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+strb
+Repetition count: 10
+
+#################################
+
+Sequence: 
+ldr
+movw
+Repetition count: 10
+
+#################################
+
+Sequence: 
+b
+movw
+Repetition count: 10
+
+#################################

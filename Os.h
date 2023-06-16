@@ -343,7 +343,7 @@ typedef struct {
 #if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC1) ||  (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) )
 	OsEventRefType  OsTaskEventRef;
 #endif
-	OsResourceRefType OsTaskResourceRef;
+
 
 	struct {
 		OsAppMode* OsTaskAppModeRef;

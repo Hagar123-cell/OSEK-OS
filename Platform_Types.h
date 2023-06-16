@@ -30,8 +30,9 @@
 
 
 #define NULL       (void*)0
+#ifndef NULL_PTR
 #define NULL_PTR   (void*)0
-
+#endif
 
 /*
  * Boolean Values

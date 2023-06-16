@@ -79,7 +79,10 @@ StatusType ActivateTask ( TaskType TaskID )
 			/* ensures that the task code is being executed from the first statement.*/
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
-			/* NotImplemented initialize Events , EventsWait , Resources*/
+			/* Implemented initialize Events , EventsWait , Resources*/
+			OsTask_TCBs->Events=0;
+			OsTask_TCBs->EventsWait=0;
+			OsTask_TCBs->Resources=0;
 			ENABLE_INTERRUPTS();
 			if(OS_GET_CALL_LEVEL() ==TASK_LEVEL)
 			{
@@ -126,7 +129,7 @@ StatusType TerminateTask ( void )
 	OsTask_TCBType * taskTCB=&OsTask_TCBs[runningTaskID];/* pointer to TCB structure */
 
 #if(OS_EXTENDED_ERROR==TRUE)
-	if(0/* NotImplemented task occupies resources*/)
+	if(taskTCB->Resources !=0 ) /*Implemented task occupies resources*/
 	{
 		status=E_OS_RESOURCE;
 	}
@@ -149,7 +152,10 @@ StatusType TerminateTask ( void )
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 
-			/* NotImplemented initialize Events , EventsWait , Resources*/
+			/* Implemented initialize Events , EventsWait , Resources*/
+			OsTask_TCBs->Events=0;
+			OsTask_TCBs->EventsWait=0;
+			OsTask_TCBs->Resources=0;
 			taskTCB->Activations--;
 		}
 		else
@@ -194,6 +200,7 @@ StatusType TerminateTask ( void )
 StatusType ChainTask ( TaskType TaskID )
 {
 	StatusType status=E_OK;
+	OsTask_TCBType * taskTCB=&OsTask_TCBs[TaskID];/* pointer to configuration structure */
 	DISABLE_INTERRUPTS();
 
 #if(OS_EXTENDED_ERROR==TRUE)
@@ -203,7 +210,7 @@ StatusType ChainTask ( TaskType TaskID )
 		status=E_OS_ID; /*Task <TaskID> is invalid, E_OS_ID */
 
 	}
-	else if (0/* NotImplemented task occupies resources*/)
+	else if (taskTCB->Resources !=0 ) /*Implemented task occupies resources*/
 	{
 		status=E_OS_RESOURCE;
 	}
@@ -215,7 +222,7 @@ StatusType ChainTask ( TaskType TaskID )
 #endif
 	{
 
-		OsTask_TCBType * taskTCB=&OsTask_TCBs[TaskID];/* pointer to configuration structure */
+
 
 		/* check if the task state is READY or  WAITING */
 		if ((taskTCB->state == READY) || (taskTCB->state == WAITING) )
@@ -260,7 +267,10 @@ StatusType ChainTask ( TaskType TaskID )
 			/* ensures that the task code is being executed from the first statement.*/
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
-			/* NotImplemented initialize Events , EventsWait , Resources*/
+			/* Implemented initialize Events , EventsWait , Resources*/
+			OsTask_TCBs->Events=0;
+			OsTask_TCBs->EventsWait=0;
+			OsTask_TCBs->Resources=0;
 			ENABLE_INTERRUPTS();
 			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
@@ -294,7 +304,7 @@ StatusType Schedule ( void )
 	StatusType status=E_OK;
 	DISABLE_INTERRUPTS();
 #if(OS_EXTENDED_ERROR==TRUE)
-	if(0/* NotImplemented task occupies resources*/)
+	if(OsTask_TCBs[OsSched_getRunningTaskID()].Resources !=0 ) /*Implemented task occupies resources*/
 	{
 		status=E_OS_RESOURCE;
 	}
@@ -414,10 +424,10 @@ void OsTask_taskInit(OsTask * OsTaskConfig)
 			/* ensures that the task code is being executed from the first statement.*/
 			OsTask_TCBs[i].stackPtr=initialiseStack(OsTask_TCBs[i].stackPtr ,OsTaskConfig[i].entry );
 
-			/* NotImplemented initialize Events , EventsWait , Resources*/
-			/* OsTask_TCBs[i].Events=0;
+			/*Implemented initialize Events , EventsWait , Resources*/
+			OsTask_TCBs[i].Events=0;
 			OsTask_TCBs[i].EventsWait=0;
-			OsTask_TCBs[i].Resources  */
+			OsTask_TCBs[i].Resources=0;
 
 		}
 		else

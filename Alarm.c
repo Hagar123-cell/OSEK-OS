@@ -6,7 +6,7 @@
  *
  * Description: Source file for Alarm management
  *
- * Author: 
+ * Author:
  ******************************************************************************/
 
 #include "Alarm.h"
@@ -26,7 +26,6 @@
 StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 {
   StatusType ret = E_OK;
-  OsCounterRefType counter;
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
@@ -37,16 +36,17 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 
   }
   else
- 
+
 #endif
  {
-    
-    counter = Alarms[AlarmID].OsAlarmCounterRef;
 
-    Info->maxallowedvalue = counter->OsCounterMaxAllowedValue;
-    Info->mincycle = counter->OsCounterMinCycle;
-    Info->ticksperbase = counter->OsCounterTicksPerBase;
+
+
+    Info->maxallowedvalue = Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue;
+    Info->mincycle = Alarms[AlarmID].OsAlarmCounterRef->OsCounterMinCycle;
+    Info->ticksperbase = Alarms[AlarmID].OsAlarmCounterRef->OsCounterTicksPerBase;
     
+
  }
   
   return ret;
@@ -78,8 +78,8 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 
 #endif
  {
-    
-    if(Alarms[AlarmID].AlarmState == 0)
+
+    if(Alarms[AlarmID].AlarmState == Disable)
     {
 
       ret = E_OS_NOFUNC;
@@ -90,7 +90,7 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 
       *Tick = Alarms[AlarmID].AlarmTime;
 
-    }   
+    }
     
  }
   
@@ -116,8 +116,6 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
 {
   StatusType ret = E_OK;
-  OsCounterRefType counter;
-  counter = Alarms[AlarmID].OsAlarmCounterRef;
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
@@ -127,10 +125,10 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
     ret = E_OS_ID;
     
   }
-  else if( ( increment < 0 ) || ( increment > (counter->OsCounterMaxAllowedValue) ) || 
+  else if( ( increment < 0 ) || ( increment > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue) ) ||
             ( (cycle != 0) && 
-              ( (cycle > (counter->OsCounterMaxAllowedValue)) || 
-                (cycle < (counter->OsCounterMinCycle)) ) ) )
+              ( (cycle > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue)) ||
+                (cycle < (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMinCycle)) ) ) )
             {
 
               ret = E_OS_VALUE;
@@ -138,9 +136,9 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
             }
 
             else
-#endif            
+#endif
             {
-              if(Alarms[AlarmID].AlarmState == 1)
+              if(Alarms[AlarmID].AlarmState == Enable)
               {
 
                ret = E_OS_STATE; 
@@ -149,13 +147,13 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
               else
               {
 
-                DisableAllInterrupts();
+                //DisableAllInterrupts();
 
                 Alarms[AlarmID].AlarmState = 1;
                 Alarms[AlarmID].AlarmTime = increment;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                EnableAllInterrupts();
+                //EnableAllInterrupts();
 
               }
 
@@ -183,8 +181,7 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
 StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
 {
   StatusType ret = E_OK;
-  OsCounterRefType counter;
-  counter = Alarms[AlarmID].OsAlarmCounterRef;
+
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
@@ -194,10 +191,10 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
     ret = E_OS_ID;
     
   }
-  else if( ( start < 0 ) || ( start > (counter->OsCounterMaxAllowedValue) ) || 
+  else if( ( start < 0 ) || ( start > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue) ) ||
             ( (cycle != 0) && 
-              ( (cycle > (counter->OsCounterMaxAllowedValue)) || 
-                (cycle < (counter->OsCounterMinCycle)) ) ) )
+              ( (cycle > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue)) ||
+                (cycle < (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMinCycle)) ) ) )
             {
 
               ret = E_OS_VALUE;
@@ -205,7 +202,7 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
             }
 
             else
-#endif            
+#endif
             {
               if(Alarms[AlarmID].AlarmState == 1)
               {
@@ -216,13 +213,13 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
               else
               {
 
-                DisableAllInterrupts();
+            	//DisableAllInterrupts();
 
                 Alarms[AlarmID].AlarmState = 1;
-                Alarms[AlarmID].AlarmTime = GetCounter(counter) + start; //////////
+                Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + start;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                EnableAllInterrupts();
+                //EnableAllInterrupts();
 
               }
 
@@ -253,10 +250,10 @@ StatusType CancelAlarm ( AlarmType AlarmID )
   {
 
     ret = E_OS_ID;
-    
+
   }
   else
-  
+
 #endif
   {
     
@@ -269,7 +266,7 @@ StatusType CancelAlarm ( AlarmType AlarmID )
     else
     {
       
-      Alarms[AlarmID].AlarmState == 0;
+      Alarms[AlarmID].AlarmState = 0;
 
     }
     
@@ -278,3 +275,213 @@ StatusType CancelAlarm ( AlarmType AlarmID )
   return ret;
 
 }
+
+#if OSALARM_NUMBER_OF_ALARMS 
+TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value){
+
+  //AlarmType AlarmID;
+  TickType MinimalCount = -1;
+  TickType Temp;
+
+  //increment counter time
+	Alarms[AlarmID].OsActionInfo.OsAlarmCounter->Time++;
+
+  //check overflow
+	while (Alarms[AlarmID].OsActionInfo.OsAlarmCounter->Time >= Alarms[AlarmID].OsActionInfo.OsAlarmCounter->OsCounterMaxAllowedValue)
+	{
+	        // Wrap around the counter value to zero
+		      Alarms[AlarmID].OsActionInfo.OsAlarmCounter->Time -= Alarms[AlarmID].OsActionInfo.OsAlarmCounter->OsCounterMaxAllowedValue;
+  }
+
+  /*/
+  for(int i = 0; i < allarm count; i++)
+  {
+    AlarmID = get el id mn struct el counter
+
+    if(Alarms[AlarmID].AlarmState = Enable)
+    {
+      Temp = IncrementAlarm(AlarmID, Increment_Value);
+
+      if(MinimalCount > Temp)
+      {
+        MinimalCount = Temp;
+      }
+      else
+      {
+
+      }
+    }
+
+
+  }
+  */
+
+  if(Alarms[AlarmID].AlarmState = Enable)
+    {
+      Temp = IncrementAlarm(AlarmID, Increment_value);
+
+      if(MinimalCount > Temp)
+      {
+        MinimalCount = Temp;
+      }
+      else
+      {
+
+      }
+    }
+
+  return MinimalCount;
+}
+#endif
+
+
+#if OSALARM_NUMBER_OF_ALARMS 
+
+void Alarm_init(void)
+{
+
+AlarmType AlarmID;
+for(AlarmID = 0; AlarmID < OSALARM_NUMBER_OF_ALARMS; AlarmID++){
+
+  //create counter ll alarm dah
+
+  if(Alarms[AlarmID].Alarmautostar == True){
+
+
+    SetRelAlarm(AlarmID, Alarms[AlarmID].AlarmTime, Alarms[AlarmID].AlarmCycleTime);
+
+  }
+
+}
+
+}
+#endif
+
+#if OSALARM_NUMBER_OF_ALARMS
+
+TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value){
+
+  TickType RestIncrement;
+  TickType AlarmCount;
+  TickType CounterIncrement;
+
+  //init arlarms count
+  AlarmCount = 0;
+
+
+   //check if the increment is smaller than the expiration time 
+  if (Alarms[AlarmID].AlarmTime > Increment_value){
+
+    //decrement the alarm
+    Alarms[AlarmID].AlarmTime -= Increment_value;
+
+    // alarm will not expire
+    RestIncrement = Alarms[AlarmID].AlarmTime;
+
+  }
+  else
+  {
+
+    //check if alarm is cyclic or single shot
+
+    //Single Shot
+    if(Alarms[AlarmID].AlarmCycleTime == 0){
+
+      //in case of single shot, expires 1 time
+      AlarmCount = 1;
+
+      //set time to zero
+      Alarms[AlarmID].AlarmTime = 0;
+
+      //disable the alarm
+      Alarms[AlarmID].AlarmState = Disable;
+
+      //set rest of increment to zero
+      RestIncrement = 0;
+    }
+
+    else
+    {
+
+      //Cyclic Alarm
+
+      while(Alarms[AlarmID].AlarmTime <= Increment_value){
+
+        //add cycle time
+        Alarms[AlarmID].AlarmTime += Alarms[AlarmID].AlarmCycleTime;
+
+        //increment Alarms expiration times
+        AlarmCount ++;
+      }
+
+      //decrement the alarm
+      Alarms[AlarmID].AlarmTime -= Increment_value;
+
+      // alarm will not expire
+      RestIncrement = Alarms[AlarmID].AlarmTime;
+
+    }
+
+    //Alarm Actions
+
+    if(Alarms[AlarmID].OsAction == OsAlarmIcrementCounter)
+    {
+      // call counter increment function
+      CounterIncrement = IncrementCounter(AlarmID, AlarmCount); 
+
+      RestIncrement += Alarms[AlarmID].AlarmCycleTime * (CounterIncrement -1 );
+
+    }
+
+    else
+    {
+      for(; AlarmCount >0; AlarmCount--)
+      {
+
+        switch (Alarms[AlarmID].OsAction)
+        {
+            case OsAlarmActiveTask:
+
+              //activate task  
+              ActivateTask(Alarms[AlarmID].OsActionInfo.TaskID);
+
+              break;
+
+      //callback function
+            case OsAlarmCallback:
+
+              if(Alarms[AlarmID].OsActionInfo.OsAlarmCallbackFunction != NULL_PTR)
+              {
+
+                Alarms[AlarmID].OsActionInfo.OsAlarmCallbackFunction();
+          
+              }
+
+
+              break;
+//#if ll events
+            case OsAlarmSetEvent:
+
+              //set event
+              SetEvent(Alarms[AlarmID].OsActionInfo.TaskID, Alarms[AlarmID].OsActionInfo.Event);
+
+              break;
+
+      
+            default:
+              break;
+          }
+
+
+      }
+      
+
+    }
+
+
+
+  }
+  return RestIncrement;
+
+}
+#endif

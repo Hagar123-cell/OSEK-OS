@@ -26,9 +26,6 @@
  *                 Os Counter Configuration                                    *
  *******************************************************************************/
 
-/* Type definition contains counter increment type */
-typedef uint32 OsCounterIncrementType;
-
 /* Type definition contains the natural type or unit of the counter */
 typedef enum{
 		HARDWARE , SOFTWARE
@@ -43,7 +40,8 @@ typedef struct
   TickType OsCounterTicksPerBase;
   OsCounterTypeType OsCounterType;
   TickType Time;
-  //OsSecondsPerTick;
+  //uint8	AlarmsCount;
+  //AlarmType* AlarmRef;
 
 }OsCounter;
 
@@ -108,6 +106,7 @@ typedef struct{
 
 }OsAlarmActionInfo;
 
+/* Type definition for Alarm Struct */
 typedef struct
 {
   AlarmTimeType AlarmTime;    //expire time
@@ -115,7 +114,7 @@ typedef struct
   OsAlarmStateType AlarmState;
   OsCounter* OsAlarmCounterRef;
   OsAlarmActionType OsAction;
-  OsAlarmActionInfo OsActionInfo;
+  OsAlarmActionInfo* OsActionInfo;
   OsAlarmautostartType Alarmautostar;
 
   

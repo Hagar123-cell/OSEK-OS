@@ -28,7 +28,7 @@ uint32 OsSavedIntState = 0;
 void osInitInterrupts(void)
 {
 	/*set the mtvec value to our interrupt vector table*/
-	uint32 mtvecValue = ((uint32)interruptVectorTable & 0xFFFFFFFC) | 0x1;
+	uint32 mtvecValue = ((uint32)OsCallSysTickIsr & 0xFFFFFFFC) | 0x1;
 	csr_write_mtvec(mtvecValue);
 
 	/*initialization of interrupts*/

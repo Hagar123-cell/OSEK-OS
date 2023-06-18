@@ -23,7 +23,7 @@
 *               characteristics. The return value <Info> is a structure in which 
 *               the information of data type AlarmBaseType is stored.
 ************************************************************************************/
-StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
+StatusType GetAlarmBase(AlarmType AlarmID, AlarmBaseRefType Info)
 {
   /* \req OSEK_Alarm_6: The system service StatusType
 	 ** GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
@@ -73,7 +73,7 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 * Description: The system service GetAlarm returns the relative value in ticks 
 *               before the alarm <AlarmID> expires. 
 ************************************************************************************/
-StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
+StatusType GetAlarm(AlarmType AlarmID, TickRefType Tick)
 {
   /* \req OSEK_Alarm_1: The system service StatusType
 	 ** GetAlarm ( AlarmType AlarmID, TickRefType Tick)
@@ -132,7 +132,7 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 *               alarm <AlarmID> is activated or the assigned event (only for 
 *               extended tasks) is set or the alarm-callback routine is called. 
 ************************************************************************************/
-StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
+StatusType SetRelAlarm(AlarmType AlarmID, TickType increment, TickType cycle)
 {
 
   /* \req OSEK_Alarm_10: The system service StatusType
@@ -211,7 +211,7 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
 *               <AlarmID> is activated or the assigned event (only for extended 
 *               tasks) is set or the alarm-callback routine is called.
 ************************************************************************************/
-StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
+StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle)
 {
   /* \req OSEK_Alarm_15: The system service StatusType
 	 ** SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType Cycle )
@@ -287,7 +287,7 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
 * Parameters (out): None
 * Description: The system service cancels the alarm <AlarmID>.
 ************************************************************************************/
-StatusType CancelAlarm ( AlarmType AlarmID )
+StatusType CancelAlarm(AlarmType AlarmID)
 {
   /* \req OSEK_Alarm_20: The system service StatusType
 	 ** CancelAlarm ( AlarmType AlarmID ) shall be defined */

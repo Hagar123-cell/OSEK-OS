@@ -25,14 +25,6 @@
 
 #define VECTOR_TABLE_SIZE      64
 
-/*******************************************************************************
- *                             Prototypes                                      *
- *******************************************************************************/
-
-void set_vector_table_address(uint32 vectorTableAddress);
-
-
-void set_mtvecValue(uint32 mtvecValue);
 
 /*******************************************************************************
  *                         Interrupt Service Routines                          *

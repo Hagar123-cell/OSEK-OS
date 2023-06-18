@@ -25,13 +25,20 @@
 ************************************************************************************/
 StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 {
+  /* \req OSEK_Alarm_6: The system service StatusType
+	 ** GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
+	 ** shall be defined */
+
+  // \req OSEK_Alarm_7: The GetAlarmBase API should return E_OK in Standard mode
   StatusType ret = E_OK;
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
+  //check that the AlarmID is in range
   if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
+    // \req OSEK_Alarm_8: The GetAlarmBase API should return E_OS_ID in Extended mode
     ret = E_OS_ID;
 
   }
@@ -40,6 +47,9 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 #endif
  {
 
+    /* \req OSEK_Alarm_9: The system service GetAlarmBase reads the alarm base characteristics. 
+    ** The return value Info is a structure in which the information of data type 
+    ** AlarmBaseType is stored */
 
 
     Info->maxallowedvalue = Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue;
@@ -65,12 +75,19 @@ StatusType GetAlarmBase ( AlarmType AlarmID, AlarmBaseRefType Info )
 ************************************************************************************/
 StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 {
+  /* \req OSEK_Alarm_1: The system service StatusType
+	 ** GetAlarm ( AlarmType AlarmID, TickRefType Tick)
+	 ** shall be defined */
+
+  // \req OSEK_Alarm_2: The GetAlarm API should return E_OK in Standard mode
   StatusType ret = E_OK;
 #if (OS_EXTENDED_ERROR == TRUE)
 
+  //check that the AlarmID is in range
   if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
+    // \req OSEK_Alarm_3: The GetAlarm API should return E_OS_ID in Extended mode
     ret = E_OS_ID;
 
   }
@@ -78,16 +95,18 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 
 #endif
  {
-
+    //check if the alarm is not running
     if(Alarms[AlarmID].AlarmState == Disable)
     {
 
+      // \req OSEK_Alarm_4: The GetAlarm API should return E_OS_NOFUNC in Standard mode if Alarm is not used
       ret = E_OS_NOFUNC;
 
     }
     else
     {
-
+      /* \req OSEK_Alarm_5: The system service GetAlarm shall return 
+      ** the relative value in ticks before the alarm AlarmID expires */
       *Tick = Alarms[AlarmID].AlarmTime;
 
     }
@@ -115,22 +134,31 @@ StatusType GetAlarm ( AlarmType AlarmID, TickRefType Tick )
 ************************************************************************************/
 StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
 {
+
+  /* \req OSEK_Alarm_10: The system service StatusType
+	 ** SetRelAlarm ( AlarmType AlarmID, TickType Increment, TickType Cycle )
+	 ** shall be defined */
+
+  // \req OSEK_Alarm_11: The SetRelAlarm API should return E_OK in Standard mode
   StatusType ret = E_OK;
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
+  //check that the AlarmID is in range
   if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
-
+    // \req OSEK_Alarm_13: The SetRelAlarm API may return E_OS_ID in Extended mode
     ret = E_OS_ID;
     
   }
+  //check that increment and cycle are in range
   else if( ( increment < 0 ) || ( increment > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue) ) ||
             ( (cycle != 0) && 
               ( (cycle > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue)) ||
                 (cycle < (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMinCycle)) ) ) )
             {
 
+              // \req OSEK_Alarm_14: The SetRelAlarm API may return E_OS_VALUE in Extended mode
               ret = E_OS_VALUE;
 
             }
@@ -138,22 +166,27 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
             else
 #endif
             {
+              //check if the alarm is running
               if(Alarms[AlarmID].AlarmState == Enable)
               {
 
+               /* \req OSEK_Alarm_12: The SetRelAlarm API should 
+               * return E_OS_STATE in Standard mode if Alarm is already in use */
                ret = E_OS_STATE; 
 
               }
               else
               {
 
-                //DisableAllInterrupts();
+                DisableAllInterrupts();
 
-                Alarms[AlarmID].AlarmState = 1;
+                //Enable Alarm
+                Alarms[AlarmID].AlarmState = Enable;
+                //Set Alarm
                 Alarms[AlarmID].AlarmTime = increment;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                //EnableAllInterrupts();
+                EnableAllInterrupts();
 
               }
 
@@ -180,23 +213,32 @@ StatusType SetRelAlarm ( AlarmType AlarmID, TickType increment, TickType cycle )
 ************************************************************************************/
 StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
 {
+  /* \req OSEK_Alarm_15: The system service StatusType
+	 ** SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType Cycle )
+	 ** shall be defined */
+
+  // \req OSEK_Alarm_16: The SetAbsAlarm API should return E_OK in Standard mode
   StatusType ret = E_OK;
 
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
+  //check that the AlarmID is in range
   if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
+    // \req OSEK_Alarm_18: The SetAbsAlarm API may return E_OS_ID in Extended mode
     ret = E_OS_ID;
     
   }
+  //check that increment and cycle are in range
   else if( ( start < 0 ) || ( start > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue) ) ||
             ( (cycle != 0) && 
               ( (cycle > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue)) ||
                 (cycle < (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMinCycle)) ) ) )
             {
 
+              // \req OSEK_Alarm_19: The SetAbsAlarm API may return E_OS_VALUE in Extended mode
               ret = E_OS_VALUE;
 
             }
@@ -204,22 +246,27 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
             else
 #endif
             {
-              if(Alarms[AlarmID].AlarmState == 1)
+              //check if the alarm is running
+              if(Alarms[AlarmID].AlarmState == Enable)
               {
-
+               
+               /* \req OSEK_Alarm_17: The SetAbsAlarm API should 
+               * return E_OS_STATE in Standard mode if Alarm is already in use */
                ret = E_OS_STATE; 
 
               }
               else
               {
 
-            	//DisableAllInterrupts();
+            	  DisableAllInterrupts();
 
-                Alarms[AlarmID].AlarmState = 1;
+                //Enable Alarm
+                Alarms[AlarmID].AlarmState = Enable;
+                //Set Alarm
                 Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + start;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                //EnableAllInterrupts();
+                EnableAllInterrupts();
 
               }
 
@@ -242,13 +289,19 @@ StatusType SetAbsAlarm ( AlarmType AlarmID, TickType start, TickType cycle )
 ************************************************************************************/
 StatusType CancelAlarm ( AlarmType AlarmID )
 {
+  /* \req OSEK_Alarm_20: The system service StatusType
+	 ** CancelAlarm ( AlarmType AlarmID ) shall be defined */
+
+  // \req OSEK_Alarm_21: The CancelAlarm API should return E_OK in Standard mode
   StatusType ret = E_OK;
 
 #if (OS_EXTENDED_ERROR == TRUE)
 
+  //check that the AlarmID is in range
   if(AlarmID >= OSALARM_NUMBER_OF_ALARMS)
   {
 
+    // \req OSEK_Alarm_23: The CancelAlarm API may return E_OS_ID in Extended mode
     ret = E_OS_ID;
 
   }
@@ -256,17 +309,20 @@ StatusType CancelAlarm ( AlarmType AlarmID )
 
 #endif
   {
-    
-    if(Alarms[AlarmID].AlarmState == 0)
+    //check if the alarm is not running  
+    if(Alarms[AlarmID].AlarmState == Disable)
     {
 
+      /* \req OSEK_Alarm_22: The CancelAlarm API should 
+      * return E_OS_NOFUNC in Standard mode if Alarm is not used */
       ret = E_OS_NOFUNC;
 
     }
     else
     {
       
-      Alarms[AlarmID].AlarmState = 0;
+      // \req OSEK_Alarm_24: The system service CancelAlarm shall cancel the alarm AlarmID
+      Alarms[AlarmID].AlarmState = Disable;
 
     }
     
@@ -287,26 +343,29 @@ StatusType CancelAlarm ( AlarmType AlarmID )
 * Description: The system service used to increment the counter.
 ************************************************************************************/
 #if OSALARM_NUMBER_OF_ALARMS 
-TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value){
+TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value)
+{
 
   //AlarmType AlarmID;
   TickType MinimalCount = -1;
   TickType Temp;
 
   //increment counter time
-	Alarms[AlarmID].OsActionInfo.OsAlarmCounter->Time++;
+	Alarms[AlarmID].OsActionInfo->OsAlarmCounter->Time++;
 
   //check overflow
-	while (Alarms[AlarmID].OsActionInfo.OsAlarmCounter->Time >= Alarms[AlarmID].OsActionInfo.OsAlarmCounter->OsCounterMaxAllowedValue)
+	while (Alarms[AlarmID].OsActionInfo->OsAlarmCounter->Time >= Alarms[AlarmID].OsActionInfo->OsAlarmCounter->OsCounterMaxAllowedValue)
 	{
-	        // Wrap around the counter value to zero
-		      Alarms[AlarmID].OsActionInfo.OsAlarmCounter->Time -= Alarms[AlarmID].OsActionInfo.OsAlarmCounter->OsCounterMaxAllowedValue;
+
+    // Wrap around the counter value to zero
+    Alarms[AlarmID].OsActionInfo->OsAlarmCounter->Time -= Alarms[AlarmID].OsActionInfo->OsAlarmCounter->OsCounterMaxAllowedValue;
+
   }
 
-  /*/
+  /* Multiple of alarms on same counter
   for(int i = 0; i < allarm count; i++)
   {
-    AlarmID = get el id mn struct el counter
+    AlarmID = Counters[CounterID].AlarmRef[i];
 
     if(Alarms[AlarmID].AlarmState = Enable)
     {
@@ -321,25 +380,26 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value){
 
       }
     }
-
-
   }
   */
 
   if(Alarms[AlarmID].AlarmState = Enable)
+  {
+    //Increment alarm and get the next alarm time
+    Temp = IncrementAlarm(AlarmID, Increment_value);
+
+    //if the actual count is smaller
+    if(MinimalCount > Temp)
     {
-      Temp = IncrementAlarm(AlarmID, Increment_value);
+      //Set it as minimal count
+      MinimalCount = Temp;
 
-      if(MinimalCount > Temp)
-      {
-        MinimalCount = Temp;
-      }
-      else
-      {
-
-      }
     }
+    else
+    {
 
+    }
+  }
   return MinimalCount;
 }
 #endif
@@ -358,19 +418,17 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value){
 void Alarm_init(void)
 {
 
-AlarmType AlarmID;
-for(AlarmID = 0; AlarmID < OSALARM_NUMBER_OF_ALARMS; AlarmID++){
+  AlarmType AlarmID;
+  for(AlarmID = 0; AlarmID < OSALARM_NUMBER_OF_ALARMS; AlarmID++){
 
-  //create counter ll alarm dah
+    //create counter ll alarm dah
 
-  if(Alarms[AlarmID].Alarmautostar == True){
+    if(Alarms[AlarmID].Alarmautostar == True){
 
+      SetRelAlarm(AlarmID, Alarms[AlarmID].AlarmTime, Alarms[AlarmID].AlarmCycleTime);
 
-    SetRelAlarm(AlarmID, Alarms[AlarmID].AlarmTime, Alarms[AlarmID].AlarmCycleTime);
-
+    }
   }
-
-}
 
 }
 #endif
@@ -387,44 +445,45 @@ for(AlarmID = 0; AlarmID < OSALARM_NUMBER_OF_ALARMS; AlarmID++){
 * Description: The system service used to increment the alarm.
 ************************************************************************************/
 #if OSALARM_NUMBER_OF_ALARMS
-TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value){
+TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value)
+{
 
   TickType RestIncrement;
   TickType AlarmCount;
   TickType CounterIncrement;
 
-  //init arlarms count
+  //Init arlarms count
   AlarmCount = 0;
 
 
-   //check if the increment is smaller than the expiration time 
+   //Check if the increment is smaller than the expiration time 
   if (Alarms[AlarmID].AlarmTime > Increment_value){
 
-    //decrement the alarm
+    //Decrement the alarm
     Alarms[AlarmID].AlarmTime -= Increment_value;
 
-    // alarm will not expire
+    //Alarm will not expire
     RestIncrement = Alarms[AlarmID].AlarmTime;
 
   }
   else
   {
 
-    //check if alarm is cyclic or single shot
+    //Check if alarm is cyclic or single shot
 
     //Single Shot
     if(Alarms[AlarmID].AlarmCycleTime == 0){
 
-      //in case of single shot, expires 1 time
+      //In case of single shot, expires 1 time
       AlarmCount = 1;
 
-      //set time to zero
+      //Set time to zero
       Alarms[AlarmID].AlarmTime = 0;
 
-      //disable the alarm
+      //Disable the alarm
       Alarms[AlarmID].AlarmState = Disable;
 
-      //set rest of increment to zero
+      //Set rest of increment to zero
       RestIncrement = 0;
     }
 
@@ -435,17 +494,17 @@ TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value){
 
       while(Alarms[AlarmID].AlarmTime <= Increment_value){
 
-        //add cycle time
+        //Add cycle time
         Alarms[AlarmID].AlarmTime += Alarms[AlarmID].AlarmCycleTime;
 
-        //increment Alarms expiration times
+        //Increment Alarms expiration times
         AlarmCount ++;
       }
 
-      //decrement the alarm
+      //Decrement the alarm
       Alarms[AlarmID].AlarmTime -= Increment_value;
 
-      // alarm will not expire
+      //Alarm will not expire
       RestIncrement = Alarms[AlarmID].AlarmTime;
 
     }
@@ -454,62 +513,50 @@ TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value){
 
     if(Alarms[AlarmID].OsAction == OsAlarmIcrementCounter)
     {
-      // call counter increment function
-      CounterIncrement = IncrementCounter(AlarmID, AlarmCount); 
 
+      //Call counter increment function
+      CounterIncrement = IncrementCounter(AlarmID, AlarmCount); 
+      //Re-calculate the rest of the increments
       RestIncrement += Alarms[AlarmID].AlarmCycleTime * (CounterIncrement -1 );
 
     }
 
     else
     {
+      //Execute the alarm so many times as needed
       for(; AlarmCount >0; AlarmCount--)
       {
-
+        //Check alarm actions
         switch (Alarms[AlarmID].OsAction)
         {
             case OsAlarmActiveTask:
 
-              //activate task  
-              ActivateTask(Alarms[AlarmID].OsActionInfo.TaskID);
-
+              //Activate task  
+              ActivateTask(Alarms[AlarmID].OsActionInfo->TaskID);
               break;
 
-      //callback function
             case OsAlarmCallback:
 
-              if(Alarms[AlarmID].OsActionInfo.OsAlarmCallbackFunction != NULL_PTR)
+              //Callback function
+              if(Alarms[AlarmID].OsActionInfo->OsAlarmCallbackFunction != NULL_PTR)
               {
-
-                Alarms[AlarmID].OsActionInfo.OsAlarmCallbackFunction();
-          
+                Alarms[AlarmID].OsActionInfo->OsAlarmCallbackFunction();
               }
-
-
               break;
+
 //#if ll events
             case OsAlarmSetEvent:
 
-              //set event
-              SetEvent(Alarms[AlarmID].OsActionInfo.TaskID, Alarms[AlarmID].OsActionInfo.Event);
-
+              //Set event
+              SetEvent(Alarms[AlarmID].OsActionInfo->TaskID, Alarms[AlarmID].OsActionInfo->Event);
               break;
 
-      
             default:
               break;
           }
-
-
       }
-      
-
     }
-
-
-
   }
   return RestIncrement;
-
 }
 #endif

@@ -16,7 +16,7 @@
  *                                  definitions                                *
  *******************************************************************************/
 
-#define RES_SCHEDULER 255  // if handled later
+
 #define Resources_count 15
 
 

@@ -79,7 +79,7 @@ typedef uint32 TaskEventsType;
 
 typedef struct
 {
-	OsEventMask OsEventMaskX; //1 -> represent events that can be setted
+	OsEventMask OsEventMaskX; //1 -> represent events that the task is interested in
 }OsEvent;
 
 typedef OsEvent* OsEventRefType;

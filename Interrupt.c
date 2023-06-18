@@ -48,7 +48,7 @@ void OsCallSysTickIsr(void)
  *                             Helper Functions                                *
  *******************************************************************************/
 
-void osInitInterrupts(void)
+void Interrupt_init(void)
 {
 	/*set the mtvec value to our interrupt vector table*/
 	uint32 mtvecValue = ((uint32)OsCallSysTickIsr & 0xFFFFFFFC) | 0x1;

@@ -29,8 +29,14 @@
 void Alarm_init(void);
 #endif
 
+/* Description: The system service used to initialize the scheduler. */
+OsSched_schedulerInit();
+
+/* Description: The system service used to initialize the tasks. */
+OsTask_taskInit(OsTaskConfig);
+
 /* Description: The system service used to initialize the interrupts. */
-void osInitInterrupts(void);
+void Interrupt_init(void);
 
 /* Description: The system service used to initialize the resources. */
 void Resource_init(get_using_tasks x );

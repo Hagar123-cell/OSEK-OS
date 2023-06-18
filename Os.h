@@ -21,7 +21,19 @@
 #include "resource_event_cfg.h"
 #include "Os_Cfg.h"
 
+/*******************************************************************************
+  *                                 init Prototypes                            *
+  *******************************************************************************/
+/* Description: The system service used to initialize the alarm. */
+#if OSALARM_NUMBER_OF_ALARMS 
+void Alarm_init(void);
+#endif
 
+/* Description: The system service used to initialize the interrupts. */
+void osInitInterrupts(void);
+
+/* Description: The system service used to initialize the resources. */
+void Resource_init(get_using_tasks x );
 
   /*******************************************************************************
    *                                  structures & unions                        *
@@ -148,11 +160,6 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle);
 /* The system service cancels the alarm <AlarmID>. */
 StatusType CancelAlarm(AlarmType AlarmID);
 
-
-/* Description: The system service used to initialize the alarm. */
-#if OSALARM_NUMBER_OF_ALARMS 
-void Alarm_init(void);
-#endif
 
 
 /*******************************************************************************

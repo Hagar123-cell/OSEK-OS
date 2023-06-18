@@ -16,30 +16,8 @@
 #include "Os.h"
 #include "Interrupt.h"
 
-/*******************************************************************************
- *                          ISR & Vector Table Definitions                     *
- *******************************************************************************/
-
-#define ISR(x)                 void OsIsr_##x##Func(void)
-#define CALL_ISR(x)            OsIsr_##x##Func()
-
 #define VECTOR_TABLE_SIZE      64
 
-
-/*******************************************************************************
- *                         Interrupt Service Routines                          *
- *******************************************************************************/
-
-ISR(SysTickTimer)
-{
-
-}
-
-void OsCallSysTickIsr(void)
-{
-  CALL_ISR(SysTickTimer);
-  OSInterruptStruct->IntNestingDeepth --;
-}
 
 /*******************************************************************************
  *                         Interrupt Vector Table                              *
@@ -60,9 +38,5 @@ InterruptVector interruptVectorTable[VECTOR_TABLE_SIZE] = {
 	{6, NULL},
 	{7, (ISRFunc_ptr)OsCallSysTickIsr},
 };
-
-
-
-
 
 #endif /* INTERRUPTVECTORTABLE_H_ */

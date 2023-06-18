@@ -149,6 +149,12 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle);
 StatusType CancelAlarm(AlarmType AlarmID);
 
 
+/* Description: The system service used to initialize the alarm. */
+#if OSALARM_NUMBER_OF_ALARMS 
+void Alarm_init(void);
+#endif
+
+
 /*******************************************************************************
  *                      Resource API Prototypes                                *
  *******************************************************************************/

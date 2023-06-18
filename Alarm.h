@@ -6,8 +6,7 @@
  *
  * Description: Header file for Alarm management 
  *
- * Author: Yasmin Afifi
- *
+ * Author:
  ******************************************************************************/
 
 #ifndef ALARM_H
@@ -21,22 +20,6 @@
 
 /* Non AUTOSAR files */
 #include "Common_Macros.h"
-
-
-/*******************************************************************************
- *                 Type definition for os Event Reference                      *
- *******************************************************************************/
-
-typedef uint16 OsEvent;     //////////////////////
-typedef OsEvent* OsEventRefType;
-
-
-/*******************************************************************************
- *                 Type definition for os Task Reference                       *
- *******************************************************************************/
-
-typedef uint16 OsTask;     //////////////////////
-typedef OsTask* OsTaskRefType;
 
 
 /*******************************************************************************
@@ -56,12 +39,12 @@ typedef struct
   TickType OsCounterMinCycle;
   TickType OsCounterTicksPerBase;
   OsCounterTypeType OsCounterType;
-  //OsSecondsPerTick;
+  TickType Time;
+  //uint8	AlarmsCount;
+  //AlarmType* AlarmRef;
 
 }OsCounter;
 
-/* Type definition for os Counter Reference */
-typedef OsCounter* OsCounterRefType;
 
 /*******************************************************************************
  *                 Os Alarm Configuration                                    *
@@ -73,71 +56,66 @@ typedef OsCounter* OsCounterRefType;
  ** 0 disable
  ** 1 enable
  **/
-typedef uint8 AlarmStateType;
+typedef enum{
+		Disable , Enable
+}OsAlarmStateType;
+
+/** Type definition for Alarm Autostart
+ **
+ ** This type defines the possibly autostarts of one alarm which are:
+ ** 0 False
+ ** 1 True
+ **/
+typedef enum{
+		False, True
+}OsAlarmautostartType;
 
 /* Type definition for Alarm Time */
-typedef uint32 AlarmTimeType;
+typedef unsigned int AlarmTimeType;
 
 /*Type definition for Alarm Cycle Time */
 typedef uint32 AlarmCycleTimeType;
 
+
+/** Type definition for Alarm Actions
+ **
+ ** This type defines the possibly actions of one alarm which are:
+ ** 0 activate a task
+ ** 1 callback function
+ ** 2 increment a counter
+ ** 3 set an event
+ **/
+typedef enum{
+
+  OsAlarmActiveTask,
+  OsAlarmCallback,
+  OsAlarmIcrementCounter,
+  OsAlarmSetEvent
+
+}OsAlarmActionType;
+
 /* Type definition for Alarm callback function */
-typedef void (*OsAlarmCallbackFunction)( void * );
+typedef void (*OsAlarmCallbackType)( void  );
 
-/* Structure specifies the parameters to activate a task */
+typedef struct{
+
+  TaskType TaskID;
+  OsAlarmCallbackType OsAlarmCallbackFunction;
+  OsCounter* OsAlarmCounter;
+  EventMaskType Event;
+
+}OsAlarmActionInfo;
+
+/* Type definition for Alarm Struct */
 typedef struct
 {
-  OsTaskRefType OsAlarmActivateTaskRef;
-
-}OsAlarmActiveTask;
-
-
-/* Structure specifies the parameters to call a callback OS alarm action */
-typedef struct
-{
-
-  OsAlarmCallbackFunction OsAlarmCallbackName;   //////////////////
- 
-}OsAlarmCallback;
-
-
-/* Strcture specifies the parameters to increment a counter */
-typedef struct
-{
-  OsCounterRefType OsAlarmIncrementCounterRef;
-
-}OsAlarmIcrementCounter;
-
-/* Structure specifies the parameters to set an event*/
-typedef struct
-{
-
-  OsEventRefType OsAlarmSetEventRef;
-  OsTaskRefType OsAlarmSetEventTaskRef;
-
-}OsAlarmSetEvent;
-
-/* Structure defines which type of notification is used when the alarm expires */
-typedef struct
-{
-  OsAlarmActiveTask OsActiveTask;
-  OsAlarmCallback OsCallback;
-  OsAlarmIcrementCounter OsIncrementCounter;
-  OsAlarmSetEvent OsSetEvent;
-
-}OsAlarmAction;
-
-
-typedef struct
-{
-  AlarmTimeType AlarmTime;
+  AlarmTimeType AlarmTime;    //expire time
   AlarmCycleTimeType AlarmCycleTime;
-  AlarmStateType AlarmState;
-  OsCounterRefType OsAlarmCounterRef;
-  OsAlarmAction OsAction;
-
-
-  //Alarmautostart
+  OsAlarmStateType AlarmState;
+  OsCounter* OsAlarmCounterRef;
+  OsAlarmActionType OsAction;
+  OsAlarmActionInfo* OsActionInfo;
+  OsAlarmautostartType Alarmautostar;
 
   
 }OsAlarm;
@@ -148,10 +126,37 @@ typedef struct
 //	OsAlarm Alarms[No_ALARMS];
 //} Alarm_ConfigType;
 
-OsAlarm Alarms[No_ALARMS];
-OsCounter Counters[No_COUNTERS];
+OsAlarm Alarms[OSALARM_NUMBER_OF_ALARMS];
+OsCounter Counters[OSALARM_NUMBER_OF_COUNTERS];
 
 
+/************************************************************************************
+* Service Name: IncrementCounter
+* Service ID[hex]: 
+* Sync/Async: 
+* Reentrancy: 
+* Parameters (in): AlarmID - Reference to alarm 
+*                  Increment_value - Value we will be using 
+* Parameters (out): minimal increment
+* Description: The system service used to increment the counter.
+************************************************************************************/
+#if OSALARM_NUMBER_OF_ALARMS 
+TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value);
+#endif
+
+/************************************************************************************
+* Service Name: IncrementAlarm
+* Service ID[hex]: 
+* Sync/Async: 
+* Reentrancy: 
+* Parameters (in): AlarmID - Reference to alarm 
+*                  Increment_value - Value we will be using 
+* Parameters (out): Rest of increment
+* Description: The system service used to increment the alarm.
+************************************************************************************/
+#if OSALARM_NUMBER_OF_ALARMS
+TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value);
+#endif
 
 
 /*******************************************************************************
@@ -162,11 +167,3 @@ OsCounter Counters[No_COUNTERS];
 //extern const Alarm_ConfigType Alarm_Configuration;
 
 #endif /* ALARM_H */
-
-
-
-
-
-
-
-void IncrementCounter(unsigned int CounterID);

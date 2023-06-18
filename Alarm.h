@@ -158,19 +158,6 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value);
 TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value);
 #endif
 
-/************************************************************************************
-* Service Name: Alarm_init
-* Service ID[hex]: 
-* Sync/Async: 
-* Reentrancy: 
-* Parameters (in): None
-* Parameters (out): None
-* Description: The system service used to initialize the alarm.
-************************************************************************************/
-#if OSALARM_NUMBER_OF_ALARMS 
-void Alarm_init(void);
-#endif
-
 
 /*******************************************************************************
  *                       External Variables                                    *

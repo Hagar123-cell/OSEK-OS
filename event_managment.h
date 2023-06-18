@@ -11,16 +11,16 @@
 #ifndef EVENT_MANAGMENT_H_
 #define EVENT_MANAGMENT_H_
 
-/*******************************************************************************
- *                                  includes                                   *
- *******************************************************************************/
+ /*******************************************************************************
+  *                                  includes                                   *
+  *******************************************************************************/
 #include"Os.h"
 #include "resource_event_cfg.h"
 #include"scheduler.h"
 
-/*******************************************************************************
- *                      definitions & configurations                           *
- *******************************************************************************/
+  /*******************************************************************************
+   *                      definitions & configurations                           *
+   *******************************************************************************/
 
 typedef uint32 OsEventMask;
 
@@ -36,7 +36,7 @@ typedef OsEvent* OsEventRefType;
 
 typedef struct
 {
-	OsEventMask OsEventMaskX;
+	OsEventMask OsEventMaskX; //1 -> represent events that the task is interested in
 }OsEvent;
 
 typedef OsEvent* OsEventRefType;

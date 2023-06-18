@@ -18,6 +18,8 @@
   *******************************************************************************/
 
 #include "Std_Types.h"
+#include "resource_event_cfg.h"
+#include "Os_Cfg.h"
 
 
 
@@ -47,7 +49,8 @@ typedef enum {
  *******************************************************************************/
 
 
-
+/*This data type identifies a task.*/
+typedef uint8 TaskType;
 
 /*******************************************************************************
  *                         Resource definitions                                *
@@ -266,8 +269,7 @@ typedef uint16 OsTask_stackSizeType;
 
 /* in OSEK Specification */
 
-/*This data type identifies a task.*/
-typedef uint8 TaskType;
+
 
 /*This data type points to a variable of TaskType. */
 typedef TaskType* TaskRefType;

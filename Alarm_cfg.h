@@ -6,16 +6,18 @@
  *
  * Description: Pre-Compile Configuration Header file for Alarm management
  *
- * Author: Yasmin Afifi
+ * Author: 
  ******************************************************************************/
 
 #ifndef ALARM_CFG_H
 #define ALARM_CFG_H
 
 
-#define No_ALARMS             (2U)
+#define OSALARM_NUMBER_OF_ALARMS             (2U)
 
-#define No_COUNTERS           (2U)
+#define OSALARM_NUMBER_OF_COUNTERS           (2U)
+
+#define OS_EXTENDED_ERROR    				 TRUE
 
 
 

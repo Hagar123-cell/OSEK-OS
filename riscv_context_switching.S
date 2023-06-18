@@ -5,7 +5,7 @@
 .extern nextTCBPtr
 
 .global RISCV_CONTEXT_SWITCH
-
+.global initialiseStack
 
 # All general purpose registers are pushed into the stack except x0 , x2 ,x3 and x4 :
 # x0 since it's value is 0 and it can't be changed.
@@ -16,11 +16,16 @@
 
 RISCV_CONTEXT_SWITCH:
 
+    LOAD_REG  x4, currentTCBPtr             # load value of currectTCBPtr (address of the current TCB)
+    beq x4,x0,restoreContext		    # currentTCBPtr=0 in case of task termination by TerminateTask or  ChainTask APIs
+     					    # and no need to save context in this case since the task is already terminated so all we need is to
+    					    # load the context of the highest periority task.
+					    
 #*******************************************************************************
 #                                 Save Context                                 
 #*******************************************************************************
-    
-    addi sp, sp, -portCONTEXT_SIZE     
+
+    addi sp, sp, -CONTEXT_SIZE     
     
     STORE_REG x1,  X1_STACK_OFFSET  ( sp )      # ra
     STORE_REG x5,  X5_STACK_OFFSET  ( sp )      # t0
@@ -55,7 +60,7 @@ RISCV_CONTEXT_SWITCH:
     STORE_REG t0, MSTATUS_STACK_OFFSET ( sp )   # push mstatus register into stack to save the Machine previous interrupt enable bit (MPIE bit) in the mstatus.
 
 
-    LOAD_REG  t0, currentTCBPtr            # load value of currectTCBPtr (address of the current TCB)
+    LOAD_REG  t0, currentTCBPtr         # load value of currectTCBPtr (address of the current TCB)
     STORE_REG  sp, 0( t0 )              # save the SP value into current TCB.             
 
     csrr a1, mepc            # mepc rigister contains the return address from exeption.
@@ -67,7 +72,7 @@ RISCV_CONTEXT_SWITCH:
 #*******************************************************************************
 #                             Restore Context                                 
 #*******************************************************************************
- 
+ restoreContext: 
     LOAD_REG  t1, nextTCBPtr        # t1 contains the value of nextTCBPtr i.e. nextTCBPtr (address of the next TCB )                
     LOAD_REG  sp, 0( t1 )        # load sp from nextTCB
     
@@ -106,8 +111,40 @@ RISCV_CONTEXT_SWITCH:
     LOAD_REG x30, X30_STACK_OFFSET ( sp )
     LOAD_REG x31, X31_STACK_OFFSET ( sp )
     
-    addi sp, sp, portCONTEXT_SIZE
-
+    addi sp, sp, CONTEXT_SIZE
     
     ret
+
+
+/*******************************************************************************
+*Function Name: initialiseStack
+*Syntax : OsTask_stackType initialiseStack( OsTask_stackType stackTop , OsTask_EntryType entry)
+*Parameter (In): stackTop    -pointer to stack top.
+*                entry       -pointer to task entry
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : pointer to top of context .
+*Description: initialize stack context .
+*             store entry into stack , to ensures that the task code is being executed from the first statement.
+*             setup and store mstatus into stack .
+*Remark: stackTop passed in a0    , entry passed in a1 .
+*********************************************************************************/
+initialiseStack:
+    csrr t0, mstatus                    /* copy mstatus register into t0. */
+    andi t0, t0, ~0x8                   /* Disable interrupts */
+	
+	/* Next 3 instructions to Set MPIE(bit 7) and MPP(bits 11,12) bits in mstatus value. */
+	/*the MPIE(Machine Previous Interrupt Enable) and  MPP(Machine Previous Privilge mode) in mstatus. */
+	/* MPIE =1 -> enable interrupts after return from this exception , MPP=11 -> return to machine mode */
+    addi t1, x0, 0x188                  /* Generate the value 0x188  , can not generate 0x1880 at one because immediate field is only 12 bit (3 hexa digits) */	
+    slli t1, t1, 4                      /* 0x1880 <- (0x188<<4)  */
+    or t0, t0, t1                       /* Set MPIE and MPP bits in mstatus value. */
+
+    addi a0, a0, -CONTEXT_SIZE      /* space for Pc ,msatus ,x1 , x5-x31*/
+    STORE_REG t0, MSTATUS_STACK_OFFSET(a0)                   /*store  mstatus onto the stack. */
+
+    STORE_REG a1, PC_STACK_OFFSET(a0)                   /* store Entry of Task onto the stack. */
+    ret
+
+
 

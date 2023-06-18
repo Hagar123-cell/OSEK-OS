@@ -46,30 +46,42 @@ typedef enum {
  *                                  definitions                                *
  *******************************************************************************/
 
-#define TaskType  uint8 /*delete later by task management team*/
 
 
 
- /*******************************************************************************
-  *                         Resource definitions                                *
-  *******************************************************************************/
+/*******************************************************************************
+ *                         Resource definitions                                *
+ *******************************************************************************/
 
-  /*
-   * type of resource which is the input to GetResource & ReleaseResource
-   */
-typedef uint8 ResourceType;  //error with typedef
-
-#define TaskType  uint8 /*delete later by task management team*/
+/*
+ * type of resource which is the input to GetResource & ReleaseResource
+ */
+typedef uint8 ResourceType ;
+typedef  uint8 OsResource;
 
 typedef struct
 {
-	TaskType using_tasks[Resources_count][OSTASK_NUMBER_OF_TASKS];
+	TaskType using_tasks [Resources_count][OSTASK_NUMBER_OF_TASKS];
 }get_using_tasks;
 
 /*******************************************************************************
  *                            Event definitions                                *
  *******************************************************************************/
 
+
+typedef uint32 OsEventMask;
+typedef OsEventMask EventMaskType;
+typedef EventMaskType* EventMaskRefType;
+
+typedef uint32 TaskEventsType;  
+
+
+typedef struct
+{
+	OsEventMask OsEventMaskX; //1 -> represent events that the task is interested in
+}OsEvent;
+
+typedef OsEvent* OsEventRefType;
 
 
 
@@ -133,46 +145,48 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle);
 /* The system service cancels the alarm <AlarmID>. */
 StatusType CancelAlarm(AlarmType AlarmID);
 
+
 /*******************************************************************************
  *                      Resource API Prototypes                                *
  *******************************************************************************/
- /*
-  * This call serves to enter critical sections in the code that are
-  * assigned to the resource referenced by <ResID>. A critical
-  * section shall always be left using ReleaseResource
-  */
-StatusType GetResource(ResourceType ResID);
+/*
+ * This call serves to enter critical sections in the code that are
+ * assigned to the resource referenced by <ResID>. A critical
+ * section shall always be left using ReleaseResource
+ */
+StatusType GetResource ( ResourceType ResID );
 
 /*
  * ReleaseResource is the counterpart of GetResource and
  * serves to leave critical sections in the code that are assigned to
  * the resource referenced by <ResID>
  */
-StatusType ReleaseResource(ResourceType ResID);
+StatusType ReleaseResource ( ResourceType ResID );
 
 /*******************************************************************************
  *                      Event API Prototypes                                *
  *******************************************************************************/
 
- /*
-  *This service returns the current state of all event bits of the task
-  *<TaskID>, not the events that the task is waiting for.
-  *The service may be called from interrupt service routines, task
-  *level and some hook routines
-  *The current status of the event mask of task <TaskID> is copied
-  *to <Event>.
- */
-StatusType GetEvent(TaskType TaskID, EventMaskRefType Event);
+/*
+ *This service returns the current state of all event bits of the task
+ *<TaskID>, not the events that the task is waiting for.
+ *The service may be called from interrupt service routines, task
+ *level and some hook routines
+ *The current status of the event mask of task <TaskID> is copied
+ *to <Event>.
+*/
+StatusType GetEvent ( TaskType TaskID , EventMaskRefType Event );
 
 /*
  *The state of the calling task is set to waiting, unless at least one
  *of the events specified in <Mask> has already been set.
 */
-StatusType WaitEvent(EventMaskType Mask);
+StatusType WaitEvent ( EventMaskType Mask );
 
-StatusType ClearEvent(EventMaskType Mask);
+StatusType ClearEvent ( EventMaskType Mask );
 
-StatusType SetEvent(TaskType TaskID, EventMaskType Mask);
+StatusType SetEvent ( TaskType TaskID ,EventMaskType Mask );
+
 
 /*******************************************************************************
  *                      Interrupt API Prototypes                                *

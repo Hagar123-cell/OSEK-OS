@@ -131,7 +131,46 @@ OsAlarm Alarms[OSALARM_NUMBER_OF_ALARMS];
 OsCounter Counters[OSALARM_NUMBER_OF_COUNTERS];
 
 
+/************************************************************************************
+* Service Name: IncrementCounter
+* Service ID[hex]: 
+* Sync/Async: 
+* Reentrancy: 
+* Parameters (in): AlarmID - Reference to alarm 
+*                  Increment_value - Value we will be using 
+* Parameters (out): minimal increment
+* Description: The system service used to increment the counter.
+************************************************************************************/
+#if OSALARM_NUMBER_OF_ALARMS 
 TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value);
+#endif
+
+/************************************************************************************
+* Service Name: IncrementAlarm
+* Service ID[hex]: 
+* Sync/Async: 
+* Reentrancy: 
+* Parameters (in): AlarmID - Reference to alarm 
+*                  Increment_value - Value we will be using 
+* Parameters (out): Rest of increment
+* Description: The system service used to increment the alarm.
+************************************************************************************/
+#if OSALARM_NUMBER_OF_ALARMS
+TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value);
+#endif
+
+/************************************************************************************
+* Service Name: Alarm_init
+* Service ID[hex]: 
+* Sync/Async: 
+* Reentrancy: 
+* Parameters (in): None
+* Parameters (out): None
+* Description: The system service used to initialize the alarm.
+************************************************************************************/
+#if OSALARM_NUMBER_OF_ALARMS 
+void Alarm_init(void);
+#endif
 
 
 /*******************************************************************************

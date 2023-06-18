@@ -12,6 +12,14 @@
 
 #include "Interrupt.h"
 #include "Os.h"
+#include "Alarm.h"
+
+/*******************************************************************************
+ *                             ISR Definitions                                 *
+ *******************************************************************************/
+
+#define ISR(x)                 void OsIsr_##x##Func(void)
+#define CALL_ISR(x)            OsIsr_##x##Func()
 
 /*******************************************************************************
  *                                 Global Variables                            *
@@ -19,7 +27,22 @@
 
 uint8 suspend_All_Counter = 0;
 uint32 OsSavedIntState = 0;
+TickType CounterIncrement = 1;
 
+/*******************************************************************************
+ *                         Interrupt Service Routines                          *
+ *******************************************************************************/
+
+ISR(SysTickTimer)
+{
+  CounterIncrement = IncrementCounter(0, 1);
+}
+
+void OsCallSysTickIsr(void)
+{
+  CALL_ISR(SysTickTimer);
+  OSInterruptStruct->IntNestingDeepth --;
+}
 
 /*******************************************************************************
  *                             Helper Functions                                *
@@ -50,17 +73,17 @@ void osInitInterrupts(void)
 	ENABLE_INTERRUPTS();
 }
 
-boolean OsIsCat2IntContext(void)
+boolean osIsCat2IntContext(void)
 {
 	return((boolean)OSInterruptStruct->Cat2IntLevel);
 }
 
-boolean OsIsInterruptContext(void)
+boolean osIsInterruptContext(void)
 {
 	return((OSInterruptStruct->IntNestingDeepth > 0) ? TRUE : FALSE);
 }
 
-void OsRunCat2Isr(void)
+void osRunCat2Isr(void)
 {
   /* get the PLIC pending interrupt ID */
   static uint32 PlicIntId = 0;

@@ -11,35 +11,12 @@
 #ifndef  _resourse_H
 #define _resourse_H
 
- /*******************************************************************************
-  *                                  includes                                   *
-  *******************************************************************************/
+/*******************************************************************************
+ *                                  includes                                   *
+ *******************************************************************************/
 
 #include"Os.h"
-#include "resource_event_cfg.h"
 #include"scheduler.h"
-
-  /*******************************************************************************
-   *                                  structures & unions                        *
-   *******************************************************************************/
-
-typedef enum
-{
-	INTERNAL, LINKED, STANDARD
-}OsResourceProperty;
-/*
-typedef struct
-{
-	 OsResourceProperty ResourceProperty;
-	 OsResource *OsResourceLinkedResourceRef;
-}OsResource;
-*/
-
-typedef struct
-{
-	ceiling_priority ceiling_prior;
-	occupation resource_occupation;
-}OsResource;
 
 /*******************************************************************************
  *                      definitions & configurations                           *
@@ -47,8 +24,24 @@ typedef struct
 
 typedef  uint8 ceiling_priority;
 typedef boolean occupation;
-OsResource resource_info[Resources_count];
 
+
+
+
+/*******************************************************************************
+ *                                  structures & unions                        *
+ *******************************************************************************/
+
+
+
+typedef struct
+{
+	ceiling_priority ceiling_prior;
+	occupation resource_occupation;
+}os_resource_info;
+
+
+os_resource_info resource_info [Resources_count];
 
 
 #endif /*_resourse_H*/

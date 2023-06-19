@@ -19,17 +19,6 @@
 
 #include "Std_Types.h"
 #include "resource_event_cfg.h"
-#include "Os_Cfg.h"
-
-
-/*******************************************************************************
-  *                                 OS Prototypes                              *
-  *******************************************************************************/
-
-void StartOS(AppModeType);
-
-void ShutdownOS(StatusType);
-
 
 /*******************************************************************************
   *                                 init Prototypes                            *
@@ -39,17 +28,29 @@ void ShutdownOS(StatusType);
 void Alarm_init(void);
 #endif
 
-/* Description: The system service used to initialize the scheduler. */
-OsSched_schedulerInit();
+/*******************************************************************************
+*Function Name: OsSched_schedulerInit
+*Parameter (In): none.
+*Parameter (Out): none
+*Parameter (In/Out): none
+*Return : none
+*Description: initialize ready list , OsTask_RunningTaskID, OsTask_HighestBasePriority  .
+*********************************************************************************/
+void OsSched_schedulerInit();
 
-/* Description: The system service used to initialize the tasks. */
-OsTask_taskInit(OsTaskConfig);
+/*******************************************************************************
+ *Function Name: OsTask_taskInit
+ *Parameter (In): none
+ *Parameter (Out): none
+ *Parameter (In/Out): none
+ *Return : none
+ *Description: initialize tasks TCB and ready list . move autostart task to ready list .
+ *********************************************************************************/
+void OsTask_taskInit();
 
 /* Description: The system service used to initialize the interrupts. */
 void Interrupt_init(void);
 
-/* Description: The system service used to initialize the resources. */
-void Resource_init(get_using_tasks x );
 
   /*******************************************************************************
    *                                  structures & unions                        *
@@ -83,7 +84,16 @@ typedef uint8 TaskType;
 /*******************************************************************************
  *                         Resource definitions                                *
  *******************************************************************************/
+enum
+{
+	OS_CONFORMANCE_BCC1,
+	OS_CONFORMANCE_ECC1,
+	OS_CONFORMANCE_BCC2,
+	OS_CONFORMANCE_ECC2
+};
 
+/* OS Pre-Compile Configuration Header file */
+#include "Os_Cfg.h"
 /*
  * type of resource which is the input to GetResource & ReleaseResource
  */
@@ -95,6 +105,9 @@ typedef struct
 	TaskType using_tasks [Resources_count][OSTASK_NUMBER_OF_TASKS];
 }get_using_tasks;
 
+
+/* Description: The system service used to initialize the resources. */
+void Resource_init(get_using_tasks x );
 /*******************************************************************************
  *                            Event definitions                                *
  *******************************************************************************/
@@ -268,7 +281,6 @@ void ResumeOSInterrupts(void);
 /*******************************************************************************
  *                              App Mode Start			                       *
  *******************************************************************************/
-#define OSDEFAULTAPPMODE  1
 
 typedef uint16 AppModeType;
 typedef struct {
@@ -282,6 +294,13 @@ typedef struct {
 typedef OsEvent* OsEventRefType;
 
 typedef OsResource* OsResourceRefType;
+/*******************************************************************************
+  *                                 OS Prototypes                              *
+  *******************************************************************************/
+
+void StartOS(AppModeType);
+
+void ShutdownOS(StatusType);
 
 
 /*******************************************************************************
@@ -325,13 +344,7 @@ typedef enum {
 	FULL, NON
 }OsTaskScheduleType;
 
-enum
-{
-	OS_CONFORMANCE_BCC1,
-	OS_CONFORMANCE_ECC1,
-	OS_CONFORMANCE_BCC2,
-	OS_CONFORMANCE_ECC2
-};
+
 typedef enum
 {
 	BASIC,
@@ -345,10 +358,6 @@ typedef enum
 	SYSTEM_LEVEL, /* set calling level to SYSTEM_LEVEL , before calling scheduler  */
 	ISR2_LEVEL
 }OsTask_callLevelType;
-
-
-/* OS Pre-Compile Configuration Header file */
-#include "Os_Cfg.h"
 
 
 /*******************************************************************************
@@ -517,5 +526,9 @@ StatusType GetTaskID(TaskRefType TaskID);
 StatusType GetTaskState(TaskType TaskID, TaskStateRefType State);
 
 
+/*******************************************************************************
+ *                       External Configurations                                    *
+ *******************************************************************************/
+extern OsTask * OsTaskConfig;
 
 #endif /* OS_H */

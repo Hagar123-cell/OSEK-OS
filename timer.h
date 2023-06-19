@@ -27,7 +27,17 @@ void timer_init(void);
 	Function Arguments   : void
 	Function Description : fire an interrupt when the counter reach to the input value.
 */
-void compare(int compare_value);
-
-
+void compare(int compareValue);
+/*
+	Function Name        : Enale_timer
+	Function Returns     : void
+	Function Arguments   : void
+	Function Description : enable the timer.
+*/
+/*
+	Function Name        : disable_timer
+	Function Returns     : void
+	Function Arguments   : void
+	Function Description : disable the timer.
+*/
 #endif // TIMER_H

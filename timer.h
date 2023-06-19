@@ -34,10 +34,12 @@ void compare(int compareValue);
 	Function Arguments   : void
 	Function Description : enable the timer.
 */
+void Enable_timer(void);
 /*
 	Function Name        : disable_timer
 	Function Returns     : void
 	Function Arguments   : void
 	Function Description : disable the timer.
 */
+void disable_timer(void);
 #endif // TIMER_H

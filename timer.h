@@ -1,4 +1,4 @@
-#ifndef TIMER_H_INCLUDED
+#ifndef TIMER_H
 
 #define TIMER_H_INCLUDED
 
@@ -30,4 +30,4 @@ void timer_init(void);
 void compare(int compare_value);
 
 
-#endif // TIMER_H_INCLUDED
+#endif // TIMER_H

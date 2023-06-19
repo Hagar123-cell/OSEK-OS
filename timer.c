@@ -20,14 +20,14 @@ void Disable_timer(void)
 	
 	CLR_BIT(CNRTR,1);
 	/***********disable timer***************/
-	return void;
+	
 
 }
 }
 void ISR(void)
 {
 	IncementCounter();
-	return void;
+	
 
 }
 

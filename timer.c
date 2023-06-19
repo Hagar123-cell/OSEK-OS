@@ -1,5 +1,5 @@
 #include "timer.h"
-#include "alarm.h"
+#include "Alarm.h"
 void timer_init(void)
 {
 	SET_BIT(CNRTR,1);           //enable timer

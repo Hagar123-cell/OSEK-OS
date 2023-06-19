@@ -32,6 +32,7 @@
 /*******************************************************************************
  *                                 Prototypes                                  *
  *******************************************************************************/
+void OsCallSysTickIsr(void);
 
 void osSaveAndDisableIntState(void);
 
@@ -41,12 +42,10 @@ uint32 osGetPMR(void);
 
 void osSetPMR(uint32 level);
 
-boolean OsIsInterruptContext(void);
+boolean osIsInterruptContext(void);
 
-boolean OsIsCat2IntContext(void);
+boolean osIsCat2IntContext(void);
 
-void osInitInterrupts(void);
-
-void OsRunCat2Isr(void);
+void osRunCat2Isr(void);
 
 #endif /* INTERRUPT_H_ */

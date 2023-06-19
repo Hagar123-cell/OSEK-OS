@@ -7,13 +7,13 @@ void timer_init(void)
 	SET_BIT(CNRTR,3);         /* select suitable prescalar
                             */
 	CLR_BIT(CNRTR,4);
-	return void;
+	
 }
 void Enable_timer(void)
 {
 	SET_BIT(CNRTR,1);   
 	/***********enable timer***************/
-	return void;
+	
 }
 void Disable_timer(void)
 {

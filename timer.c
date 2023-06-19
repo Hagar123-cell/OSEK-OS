@@ -9,7 +9,7 @@ void timer_init(void)
 	CLR_BIT(CNRTR,4);
 	return void;
 }
-void Enable_timer()
+void Enable_timer(void)
 {
 	SET_BIT(CNRTR,1);   
 	/***********enable timer***************/

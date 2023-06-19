@@ -1,4 +1,5 @@
 #include "timer.h"
+#include "alarm.h"
 void timer_init(void)
 {
 	SET_BIT(CNRTR,1);           //enable timer
@@ -20,7 +21,12 @@ void compare(int compare_value)
     }
 
 }
+void ISR(void)
+{
+	IncementCounter();
+	return void;
 
+}
 
 
 

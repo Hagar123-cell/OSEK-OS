@@ -23,6 +23,9 @@ void Disable_timer(void)
 	
 
 }
+void compare(int compareValue)
+{
+		CMPR = compareValue;
 }
 void ISR(void)
 {

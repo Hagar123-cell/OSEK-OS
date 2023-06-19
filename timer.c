@@ -20,11 +20,7 @@ void compare(int compare_value)
     }
 
 }
-void ISR(void)
-{
-    IncrementCounter();
-    return void;
-}
+
 
 
 

@@ -5,7 +5,7 @@
 #define CNTR        (*((volatile unsigned long *)0x00010000))
 #define CMPR        (*((volatile unsigned long *)0x00010004))
 #define CNRTR      (*((volatile unsigned long *)0x00010008))
-#define INTERRUPT   (*((volatile unsigned long *)0x000100012))
+
 
 
 #define SET_BIT(reg,bit)    reg|=(1<<bit)

@@ -110,7 +110,7 @@ typedef struct
   OsCounter* OsAlarmCounterRef;
   OsAlarmActionType OsAction;
   OsAlarmActionInfo* OsActionInfo;
-  OsAlarmautostartType Alarmautostar;
+  OsAlarmautostartType Alarmautostart;
 
   
 }OsAlarm;

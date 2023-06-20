@@ -80,8 +80,8 @@ StatusType ActivateTask ( TaskType TaskID )
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 			/* Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs->Events=0;
-			OsTask_TCBs->EventsWait=0;
+			OsTask_TCBs->Events.OsEventMaskX=0;
+			OsTask_TCBs->EventsWait.OsEventMaskX=0;
 			OsTask_TCBs->Resources=0;
 			ENABLE_INTERRUPTS();
 			if(OS_GET_CALL_LEVEL() ==TASK_LEVEL)
@@ -153,8 +153,8 @@ StatusType TerminateTask ( void )
 
 
 			/* Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs->Events=0;
-			OsTask_TCBs->EventsWait=0;
+			OsTask_TCBs->Events.OsEventMaskX=0;
+			OsTask_TCBs->EventsWait.OsEventMaskX=0;
 			OsTask_TCBs->Resources=0;
 			taskTCB->Activations--;
 		}
@@ -268,8 +268,8 @@ StatusType ChainTask ( TaskType TaskID )
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 			/* Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs->Events=0;
-			OsTask_TCBs->EventsWait=0;
+			OsTask_TCBs->Events.OsEventMaskX=0;
+			OsTask_TCBs->EventsWait.OsEventMaskX=0;
 			OsTask_TCBs->Resources=0;
 			ENABLE_INTERRUPTS();
 			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
@@ -391,17 +391,16 @@ StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 
 /*******************************************************************************
  *Function Name: OsTask_taskInit
- *Parameter (In): OsTaskConfig	 - pointer to the first element of static configuration array.
+ *Parameter (In): none
  *Parameter (Out): none
  *Parameter (In/Out): none
  *Return : none
  *Description: initialize tasks TCB and ready list . move autostart task to ready list .
  *********************************************************************************/
-void OsTask_taskInit(OsTask * OsTaskConfig)
+void OsTask_taskInit()
 {
 	uint8 i;
 	OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
-	OsSched_schedulerInit();
 
 
 	for(i=0; i < OSTASK_NUMBER_OF_TASKS;i++)
@@ -425,8 +424,8 @@ void OsTask_taskInit(OsTask * OsTaskConfig)
 			OsTask_TCBs[i].stackPtr=initialiseStack(OsTask_TCBs[i].stackPtr ,OsTaskConfig[i].entry );
 
 			/*Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs[i].Events=0;
-			OsTask_TCBs[i].EventsWait=0;
+			OsTask_TCBs[i].Events.OsEventMaskX=0;
+			OsTask_TCBs[i].EventsWait.OsEventMaskX=0;
 			OsTask_TCBs[i].Resources=0;
 
 		}

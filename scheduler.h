@@ -108,19 +108,6 @@ void OsSched_WaitingToReady(
 							);
 #endif
 
-
-/*******************************************************************************
-*Function Name: OsSched_schedulerInit
-*Parameter (In): none.
-*Parameter (Out): none
-*Parameter (In/Out): none
-*Return : none
-*Description: initialize ready list , OsTask_RunningTaskID, OsTask_HighestBasePriority  .
-*********************************************************************************/
-void OsSched_schedulerInit();
-
-
-
 /*******************************************************************************
 *Function Name: OsSched_reschedule
 *Parameter (In): none

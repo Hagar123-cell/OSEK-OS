@@ -16,19 +16,6 @@
 #include "Os.h"
 
 
-
-
-
-/*******************************************************************************
- *Function Name: OsTask_taskInit
- *Parameter (In): OsTaskConfig	 - pointer to the first element of static configuration array.
- *Parameter (Out): none
- *Parameter (In/Out): none
- *Return : none
- *Description: initialize tasks TCB and ready list . move autostart task to ready list .
- *********************************************************************************/
-void OsTask_taskInit(OsTask * OsTaskConfig);
-
 /*******************************************************************************
  *Function Name: initialiseStack
  *Syntax : OsTask_stackType initialiseStack( OsTask_stackType stackTop , OsTask_EntryType entry)

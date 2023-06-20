@@ -12,7 +12,7 @@ void StartOS(AppModeType mode)
 	Ossched_StartScheduler();
 }
 
-void ShutdownOS(void)
+void ShutdownOS(StatusType status)
 {
   DISABLE_INTERRUPTS();
 

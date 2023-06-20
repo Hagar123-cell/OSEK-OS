@@ -18,7 +18,6 @@
   *******************************************************************************/
 
 #include "Std_Types.h"
-#include "resource_event_cfg.h"
 #include "Os_Cfg.h"
 
 

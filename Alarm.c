@@ -178,7 +178,7 @@ StatusType SetRelAlarm(AlarmType AlarmID, TickType increment, TickType cycle)
               else
               {
 
-                DisableAllInterrupts();
+                DISABLE_INTERRUPTS();
 
                 //Enable Alarm
                 Alarms[AlarmID].AlarmState = Enable;
@@ -186,7 +186,7 @@ StatusType SetRelAlarm(AlarmType AlarmID, TickType increment, TickType cycle)
                 Alarms[AlarmID].AlarmTime = increment;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                EnableAllInterrupts();
+                ENABLE_INTERRUPTS();
 
               }
 
@@ -258,7 +258,7 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle)
               else
               {
 
-            	  DisableAllInterrupts();
+            	  DISABLE_INTERRUPTS();
 
                 //Enable Alarm
                 Alarms[AlarmID].AlarmState = Enable;
@@ -266,7 +266,7 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle)
                 Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + start;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                EnableAllInterrupts();
+                ENABLE_INTERRUPTS();
 
               }
 
@@ -544,7 +544,6 @@ TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value)
               }
               break;
 
-//#if ll events
             case OsAlarmSetEvent:
 
               //Set event

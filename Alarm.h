@@ -15,11 +15,6 @@
 /* General OS definitions */
 #include "Os.h"
 
-/* Alarm Pre-Compile Configuration Header file */
-#include "Alarm_cfg.h"
-
-/* Non AUTOSAR files */
-#include "Common_Macros.h"
 
 
 /*******************************************************************************

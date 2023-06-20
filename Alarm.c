@@ -421,8 +421,6 @@ void Alarm_init(void)
   AlarmType AlarmID;
   for(AlarmID = 0; AlarmID < OSALARM_NUMBER_OF_ALARMS; AlarmID++){
 
-    //create counter ll alarm dah
-
     if(Alarms[AlarmID].Alarmautostar == True){
 
       SetRelAlarm(AlarmID, Alarms[AlarmID].AlarmTime, Alarms[AlarmID].AlarmCycleTime);

@@ -91,7 +91,7 @@ void OsSched_schedulerInit()
 {
 	uint8 i;
 	OsTask_RunningTaskID=0;
-	OsTask_HighestBasePriority=0;
+	OsTask_HighestBasePriority=OSTASK_PRIORITY_LEVELS-1;
 	for(i=0; i<OSTASK_PRIORITY_LEVELS ;i++)
 	{
 		OsTask_ReadyList[i].head=INVALID_TASK;
@@ -390,11 +390,11 @@ void OsSched_reschedule()
  	ready state, as soon as a higher-priority task has got ready.
 	*************************************************************************/
 
-	if((OsTask_TCBs[OsTask_RunningTaskID].state==RUNNING)  \
-	   &&(OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskSchedule==FULL))
+	if(OsTask_TCBs[OsTask_RunningTaskID].state==RUNNING)
 		/**OSEK_SCHEDULER_10&13&14*/
 	{
-		if(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority)
+		if(  (OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskSchedule==FULL)\
+		   &&(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority))
 		{
 			OsSched_RunningToReady();
 			OsSched_ReadyToRunning(peekTaskID);

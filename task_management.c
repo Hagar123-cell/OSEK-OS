@@ -401,7 +401,6 @@ void OsTask_taskInit()
 {
 	uint8 i;
 	OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
-	OsSched_schedulerInit();
 
 
 	for(i=0; i < OSTASK_NUMBER_OF_TASKS;i++)

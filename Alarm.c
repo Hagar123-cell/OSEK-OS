@@ -386,7 +386,7 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value)
   if(Alarms[AlarmID].AlarmState = Enable)
   {
     //Increment alarm and get the next alarm time
-    Temp = IncrementAlarm(AlarmID, Increment_value);
+    Temp = AlarmManagement(AlarmID, Increment_value);
 
     //if the actual count is smaller
     if(MinimalCount > Temp)
@@ -433,7 +433,7 @@ void Alarm_init(void)
 
 
 /************************************************************************************
-* Service Name: IncrementAlarm
+* Service Name: AlarmManagement
 * Service ID[hex]: 
 * Sync/Async: 
 * Reentrancy: 
@@ -443,7 +443,7 @@ void Alarm_init(void)
 * Description: The system service used to increment the alarm.
 ************************************************************************************/
 #if OSALARM_NUMBER_OF_ALARMS
-TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value)
+TickType AlarmManagement(AlarmType AlarmID, TickType Increment_value)
 {
 
   TickType RestIncrement;

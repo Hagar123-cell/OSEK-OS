@@ -140,7 +140,7 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value);
 #endif
 
 /************************************************************************************
-* Service Name: IncrementAlarm
+* Service Name: AlarmManagement
 * Service ID[hex]: 
 * Sync/Async: 
 * Reentrancy: 
@@ -150,7 +150,7 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value);
 * Description: The system service used to increment the alarm.
 ************************************************************************************/
 #if OSALARM_NUMBER_OF_ALARMS
-TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value);
+TickType AlarmManagement(AlarmType AlarmID, TickType Increment_value);
 #endif
 
 

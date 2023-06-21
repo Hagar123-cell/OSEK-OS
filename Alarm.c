@@ -183,7 +183,7 @@ StatusType SetRelAlarm(AlarmType AlarmID, TickType increment, TickType cycle)
                 //Enable Alarm
                 Alarms[AlarmID].AlarmState = Enable;
                 //Set Alarm
-                Alarms[AlarmID].AlarmTime = increment;
+                Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + increment;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
                 ENABLE_INTERRUPTS();
@@ -263,7 +263,7 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle)
                 //Enable Alarm
                 Alarms[AlarmID].AlarmState = Enable;
                 //Set Alarm
-                Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + start;
+                Alarms[AlarmID].AlarmTime = start;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
                 ENABLE_INTERRUPTS();

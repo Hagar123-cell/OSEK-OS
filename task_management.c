@@ -133,7 +133,7 @@ StatusType TerminateTask ( void )
 	{
 		status=E_OS_RESOURCE;
 	}
-	else if(OS_GET_CALL_LEVEL()!=TASK_LEVEL )
+	else if(OS_GET_CALL_LEVEL() == ISR2_LEVEL )
 	{
 		status=E_OS_CALLEVEL;
 	}
@@ -142,7 +142,7 @@ StatusType TerminateTask ( void )
 
 	{
 #if ((OS_CONFORMANCE == OS_CONFORMANCE_ECC2) ||  (OS_CONFORMANCE == OS_CONFORMANCE_BCC2))
-		if(taskTCB->Activations >= 1)
+		if((taskTCB->Activations >= 1) && (taskTCB->OsTaskConfig->taskKind==BASIC))
 		{
 			OsSched_RunningToSuspended();
 			OsSched_SuspendedToReady(runningTaskID);
@@ -214,7 +214,7 @@ StatusType ChainTask ( TaskType TaskID )
 	{
 		status=E_OS_RESOURCE;
 	}
-	else if(OS_GET_CALL_LEVEL()!=TASK_LEVEL)
+	else if(OS_GET_CALL_LEVEL() == ISR2_LEVEL)
 	{
 		status=E_OS_CALLEVEL;
 	}
@@ -308,7 +308,7 @@ StatusType Schedule ( void )
 	{
 		status=E_OS_RESOURCE;
 	}
-	else if(OS_GET_CALL_LEVEL()!=TASK_LEVEL)
+	else if(OS_GET_CALL_LEVEL() == ISR2_LEVEL)
 	{
 		status=E_OS_CALLEVEL;
 	}
@@ -413,7 +413,9 @@ void OsTask_taskInit()
 		OsTask_TCBs[i].CurrentPriority=OsTaskConfig[i].OsTaskPriority;
 
 
-		if(OsTaskConfig[i].OsTaskAutostart.OsTaskAppModeRef->appMode & OSAPPMODE_CURRENT_APPMODE)
+		/*if(OsTaskConfig[i].OsTaskAutostart.OsTaskAppModeRef->appMode & OSAPPMODE_CURRENT_APPMODE)*/
+
+		if(OsTaskConfig[i].OsTaskAutostart==TRUE)
 		{
 			OsTask_TCBs[i].state=READY;
 			OsSched_SuspendedToReady(i);

@@ -308,6 +308,7 @@ void ShutdownOS(StatusType);
  *******************************************************************************/
  /* in OS SWS */
 typedef uint8 OsTaskActivationType;
+typedef uint8 OsTaskAutostartType;  /* TRUE or FALSE */
 typedef uint8 OsTaskPriorityType;
 typedef void (*OsTask_EntryType)(void);
 typedef void* OsTask_stackType;
@@ -399,9 +400,7 @@ typedef struct {
 #endif
 
 
-	struct {
-		OsAppMode* OsTaskAppModeRef;
-	}OsTaskAutostart;
+	OsTaskAutostartType OsTaskAutostart;
 	/*OsTaskTimingProtection */			  /*This container contains all parameters regarding timing protection of the task.*/
 }OsTask;
 

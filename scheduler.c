@@ -91,7 +91,7 @@ void OsSched_schedulerInit()
 {
 	uint8 i;
 	OsTask_RunningTaskID=0;
-	OsTask_HighestBasePriority=OSTASK_PRIORITY_LEVELS-1;
+	OsTask_HighestBasePriority=0;
 	for(i=0; i<OSTASK_PRIORITY_LEVELS ;i++)
 	{
 		OsTask_ReadyList[i].head=INVALID_TASK;
@@ -264,7 +264,7 @@ void OsSched_SuspendedToReady
     OsSched_ReadyListAddToTail(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
     OsTask_TCBs[taskID].state    = READY; /* change state of the task to ready*/
 
-    if(OsTask_TCBs[taskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskPriority)
+    if(OsTask_TCBs[taskID].CurrentPriority > OsTask_HighestBasePriority)
     {
     	OsTask_HighestBasePriority=OsTask_TCBs[taskID].CurrentPriority;
     }
@@ -318,7 +318,7 @@ void OsSched_WaitingToReady
 	OsTask_TCBs[taskID].state=READY;
 	OsSched_ReadyListAddToTail(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
 
-	if(OsTask_TCBs[taskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskPriority)
+	if(OsTask_TCBs[taskID].CurrentPriority > OsTask_HighestBasePriority)
 	{
 		OsTask_HighestBasePriority=OsTask_TCBs[taskID].CurrentPriority;
 	}

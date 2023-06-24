@@ -1,6 +1,5 @@
 #include "Os.h"
 
-#define no_of_tasks 2
 #define STACKSIZE 240
 
 uint32 task1Stack [STACKSIZE];
@@ -11,7 +10,7 @@ void Task2 (void);
 
 typedef struct Task_ConfigType
 {
-	OsTask tasksConfig[no_of_tasks];
+	OsTask tasksConfig[OSTASK_NUMBER_OF_TASKS];
 } Task_ConfigType;
 
 const Task_ConfigType Task_Configuration = {

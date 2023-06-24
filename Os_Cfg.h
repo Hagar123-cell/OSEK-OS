@@ -16,7 +16,7 @@
  *                  Task Management Pre-Compile Configurations                 *
  *******************************************************************************/
 
-#define OSTASK_NUMBER_OF_TASKS  20   /* 		1 .. 255		 */
+#define OSTASK_NUMBER_OF_TASKS  2   /* 		1 .. 255		 */
 
 #define INVALID_TASK OSTASK_NUMBER_OF_TASKS
 

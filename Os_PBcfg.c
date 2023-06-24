@@ -15,8 +15,7 @@ typedef struct Task_ConfigType
 } Task_ConfigType;
 
 const Task_ConfigType Task_Configuration = {
-    &task1Stack[STACKSIZE],STACKSIZE,Task1,EXTENDED,10,2,FULL,0,AUTOMATIC,
-
-    &task2Stack[STACKSIZE],STACKSIZE,Task2,EXTENDED,10,1,FULL,0,AUTOMATIC
+    { task1Stack,STACKSIZE,Task1,EXTENDED,0,2,FULL,0,TRUE},
+	{ task2Stack,STACKSIZE,Task2,EXTENDED,0,1,FULL,0,TRUE}
 };
 

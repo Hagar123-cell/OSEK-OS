@@ -178,15 +178,15 @@ StatusType SetRelAlarm(AlarmType AlarmID, TickType increment, TickType cycle)
               else
               {
 
-                DisableAllInterrupts();
+                DISABLE_INTERRUPTS();
 
                 //Enable Alarm
                 Alarms[AlarmID].AlarmState = Enable;
                 //Set Alarm
-                Alarms[AlarmID].AlarmTime = increment;
+                Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + increment;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                EnableAllInterrupts();
+                ENABLE_INTERRUPTS();
 
               }
 
@@ -258,15 +258,15 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle)
               else
               {
 
-            	  DisableAllInterrupts();
+            	  DISABLE_INTERRUPTS();
 
                 //Enable Alarm
                 Alarms[AlarmID].AlarmState = Enable;
                 //Set Alarm
-                Alarms[AlarmID].AlarmTime = Alarms[AlarmID].OsAlarmCounterRef->Time + start;
+                Alarms[AlarmID].AlarmTime = start;
                 Alarms[AlarmID].AlarmCycleTime = cycle;
 
-                EnableAllInterrupts();
+                ENABLE_INTERRUPTS();
 
               }
 
@@ -386,7 +386,7 @@ TickType IncrementCounter(AlarmType AlarmID, TickType Increment_value)
   if(Alarms[AlarmID].AlarmState = Enable)
   {
     //Increment alarm and get the next alarm time
-    Temp = IncrementAlarm(AlarmID, Increment_value);
+    Temp = AlarmManagement(AlarmID, Increment_value);
 
     //if the actual count is smaller
     if(MinimalCount > Temp)
@@ -421,9 +421,7 @@ void Alarm_init(void)
   AlarmType AlarmID;
   for(AlarmID = 0; AlarmID < OSALARM_NUMBER_OF_ALARMS; AlarmID++){
 
-    //create counter ll alarm dah
-
-    if(Alarms[AlarmID].Alarmautostar == True){
+    if(Alarms[AlarmID].Alarmautostart == True){
 
       SetRelAlarm(AlarmID, Alarms[AlarmID].AlarmTime, Alarms[AlarmID].AlarmCycleTime);
 
@@ -435,7 +433,7 @@ void Alarm_init(void)
 
 
 /************************************************************************************
-* Service Name: IncrementAlarm
+* Service Name: AlarmManagement
 * Service ID[hex]: 
 * Sync/Async: 
 * Reentrancy: 
@@ -445,7 +443,7 @@ void Alarm_init(void)
 * Description: The system service used to increment the alarm.
 ************************************************************************************/
 #if OSALARM_NUMBER_OF_ALARMS
-TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value)
+TickType AlarmManagement(AlarmType AlarmID, TickType Increment_value)
 {
 
   TickType RestIncrement;
@@ -544,7 +542,6 @@ TickType IncrementAlarm(AlarmType AlarmID, TickType Increment_value)
               }
               break;
 
-//#if ll events
             case OsAlarmSetEvent:
 
               //Set event

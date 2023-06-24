@@ -226,6 +226,10 @@ void OsSched_RunningToSuspended(void)
 *Description: change task state from running to ready,
 *			  add the task to the head of the ready list.
 *********************************************************************************/
+/********************OSEK_SCHEDULER_4*******************************************
+A preempted task is considered to be the first (oldest) task in the ready 
+list of its current priority.
+*******************************************************************************/
 void OsSched_RunningToReady(void)
 {
     OsTask_TCBs[OsTask_RunningTaskID].state = READY;
@@ -260,7 +264,7 @@ void OsSched_SuspendedToReady
     OsSched_ReadyListAddToTail(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
     OsTask_TCBs[taskID].state    = READY; /* change state of the task to ready*/
 
-    if(OsTask_TCBs[taskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskPriority)
+    if(OsTask_TCBs[taskID].CurrentPriority > OsTask_HighestBasePriority)
     {
     	OsTask_HighestBasePriority=OsTask_TCBs[taskID].CurrentPriority;
     }
@@ -279,6 +283,9 @@ void OsSched_SuspendedToReady
 *Description: change task state from ready to running,
 *			  remove the task from the ready list.
 *********************************************************************************/
+/**********************************OSEK_SCHEDULER_3 ****************************
+Tasks on the same priority level are started depending on their order of activation
+*******************************************************************************/
 void OsSched_ReadyToRunning(
 							TaskType taskID
 							)
@@ -298,6 +305,10 @@ void OsSched_ReadyToRunning(
 *			  add the task to the tail the ready list,
 *			  update OsTask_HighestBasePriority .
 *********************************************************************************/
+/*************************************OSEK_SCHEDULER_5**************************
+A task being released from the waiting state is 
+treated like the last (newest) task in the ready queue of its priority
+*******************************************************************************/
 #if( (OS_CONFORMANCE == OS_CONFORMANCE_ECC1) ||  (OS_CONFORMANCE == OS_CONFORMANCE_ECC2) )
 void OsSched_WaitingToReady
 (
@@ -307,7 +318,7 @@ void OsSched_WaitingToReady
 	OsTask_TCBs[taskID].state=READY;
 	OsSched_ReadyListAddToTail(&OsTask_ReadyList[OsTask_TCBs[taskID].CurrentPriority], taskID);
 
-	if(OsTask_TCBs[taskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskPriority)
+	if(OsTask_TCBs[taskID].CurrentPriority > OsTask_HighestBasePriority)
 	{
 		OsTask_HighestBasePriority=OsTask_TCBs[taskID].CurrentPriority;
 	}
@@ -327,6 +338,10 @@ void OsSched_WaitingToReady
 *Return : none
 *Description: search the ready list to get the highest priority task ID .
 *********************************************************************************/
+/********************************** OSEK_SCHEDULER_2 ***************************
+The value 0 is defined as the lowest priority of a task. Accordingly bigger 
+numbers define higher priorities.
+***************************************************************************/
 STATIC void OsSched_getHighestReadyTask
 (
 		TaskType *taskIDPtr
@@ -351,6 +366,12 @@ STATIC void OsSched_getHighestReadyTask
 *Description: get highest priority task and switch context to it  .
 *Remark: this function check if the running task is preemptive or NOT before perform switch context.
 *********************************************************************************/
+/*******************************************************************************
+****************OSEK_SCHEDULER_1************************************************
+The scheduler decides on the basis of the task 
+priority which is the next of the ready tasks to be 
+transferred into the running state
+***************************************************************************/
 void OsSched_reschedule()
 {
 	TaskType peekTaskID;
@@ -364,10 +385,16 @@ void OsSched_reschedule()
 	 * because ActivateTask, SetEvent and ReleaseResource APIs are rescheduling points only in case of FULL preemptive.
 	 *
 	 */
-	if((OsTask_TCBs[OsTask_RunningTaskID].state==RUNNING)  \
-	   &&(OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskSchedule==FULL))
+	/*********************OSEK_SCHEDULER_6***********************************.
+	Full preemptive scheduling will put the running task into the 
+ 	ready state, as soon as a higher-priority task has got ready.
+	*************************************************************************/
+
+	if(OsTask_TCBs[OsTask_RunningTaskID].state==RUNNING)
+		/**OSEK_SCHEDULER_10&13&14*/
 	{
-		if(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority)
+		if(  (OsTask_TCBs[OsTask_RunningTaskID].OsTaskConfig->OsTaskSchedule==FULL)\
+		   &&(OsTask_TCBs[peekTaskID].CurrentPriority > OsTask_TCBs[OsTask_RunningTaskID].CurrentPriority))
 		{
 			OsSched_RunningToReady();
 			OsSched_ReadyToRunning(peekTaskID);
@@ -384,6 +411,8 @@ void OsSched_reschedule()
 		}
 	}
 	else  /*task state is NOT RUNNING in case of TerminateTask , ChainTask and WaitEvent APIs*/
+		/****************************************************OSEK_SCHEDULER_8 &&9&12 *****************/
+
 	{
 		OsSched_ReadyToRunning(peekTaskID);
 		OsTask_HighestBasePriority=OsTask_TCBs[peekTaskID].CurrentPriority;
@@ -429,6 +458,11 @@ TaskType OsSched_getRunningTaskID()
 *Description:this function switch the context to the highest priority task.
 *Remark: this function is called only in schedule API.
 *********************************************************************************/
+/****************OSEK_SCHEDULER_1************************************************
+The scheduler decides on the basis of the task 
+priority which is the next of the ready tasks to be 
+transferred into the running state
+***************************************************************************/
 void OsSched_scheduleInternal()
 {
 	TaskType peekTaskID;

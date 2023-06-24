@@ -1,17 +1,18 @@
 #include "Os.h"
-
+#include "schedule.h"
 get_using_tasks x;
 
 void StartOS(AppModeType mode)
 {
 	OsSched_schedulerInit();
-	OsTask_taskInit(OsTask * OsTaskConfig);
+	OsTask_taskInit();
 	Alarm_init();
 	Resource_init(x);
 	Interrupt_init();
+	Ossched_StartScheduler();
 }
 
-void ShutdownOS(void)
+void ShutdownOS(StatusType status)
 {
   DISABLE_INTERRUPTS();
 

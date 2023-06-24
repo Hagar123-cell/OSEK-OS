@@ -4,8 +4,8 @@
 
 #define CNTR        (*((volatile unsigned long *)0x00010000))
 #define CMPR        (*((volatile unsigned long *)0x00010004))
-#define CNTRR       (*((volatile unsigned long *)0x00010008))
-#define INTERRUPT   (*((volatile unsigned long *)0x000100012))
+#define CNRTR      (*((volatile unsigned long *)0x00010008))
+
 
 
 #define SET_BIT(reg,bit)    reg|=(1<<bit)
@@ -27,7 +27,19 @@ void timer_init(void);
 	Function Arguments   : void
 	Function Description : fire an interrupt when the counter reach to the input value.
 */
-void compare(int compare_value);
-
-
+void compare(int compareValue);
+/*
+	Function Name        : Enale_timer
+	Function Returns     : void
+	Function Arguments   : void
+	Function Description : enable the timer.
+*/
+void Enable_timer(void);
+/*
+	Function Name        : disable_timer
+	Function Returns     : void
+	Function Arguments   : void
+	Function Description : disable the timer.
+*/
+void disable_timer(void);
 #endif // TIMER_H

@@ -16,7 +16,7 @@
  *                  Task Management Pre-Compile Configurations                 *
  *******************************************************************************/
 
-#define OSTASK_NUMBER_OF_TASKS  20   /* 		1 .. 255		 */
+#define OSTASK_NUMBER_OF_TASKS  2   /* 		1 .. 255		 */
 
 #define INVALID_TASK OSTASK_NUMBER_OF_TASKS
 
@@ -25,6 +25,24 @@
 
 #define OS_CONFORMANCE OS_CONFORMANCE_ECC2
 #define OS_EXTENDED_ERROR    TRUE
+
+/*******************************************************************************
+ *                  Alram Management Pre-Compile Configurations                *
+ *******************************************************************************/
+
+#define OSALARM_NUMBER_OF_ALARMS             (2U)
+
+#define OSALARM_NUMBER_OF_COUNTERS           (2U)
+
+#define OS_COUNTER_MAX_ALLOWED_VALUE_1		65535
+#define OS_COUNTER_TICKS_PER_BASE_1			1
+#define OS_COUNTER_MIN_CYCLE_1				0
+
+/*******************************************************************************
+ *                  Resource Management Pre-Compile Configurations             *
+ *******************************************************************************/
+#define Resources_count 15
+
 
 /*******************************************************************************
  *                              App Mode Configuration                         *

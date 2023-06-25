@@ -4,7 +4,7 @@
 .extern currentTCBPtr
 .extern nextTCBPtr
 
-.global RISCV_CONTEXT_SWITCH
+.global riscv_context_switch
 .global initialiseStack
 
 # All general purpose registers are pushed into the stack except x0 , x2 ,x3 and x4 :
@@ -14,7 +14,7 @@
 # and it's value is intialized early in the program and never change.
 # x4 (tp) since it's used in multithreading and we are porting on single core RISC-V. 
 
-RISCV_CONTEXT_SWITCH:
+riscv_context_switch:
 
     LOAD_REG  x4, currentTCBPtr             # load value of currectTCBPtr (address of the current TCB)
     beq x4,x0,restoreContext		    # currentTCBPtr=0 in case of task termination by TerminateTask or  ChainTask APIs
@@ -113,7 +113,7 @@ RISCV_CONTEXT_SWITCH:
     
     addi sp, sp, CONTEXT_SIZE
     
-    ret
+    mret
 
 
 /*******************************************************************************

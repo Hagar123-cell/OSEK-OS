@@ -30,9 +30,9 @@
  *                  Alram Management Pre-Compile Configurations                *
  *******************************************************************************/
 
-#define OSALARM_NUMBER_OF_ALARMS             (2U)
+#define OSALARM_NUMBER_OF_ALARMS             2
 
-#define OSALARM_NUMBER_OF_COUNTERS           (2U)
+#define OSALARM_NUMBER_OF_COUNTERS           2
 
 #define OS_COUNTER_MAX_ALLOWED_VALUE_1		65535
 #define OS_COUNTER_TICKS_PER_BASE_1			1

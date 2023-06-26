@@ -231,7 +231,7 @@ StatusType SetAbsAlarm(AlarmType AlarmID, TickType start, TickType cycle)
     ret = E_OS_ID;
     
   }
-  //check that increment and cycle are in range
+  //check that start and cycle are in range
   else if( ( start < 0 ) || ( start > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue) ) ||
             ( (cycle != 0) && 
               ( (cycle > (Alarms[AlarmID].OsAlarmCounterRef->OsCounterMaxAllowedValue)) ||

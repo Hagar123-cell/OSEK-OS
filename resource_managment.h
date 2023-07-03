@@ -31,9 +31,7 @@ typedef boolean occupation;
 /*******************************************************************************
  *                                  structures & unions                        *
  *******************************************************************************/
-
-
-
+/* a struct to store the info of the resource */
 typedef struct
 {
 	ceiling_priority ceiling_prior;

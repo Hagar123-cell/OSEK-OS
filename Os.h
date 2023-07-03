@@ -98,8 +98,11 @@ enum
  * type of resource which is the input to GetResource & ReleaseResource
  */
 typedef uint8 ResourceType ;
+
+/* define a type to instantiate the variable resources from */
 typedef  uint8 OsResource;
 
+/* struct to store the tasks that use each resource */
 typedef struct
 {
 	TaskType using_tasks [Resources_count][OSTASK_NUMBER_OF_TASKS];
@@ -111,10 +114,11 @@ void Resource_init(get_using_tasks x );
 /*******************************************************************************
  *                            Event definitions                                *
  *******************************************************************************/
-
-
 typedef uint32 OsEventMask;
+
 typedef OsEventMask EventMaskType;
+
+/* define a type to instantiate the mask from */
 typedef EventMaskType* EventMaskRefType;
 
 typedef uint32 TaskEventsType;  
@@ -334,8 +338,18 @@ StatusType GetEvent ( TaskType TaskID , EventMaskRefType Event );
 */
 StatusType WaitEvent ( EventMaskType Mask );
 
+/*
+ *The events of the extended task calling ClearEvent are cleared 
+ *according to the event mask <Mask>
+*/
 StatusType ClearEvent ( EventMaskType Mask );
 
+/*
+ *The events of task <TaskID> are set according to the event 
+ *mask <Mask>. Calling SetEvent causes the task <TaskID> to 
+ *be transferred to the ready state, if it was waiting for at least 
+ *one of the events specified in <Mask>.
+*/
 StatusType SetEvent ( TaskType TaskID ,EventMaskType Mask );
 
 
@@ -399,7 +413,6 @@ typedef struct {
 
 typedef OsEvent* OsEventRefType;
 
-typedef OsResource* OsResourceRefType;
 /*******************************************************************************
   *                                 OS Prototypes                              *
   *******************************************************************************/

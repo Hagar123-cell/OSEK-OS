@@ -400,30 +400,30 @@ StatusType GetTaskState ( TaskType TaskID, TaskStateRefType State )
 void OsTask_taskInit()
 {
 	uint8 i;
-	OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
+	OS_SET_CALL_LEVEL(TASK_LEVEL);
 
 
 	for(i=0; i < OSTASK_NUMBER_OF_TASKS;i++)
 	{
 
-		OsTask_TCBs[i].OsTaskConfig= &OsTaskConfig[i];
+		OsTask_TCBs[i].OsTaskConfig= &Task_Configuration.tasksConfig[i];
 
 		/* OsTask_TCBs[i].next=INVALID_TASK;  initialized in OsSched_ReadyListAddToTail*/
 		OsTask_TCBs[i].Activations=0;
-		OsTask_TCBs[i].CurrentPriority=OsTaskConfig[i].OsTaskPriority;
+		OsTask_TCBs[i].CurrentPriority=Task_Configuration.tasksConfig[i].OsTaskPriority;
 
 
 		/*if(OsTaskConfig[i].OsTaskAutostart.OsTaskAppModeRef->appMode & OSAPPMODE_CURRENT_APPMODE)*/
 
-		if(OsTaskConfig[i].OsTaskAutostart==TRUE)
+		if(Task_Configuration.tasksConfig[i].OsTaskAutostart==TRUE)
 		{
 			OsTask_TCBs[i].state=READY;
 			OsSched_SuspendedToReady(i);
 			/* point to stack top*/
-			OsTask_TCBs[i].stackPtr=OsTaskConfig[i].stackPtr + OsTaskConfig[i].stackSize;
+			OsTask_TCBs[i].stackPtr=Task_Configuration.tasksConfig[i].stackPtr + Task_Configuration.tasksConfig[i].stackSize;
 
 			/* ensures that the task code is being executed from the first statement.*/
-			OsTask_TCBs[i].stackPtr=initialiseStack(OsTask_TCBs[i].stackPtr ,OsTaskConfig[i].entry );
+			OsTask_TCBs[i].stackPtr=initialiseStack(OsTask_TCBs[i].stackPtr ,Task_Configuration.tasksConfig[i].entry );
 
 			/*Implemented initialize Events , EventsWait , Resources*/
 			OsTask_TCBs[i].Events.OsEventMaskX=0;

@@ -1,4 +1,5 @@
 /******************************************************************************
+ * Author: Hagar Ahmed & Heba Adel
  *
  * Module: event_managment
  *
@@ -71,7 +72,7 @@ StatusType GetEvent ( TaskType TaskID , EventMaskRefType Event )
 /*
  *The state of the calling task is set to waiting, unless at least one
  *of the events specified in <Mask> has already been set.
-*/
+ */
 
 /* OSEK_EVENT_6 */
 StatusType WaitEvent ( EventMaskType Mask )
@@ -79,7 +80,7 @@ StatusType WaitEvent ( EventMaskType Mask )
 	StatusType status;
 
 /* OSEK_EVENT_8 */
-		if(!((OsTask_TCBs[OsSched_getRunningTaskID()]. OsTaskConfig -> taskKind )== EXTENDED))//not extended
+		if(!((OsTask_TCBs[OsSched_getRunningTaskID()]. OsTaskConfig -> taskKind )== EXTENDED))// extended
 		{
 			status = E_OS_ACCESS;
 		}
@@ -117,7 +118,7 @@ StatusType ClearEvent ( EventMaskType Mask )
 	StatusType status;
 
 /* OSEK_EVENT_13 */
-			if(!((OsTask_TCBs[OsSched_getRunningTaskID()]. OsTaskConfig -> taskKind )== EXTENDED))//not extended
+			if(!((OsTask_TCBs[OsSched_getRunningTaskID()]. OsTaskConfig -> taskKind )== EXTENDED))// extended
 			{
 				status = E_OS_ACCESS;
 			}
@@ -166,10 +167,14 @@ StatusType SetEvent ( TaskType TaskID ,EventMaskType Mask )
 				    OsTask_TCBs[TaskID].Events.OsEventMaskX |= (Mask & OsTask_TCBs[OsSched_getRunningTaskID()].OsTaskConfig->OsTaskEventRef->OsEventMaskX);
 				    if (( OsTask_TCBs[TaskID].state == WAITING ) && ( OsTask_TCBs[TaskID].EventsWait.OsEventMaskX & OsTask_TCBs[TaskID].Events.OsEventMaskX ) )
 				    {
-				    	OsSched_WaitingToReady(TaskID);//  from waiting to ready
-				    }
+				    	OsSched_WaitingToReady(TaskID);
+				   if(OsTask_TCBs[TaskID].CurrentPriority > OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority)
+					    {
 /* OSEK_EVENT_19 */
-				    OsSched_reschedule();//call scheduler
+					    	OsSched_reschedule();
+					 
+					    }
+					}
 				}
 
 			}

@@ -1,4 +1,5 @@
 /******************************************************************************
+ * Author: Hagar Ahmed & Heba Adel
  *
  * Module: resource_management
  *
@@ -17,21 +18,15 @@
 
 
 
-
-/*******************************************************************************
- *                                  global variables                           *
- *******************************************************************************/
-
-
-
-
 /*******************************************************************************
  *                                  function definitions                       *
  *******************************************************************************/
 
 /*
+ * " deleted as we handeled it in configuration "
  * setting ceiling priority for each resource
  */
+ /*
 void get_ceiling_priority(get_using_tasks x )
 {
 	ceiling_priority max = 0;
@@ -47,15 +42,19 @@ void get_ceiling_priority(get_using_tasks x )
 	  resource_info[i].ceiling_prior = max+1;
   }
 }
+*/ 
 
 void Resource_init(get_using_tasks x )
 {
+	/* mark all resources as not occupied */
 	for(uint8 i=0; i<Resources_count; i++)
 	{
 		resource_info[i].resource_occupation = 0;
 	}
-	get_ceiling_priority(x);
+	// get_ceiling_priority(x);
 }
+
+
 /*
  * This call serves to enter critical sections in the code that are
  * assigned to the resource referenced by <ResID>. A critical
@@ -68,7 +67,7 @@ StatusType GetResource (ResourceType ResID )
 	StatusType status;
 
 /*OSEK_RESOURCE_3*/
-	if(ResID >= Resources_count)
+	if((ResID >= Resources_count) && (ResID != res_scheduler))
 	{
 		status = E_OS_ID;
 	}
@@ -82,11 +81,14 @@ StatusType GetResource (ResourceType ResID )
 	else
 	{
 		status = E_OK;
+		/*prevent multiple resource occupation*/
+		if(OsTask_TCBs[OsSched_getRunningTaskID()].Resources == 0)
+		{
 /*OSEK_RESOURCE_4*/
-		resource_info[ResID].resource_occupation = 1;
-	    OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority = resource_info[ResID].ceiling_prior;
-	    OsTask_TCBs[OsSched_getRunningTaskID()].Resources ++;// increment no of resources occupied by running task
-
+			resource_info[ResID].resource_occupation = 1;
+			OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority = resource_info[ResID].ceiling_prior;
+			OsTask_TCBs[OsSched_getRunningTaskID()].Resources ++;// increment no of resources occupied by the running task
+		}
 	}
 
 	return status;
@@ -106,7 +108,7 @@ StatusType ReleaseResource ( ResourceType ResID )
 	StatusType status;
 
 /*OSEK_RESOURCE_7*/
-	if(ResID >= Resources_count)
+	if((ResID >= Resources_count) && (ResID != res_scheduler))
 	{
 		status = E_OS_ID;
 	}
@@ -127,7 +129,7 @@ StatusType ReleaseResource ( ResourceType ResID )
 /*OSEK_RESOURCE_8*/
 		resource_info[ResID].resource_occupation = 0;
 		OsTask_TCBs[OsSched_getRunningTaskID()].CurrentPriority = OsTask_TCBs[OsSched_getRunningTaskID()].OsTaskConfig->OsTaskPriority ;
-	    OsTask_TCBs[OsSched_getRunningTaskID()].Resources --;// decrement no of resources occupied by running task
+	    OsTask_TCBs[OsSched_getRunningTaskID()].Resources --;// decrement no of resources occupied by the running task
 /*OSEK_RESOURCE_9*/
 		OsSched_reschedule();//call scheduler
 	}

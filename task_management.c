@@ -210,7 +210,7 @@ StatusType ChainTask ( TaskType TaskID )
 		status=E_OS_ID; /*Task <TaskID> is invalid, E_OS_ID */
 
 	}
-	else if (taskTCB->Resources !=0 ) /*Implemented task occupies resources*/
+	else if (OsTask_TCBs[OsSched_getRunningTaskID()]->Resources !=0 )/*Implemented task occupies resources*/
 	{
 		status=E_OS_RESOURCE;
 	}

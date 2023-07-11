@@ -1,0 +1,4 @@
+Expected output:
+
+$1 = {stackPtr = 0x80001f54 <task3Stack+120>, state = READY, CurrentPriority = 3 '\003', Activations = 0 '\000', Events = {OsEventMaskX = 0}, EventsWait = {OsEventMaskX = 0}, Resources = 0 '\000', 
+  next = 3 '\003', OsTaskConfig = 0x800016fc <Task_Configuration+64>}

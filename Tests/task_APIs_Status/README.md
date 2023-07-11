@@ -1,6 +1,11 @@
-# Compile and run the test as follows: 
+## Test requires:
+1. [riscv-gnu-toolchain](https://github.com/riscv-collab/riscv-gnu-toolchain) Version 12.2.0. 
+2. QEMU System emulator version 7.1.0 (v7.1.0).
 
-Open task_APIs_Status directory and run the following command to compile the test
+## Compile and Run the test as follows: 
+Make sure riscv32-unknown-elf- binaries and qemu-system-riscv32 binary are in your PATH when you run the test. 
+
+Open task_APIs_Status directory and run the following command to compile the test.
 ```
 riscv32-unknown-elf-gcc -I../../ -I./  -g -ffreestanding -O0 -Wl,--gc-sections     -nostartfiles -nostdlib -nodefaultlibs -Wl,-T,../../Linker_and_Startup/riscv32-virt.ld ../../Linker_and_Startup/crt0.s Task_API_Errors.c ../../Os.c Os_PBcfg.c ../../riscv_context_switching.S ../../scheduler.c ../../task_management.c
 ```
@@ -17,7 +22,7 @@ In another terminal launch the RISC-V GDB (GNU Debugger) and connect it to a rem
 riscv32-unknown-elf-gdb a.out -ex "target remote :1234"`
 ```
 
-run the follwing commands in debug Session:
+### Run the following commands in debug Session:
 
 ```
 b* Task1+36   

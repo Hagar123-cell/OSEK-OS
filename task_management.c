@@ -11,7 +11,14 @@
  *******************************************************************************/
 #include "task_management.h"
 #include "scheduler.h"
-#include "Interrupt.h"
+
+#ifdef TEST
+    #define DISABLE_INTERRUPTS()
+    #define ENABLE_INTERRUPTS()
+#else
+    #include "Interrupt.h"
+#endif 
+
 
 #if(OS_EXTENDED_ERROR==TRUE)
 volatile OsTask_callLevelType OS_callLevel;
@@ -80,9 +87,9 @@ StatusType ActivateTask ( TaskType TaskID )
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 			/* Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs->Events.OsEventMaskX=0;
-			OsTask_TCBs->EventsWait.OsEventMaskX=0;
-			OsTask_TCBs->Resources=0;
+			taskTCB->Events.OsEventMaskX=0;
+			taskTCB->EventsWait.OsEventMaskX=0;
+			taskTCB->Resources=0;
 			ENABLE_INTERRUPTS();
 			if(OS_GET_CALL_LEVEL() ==TASK_LEVEL)
 			{
@@ -153,9 +160,9 @@ StatusType TerminateTask ( void )
 
 
 			/* Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs->Events.OsEventMaskX=0;
-			OsTask_TCBs->EventsWait.OsEventMaskX=0;
-			OsTask_TCBs->Resources=0;
+			taskTCB->Events.OsEventMaskX=0;
+			taskTCB->EventsWait.OsEventMaskX=0;
+			taskTCB->Resources=0;
 			taskTCB->Activations--;
 		}
 		else
@@ -210,7 +217,7 @@ StatusType ChainTask ( TaskType TaskID )
 		status=E_OS_ID; /*Task <TaskID> is invalid, E_OS_ID */
 
 	}
-	else if (OsTask_TCBs[OsSched_getRunningTaskID()]->Resources !=0 )/*Implemented task occupies resources*/
+	else if (OsTask_TCBs[OsSched_getRunningTaskID()].Resources !=0 )/*Implemented task occupies resources*/
 	{
 		status=E_OS_RESOURCE;
 	}
@@ -268,9 +275,9 @@ StatusType ChainTask ( TaskType TaskID )
 			taskTCB->stackPtr=initialiseStack(taskTCB->stackPtr ,taskTCB->OsTaskConfig->entry );
 
 			/* Implemented initialize Events , EventsWait , Resources*/
-			OsTask_TCBs->Events.OsEventMaskX=0;
-			OsTask_TCBs->EventsWait.OsEventMaskX=0;
-			OsTask_TCBs->Resources=0;
+			taskTCB->Events.OsEventMaskX=0;
+			taskTCB->EventsWait.OsEventMaskX=0;
+			taskTCB->Resources=0;
 			ENABLE_INTERRUPTS();
 			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 			OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */

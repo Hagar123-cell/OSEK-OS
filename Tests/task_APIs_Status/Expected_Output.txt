@@ -1,0 +1,10 @@
+Expected output:
+
+(gdb) p *&act[0]@8  
+$6 = {E_OK, E_OS_LIMIT, E_OK, E_OK, E_OK, E_OK, E_OS_LIMIT, E_OS_ID}
+(gdb) p *&ter[0]@2  
+$7 = {E_OS_RESOURCE, E_OS_CALLEVEL}
+(gdb) p *&chain[0]@5
+$8 = {E_OS_ID, E_OS_RESOURCE, E_OS_CALLEVEL, E_OS_LIMIT, E_OS_LIMIT}
+(gdb) p *&sched[0]@2
+$9 = {E_OS_RESOURCE, E_OS_CALLEVEL}

@@ -644,9 +644,6 @@ StatusType GetTaskID(TaskRefType TaskID);
 StatusType GetTaskState(TaskType TaskID, TaskStateRefType State);
 
 
-/*******************************************************************************
- *                       External Configurations                                    *
- *******************************************************************************/
-extern OsTask * OsTaskConfig;
+#include "Os_PBcfg.h"
 
 #endif /* OS_H */

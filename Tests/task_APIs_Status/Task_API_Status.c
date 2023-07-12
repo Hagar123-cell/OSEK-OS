@@ -179,6 +179,9 @@ In TerminateTask API: If the version with extended status is used, the service r
 /*##################################################################################################*/
 void test_ChainTask_errors(void)
 {
+	/*OSEK_TASK_16 	
+ 	In TerminateTask API: This function will never return in Standard mode. */
+	
 	/*@OSEK_TASK_28 	
 	In ChainTask API: Added possible return values in Extended mode are:E_OS_ID if the TaskID is invalid,
 	or E_OS_RESOURCE if the calling task still occupies resources, or 

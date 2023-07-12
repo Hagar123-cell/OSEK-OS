@@ -1,0 +1,6 @@
+Expected output:
+
+(gdb) print OsTask_TCBs[0].state       
+$10 = READY
+(gdb) print OsTask_TCBs[2].state
+$11 = SUSPENDED

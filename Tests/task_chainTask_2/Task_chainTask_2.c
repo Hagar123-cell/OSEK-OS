@@ -47,6 +47,17 @@ void Task1 (void)
 {
      OsTask_TCBs[TASK1_ID].Events.OsEventMaskX=3; /*to make sure events will be cleared after calling activate task*/
      OsTask_TCBs[TASK1_ID].EventsWait.OsEventMaskX=9; /*to make sure eventsWait will be cleared after calling activate task*/
+ 
+   /*@OSEK_TASK_21 	
+   In ChainTask API: If the succeeding task is identical with the current task, this does not result in multiple requests.
+   The task is not transferred to the suspended state but will immediately become ready again.*/ 
+   /*tested by calling ChainTask when succeeding task is identical with the current task then
+    print the state of this task using Qemu that will show the state is ready*/
+   
+  /*@OSEK_TASK_25 	
+   In ChainTask API: When an extended task is transferred from suspended state into ready state all its events are cleared. */
+   /*tested by printing the the events of task1 after calling chainTask that shows the events that we have set manually are cleared*/
+    
      ChainTask(TASK1_ID);
 for(;;)
   {

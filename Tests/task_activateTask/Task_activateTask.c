@@ -1,4 +1,16 @@
-
+/******************************************************************************
+ *
+ * File Name: Task_activateTask.c
+ *
+ * Author: Peter Samir
+ *
+ * Description: Test ActivateTask API
+ *
+ * Scenario: priorities of tasks task3,task2 and task1 are 3,2 and 1 respectively, task1 is auto start so task1 will start execution,
+ *           task1 call ActivateTask to activate task2 ,ActivateTask triggers rescheduling since Task1 is preemptable and switch context to task2 ,
+ *           task2 call ActivateTask to activate task3 ,no scheduling take place after activating task3 since task2 is NON-Preemptive.
+ *	     	 breakpoint at the super loop in task2 to print the TCB of task3 to show that all events are cleared and the state is ready .
+ *******************************************************************************/
 #include "Os.h"
 #include "scheduler.h"
 #define TASK1_ID 0

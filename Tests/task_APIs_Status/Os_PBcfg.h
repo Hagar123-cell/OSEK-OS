@@ -2,7 +2,7 @@
  * Os_PBcfg.h
  *
  *  Created on: Jul 7, 2023
- *      Author: Peter
+ *      Author: David
  */
 
 #ifndef OSEK_OS_OS_PBCFG_H_

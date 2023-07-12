@@ -2,7 +2,7 @@
  * Os_PBcfg.h
  *
  *  Created on: Jul 7, 2023
- *      Author: David
+ *      Author: Peter
  */
 
 #ifndef OSEK_OS_OS_PBCFG_H_
@@ -20,8 +20,7 @@ extern const  Task_ConfigType Task_Configuration ;
 void Task1 (void);
 void Task2 (void);
 void Task3 (void);
-void Task4 (void);
-void Task5 (void);
+
 
 
 #endif /* OSEK_OS_OS_PBCFG_H_ */

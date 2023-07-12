@@ -1,0 +1,6 @@
+Expected Output:
+
+(gdb) print ID
+$1 = 0 '\000'
+(gdb) print stat
+$2 = E_OK

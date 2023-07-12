@@ -298,8 +298,8 @@ typedef struct
 //	OsAlarm Alarms[No_ALARMS];
 //} Alarm_ConfigType;
 
-OsAlarm Alarms[OSALARM_NUMBER_OF_ALARMS];
-OsCounter Counters[OSALARM_NUMBER_OF_COUNTERS];
+/*OsAlarm Alarms[OSALARM_NUMBER_OF_ALARMS];
+OsCounter Counters[OSALARM_NUMBER_OF_COUNTERS];*/
 
 /*******************************************************************************
  *                      Resource API Prototypes                                *

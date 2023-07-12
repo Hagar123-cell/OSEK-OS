@@ -1,0 +1,13 @@
+Expected Output:
+
+
+(gdb) print state_of_task1
+$1 = READY
+(gdb) print state_of_task2
+$2 = SUSPENDED
+(gdb) print state_of_task3
+$3 = RUNNING
+(gdb) print state_of_task3_3
+$4 = RUNNING
+(gdb) print stat
+$5 = E_OK

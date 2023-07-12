@@ -1,0 +1,4 @@
+Expected Output:
+
+(gdb) print sched
+$1 = E_OK

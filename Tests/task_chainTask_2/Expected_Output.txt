@@ -1,0 +1,8 @@
+Expected Output: 
+
+(gdb) print OsTask_TCBs[0].state
+$1 = READY
+(gdb) print OsTask_TCBs[0].Events.OsEventMaskX
+$2 = 0
+(gdb) print OsTask_TCBs[0].EventsWait.OsEventMaskX
+$3 = 0

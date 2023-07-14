@@ -7,3 +7,5 @@ $1 = SUSPENDED
 $2 = SUSPENDED
 (gdb) print OsTask_TCBs[2].state
 $3 = RUNNING
+(gdb) p num_of_Task1_hits
+$4 = 2

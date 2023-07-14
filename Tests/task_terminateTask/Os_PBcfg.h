@@ -8,7 +8,7 @@
 #ifndef OSEK_OS_OS_PBCFG_H_
 #define OSEK_OS_OS_PBCFG_H_
 #include "Os.h"
-#define STACKSIZE 240
+#define STACKSIZE 2000
 
 typedef struct Task_ConfigType
 {

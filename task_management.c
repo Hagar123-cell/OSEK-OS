@@ -106,7 +106,6 @@ StatusType ActivateTask ( TaskType TaskID )
 			taskTCB->Events.OsEventMaskX=0;
 			taskTCB->EventsWait.OsEventMaskX=0;
 			taskTCB->Resources=0;
-			ENABLE_INTERRUPTS();
 			if(OS_GET_CALL_LEVEL() ==TASK_LEVEL)
 			{
 				/*@OSEK_TASK_5
@@ -206,7 +205,6 @@ StatusType TerminateTask ( void )
 			In TerminateTask API: The calling task shall be transferred from the running state into the suspended state. */
 			OsSched_RunningToSuspended();
 		}
-		ENABLE_INTERRUPTS();
 		/*OSEK_TASK_13
 		In TerminateTask API: If the call was successful, TerminateTask does not return to the call level and the status cannot be evaluated.*/
 
@@ -294,7 +292,6 @@ StatusType ChainTask ( TaskType TaskID )
 				/*@OSEK_TASK_20
 				In ChainTask API: After termination of the calling task a succeeding task TaskID shall be activated. */
 				taskTCB->Activations++; /* increase number of activations */
-				ENABLE_INTERRUPTS();
 				OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 				OsSched_reschedule(); /* this function may Not return immediately and switch to another task  */
 			}
@@ -348,7 +345,6 @@ StatusType ChainTask ( TaskType TaskID )
 			taskTCB->Events.OsEventMaskX=0;
 			taskTCB->EventsWait.OsEventMaskX=0;
 			taskTCB->Resources=0;
-			ENABLE_INTERRUPTS();
 			OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 
 			/*@OSEK_TASK_23
@@ -407,7 +403,6 @@ StatusType Schedule ( void )
 	else
 #endif
 	{
-		ENABLE_INTERRUPTS();
 		OS_SET_CALL_LEVEL(SYSTEM_LEVEL);
 
 		/*@OSEK_TASK_31

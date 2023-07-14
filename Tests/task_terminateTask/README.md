@@ -30,4 +30,5 @@ c
 print OsTask_TCBs[0].state
 print OsTask_TCBs[1].state
 print OsTask_TCBs[2].state
+p num_of_Task1_hits
 ```
